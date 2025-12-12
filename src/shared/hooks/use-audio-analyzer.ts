@@ -18,9 +18,36 @@ export function useAudioAnalyzer(isListening: boolean) {
     const streamRef = useRef<MediaStream | null>(null)
 
     useEffect(() => {
+        const cleanup = () => {
+            if (rafRef.current) {
+                cancelAnimationFrame(rafRef.current)
+                rafRef.current = null
+            }
+
+            if (sourceRef.current) {
+                sourceRef.current.disconnect()
+                sourceRef.current = null
+            }
+
+            if (analyserRef.current) {
+                analyserRef.current = null
+            }
+
+            if (streamRef.current) {
+                streamRef.current.getTracks().forEach((track) => {
+                    track.stop()
+                })
+                streamRef.current = null
+            }
+
+            if (audioContextRef.current) {
+                void audioContextRef.current.close()
+                audioContextRef.current = null
+            }
+        }
+
         if (!isListening) {
             cleanup()
-            setVolume(0)
             return
         }
 
@@ -78,33 +105,6 @@ export function useAudioAnalyzer(isListening: boolean) {
         return cleanup
     }, [isListening])
 
-    function cleanup() {
-        if (rafRef.current) {
-            cancelAnimationFrame(rafRef.current)
-            rafRef.current = null
-        }
-
-        if (sourceRef.current) {
-            sourceRef.current.disconnect()
-            sourceRef.current = null
-        }
-
-        if (analyserRef.current) {
-            analyserRef.current = null
-        }
-
-        if (streamRef.current) {
-            streamRef.current.getTracks().forEach((track) => {
-                track.stop()
-            })
-            streamRef.current = null
-        }
-
-        if (audioContextRef.current) {
-            void audioContextRef.current.close()
-            audioContextRef.current = null
-        }
-    }
-
-    return volume
+    // Return 0 when not listening to avoid stale values
+    return isListening ? volume : 0
 }

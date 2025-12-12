@@ -52,6 +52,13 @@ interface SpeechWindow extends Window {
     webkitSpeechRecognition?: SpeechRecognitionConstructor
 }
 
+/** Check if Speech Recognition API is available */
+function isSpeechRecognitionSupported(): boolean {
+    if (typeof window === 'undefined') return false
+    const speechWindow = window as SpeechWindow
+    return !!(speechWindow.SpeechRecognition || speechWindow.webkitSpeechRecognition)
+}
+
 interface UseSTTOptions {
     languageId: string
     onResult?: (transcript: string, isFinal: boolean) => void
@@ -74,10 +81,12 @@ interface STTResult {
  */
 export function useSTT({ languageId, onResult, onError, onEnd, continuous = true }: UseSTTOptions): STTResult {
     const [isListening, setIsListening] = useState(false)
-    const [isSupported, setIsSupported] = useState(true)
     const [error, setError] = useState<string | null>(null)
     const recognitionRef = useRef<SpeechRecognition | null>(null)
     const language = getLanguage(languageId)
+
+    // Check support once at initialization
+    const isSupported = isSpeechRecognitionSupported()
 
     // Refs for callbacks to avoid re-initializing effect
     const onResultRef = useRef(onResult)
@@ -96,7 +105,6 @@ export function useSTT({ languageId, onResult, onError, onEnd, continuous = true
         const SpeechRecognitionAPI = speechWindow.SpeechRecognition || speechWindow.webkitSpeechRecognition
 
         if (!SpeechRecognitionAPI) {
-            setIsSupported(false)
             return
         }
 

@@ -1,21 +1,21 @@
 import { motion, AnimatePresence } from 'motion/react'
 
-import type { FeedbackState } from '../stores'
+import type { AttemptResult } from '../stores'
 
 interface DigitDisplayProps {
     /** Current input value */
     value: string
     /** Expected number of digits */
     digitCount: number
-    /** Feedback state for visual indication */
-    feedback: FeedbackState
+    /** Result state for visual indication */
+    result: AttemptResult
 }
 
 /**
  * Display for typed digits with placeholder underscores.
  * Shows visual feedback on correct/incorrect answers.
  */
-export function DigitDisplay({ value, digitCount, feedback }: DigitDisplayProps) {
+export function DigitDisplay({ value, digitCount, result }: DigitDisplayProps) {
     // Create array of slots
     const slots = Array.from({ length: digitCount }, (_, i) => value[i] ?? null)
 
@@ -24,8 +24,8 @@ export function DigitDisplay({ value, digitCount, feedback }: DigitDisplayProps)
             className={`
                 relative flex items-center justify-center gap-3 p-6 rounded-2xl
                 transition-all duration-300
-                ${feedback === 'correct' ? 'animate-flash-success' : ''}
-                ${feedback === 'incorrect' ? 'animate-flash-error' : ''}
+                ${result === 'correct' ? 'animate-flash-success' : ''}
+                ${result === 'incorrect' ? 'animate-flash-error' : ''}
             `}
         >
             {slots.map((digit, index) => (

@@ -2,8 +2,8 @@ import { create } from 'zustand'
 
 import type { CardState, ResponseRating } from '../types'
 
-/** Feedback state after answering */
-export type FeedbackState = 'correct' | 'incorrect' | null
+/** Result after answering - null means still attempting */
+export type AttemptResult = 'correct' | 'incorrect' | null
 
 interface SessionState {
     /** Whether a session is active */
@@ -24,8 +24,8 @@ interface SessionState {
     /** Time when current card was shown */
     cardStartTime: Date | null
 
-    /** Current feedback state */
-    feedback: FeedbackState
+    /** Current attempt result - null means still attempting */
+    result: AttemptResult
 
     /** Whether STT is currently listening */
     isListening: boolean
@@ -51,8 +51,8 @@ interface SessionState {
     /** Clear input */
     clearInput: () => void
 
-    /** Set feedback state */
-    setFeedback: (feedback: FeedbackState) => void
+    /** Set attempt result */
+    setResult: (result: AttemptResult) => void
 
     /** Calculate rating based on response time */
     calculateRating: (correct: boolean) => ResponseRating
@@ -83,7 +83,7 @@ export const useSessionStore = create<SessionState>((set, get) => ({
     startTime: null,
     input: '',
     cardStartTime: null,
-    feedback: null,
+    result: null,
     isListening: false,
     transcript: '',
 
@@ -99,7 +99,7 @@ export const useSessionStore = create<SessionState>((set, get) => ({
             startTime: now,
             input: '',
             cardStartTime: now,
-            feedback: null,
+            result: null,
             isListening: false,
             transcript: '',
         })
@@ -113,7 +113,7 @@ export const useSessionStore = create<SessionState>((set, get) => ({
             startTime: null,
             input: '',
             cardStartTime: null,
-            feedback: null,
+            result: null,
             isListening: false,
             transcript: '',
         })
@@ -138,7 +138,7 @@ export const useSessionStore = create<SessionState>((set, get) => ({
             currentIndex: nextIndex,
             input: '',
             cardStartTime: new Date(),
-            feedback: null,
+            result: null,
             isListening: false,
             transcript: '',
         })
@@ -152,8 +152,8 @@ export const useSessionStore = create<SessionState>((set, get) => ({
         set({ input: '' })
     },
 
-    setFeedback: (feedback: FeedbackState) => {
-        set({ feedback })
+    setResult: (result: AttemptResult) => {
+        set({ result })
     },
 
     calculateRating: (correct: boolean): ResponseRating => {

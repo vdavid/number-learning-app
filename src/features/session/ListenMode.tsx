@@ -12,7 +12,7 @@ const WRONG_ANSWER_DELAY = 500 // ms before marking wrong
  */
 export function ListenMode() {
     const languageId = useSettingsStore((s) => s.languageId)
-    const { input, setInput, feedback, setFeedback, getCurrentCard, nextCard, calculateRating } = useSessionStore()
+    const { input, setInput, result, setResult, getCurrentCard, nextCard, calculateRating } = useSessionStore()
     const reviewCard = useProgressStore((s) => s.reviewCard)
 
     const card = getCurrentCard()
@@ -41,7 +41,7 @@ export function ListenMode() {
 
     // Check answer when input changes
     useEffect(() => {
-        if (!card || feedback) return
+        if (!card || result) return
 
         const target = String(card.number)
 
@@ -49,14 +49,14 @@ export function ListenMode() {
         if (input.length === target.length) {
             if (input === target) {
                 // Correct!
-                setFeedback('correct')
+                setResult('correct')
                 const rating = calculateRating(true)
                 reviewCard(card.id, rating)
                 // No auto-advance - user clicks Next
             } else {
                 // Wrong - wait briefly for correction
                 wrongTimeoutRef.current = setTimeout(() => {
-                    setFeedback('incorrect')
+                    setResult('incorrect')
                     reviewCard(card.id, 'again')
 
                     // Show correct answer and replay audio
@@ -71,20 +71,20 @@ export function ListenMode() {
                 wrongTimeoutRef.current = null
             }
         }
-    }, [input, card, feedback, setFeedback, reviewCard, calculateRating, nextCard, speakNumber])
+    }, [input, card, result, setResult, reviewCard, calculateRating, nextCard, speakNumber])
 
     const handleKeyPress = useCallback(
         (key: string) => {
-            if (feedback) return
+            if (result) return
             setInput(input + key)
         },
-        [input, setInput, feedback],
+        [input, setInput, result],
     )
 
     const handleBackspace = useCallback(() => {
-        if (feedback) return
+        if (result) return
         setInput(input.slice(0, -1))
-    }, [input, setInput, feedback])
+    }, [input, setInput, result])
 
     const handleReplay = useCallback(() => {
         if (card) {
@@ -126,11 +126,11 @@ export function ListenMode() {
 
             {/* Middle: Digit display */}
             <div className='flex-1 flex items-center justify-center'>
-                <DigitDisplay value={input} digitCount={digitCount} feedback={feedback} />
+                <DigitDisplay value={input} digitCount={digitCount} result={result} />
             </div>
 
             {/* Show correct answer on error */}
-            {feedback === 'incorrect' && (
+            {result === 'incorrect' && (
                 <div className='text-center mb-4'>
                     <p className='text-[var(--text-muted)] text-sm mb-1'>Correct answer</p>
                     <p className='font-mono text-3xl text-[var(--error)]'>{card.number}</p>
@@ -138,7 +138,7 @@ export function ListenMode() {
             )}
 
             {/* Bottom: Keypad or Next button */}
-            {feedback === 'correct' ? (
+            {result === 'correct' ? (
                 <motion.button
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
@@ -147,7 +147,7 @@ export function ListenMode() {
                 >
                     Next <ArrowRight size={20} />
                 </motion.button>
-            ) : feedback === 'incorrect' ? (
+            ) : result === 'incorrect' ? (
                 <div className='flex items-center gap-6'>
                     {/* Listen Again */}
                     <motion.button
@@ -170,7 +170,7 @@ export function ListenMode() {
                     </motion.button>
                 </div>
             ) : (
-                <Keypad onKeyPress={handleKeyPress} onBackspace={handleBackspace} disabled={feedback !== null} />
+                <Keypad onKeyPress={handleKeyPress} onBackspace={handleBackspace} disabled={result !== null} />
             )}
         </div>
     )

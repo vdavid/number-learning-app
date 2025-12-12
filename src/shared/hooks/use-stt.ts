@@ -5,6 +5,7 @@ interface UseSTTOptions {
     languageId: string
     onResult?: (transcript: string, isFinal: boolean) => void
     onError?: (error: string) => void
+    onEnd?: () => void
     continuous?: boolean
 }
 
@@ -20,7 +21,7 @@ interface STTResult {
  * Hook for speech-to-text functionality.
  * Uses the Web Speech API with continuous recognition.
  */
-export function useSTT({ languageId, onResult, onError, continuous = true }: UseSTTOptions): STTResult {
+export function useSTT({ languageId, onResult, onError, onEnd, continuous = true }: UseSTTOptions): STTResult {
     const [isListening, setIsListening] = useState(false)
     const [isSupported, setIsSupported] = useState(true)
     const [error, setError] = useState<string | null>(null)
@@ -31,11 +32,13 @@ export function useSTT({ languageId, onResult, onError, continuous = true }: Use
     // Refs for callbacks to avoid re-initializing effect
     const onResultRef = useRef(onResult)
     const onErrorRef = useRef(onError)
+    const onEndRef = useRef(onEnd)
 
     useEffect(() => {
         onResultRef.current = onResult
         onErrorRef.current = onError
-    }, [onResult, onError])
+        onEndRef.current = onEnd
+    }, [onResult, onError, onEnd])
 
     // Initialize recognition on mount
     useEffect(() => {
@@ -71,6 +74,7 @@ export function useSTT({ languageId, onResult, onError, continuous = true }: Use
         recognition.onend = () => {
             console.log('[useSTT] onend')
             setIsListening(false)
+            onEndRef.current?.()
         }
 
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-explicit-any

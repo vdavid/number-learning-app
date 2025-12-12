@@ -8,11 +8,6 @@ end_of_line = lf
 insert_final_newline = true
 trim_trailing_whitespace = true
 
-# Go backend (gofmt uses tabs)
-[*.go]
-indent_style = tab
-# Leave indent_size unset so each editor can display tabs as preferred
-
 # Frontend TypeScript/JavaScript – matches frontend/.prettierrc (tabWidth 4, useTabs false)
 [*.{ts,tsx,js,jsx,mjs,cjs}]
 indent_style = space
@@ -36,10 +31,5 @@ trim_trailing_whitespace = false
 
 # Shell scripts
 [*.{sh,bash}]
-indent_style = space
-indent_size = 4
-
-# SQL migrations and other SQL
-[*.sql]
 indent_style = space
 indent_size = 4

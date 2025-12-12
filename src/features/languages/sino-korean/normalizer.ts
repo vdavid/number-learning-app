@@ -8,17 +8,17 @@
 
 /** Sino-Korean digit mappings */
 const DIGIT_MAP: Record<string, number> = {
-    영: 0,
-    공: 0, // Alternative for zero
-    일: 1,
-    이: 2,
-    삼: 3,
-    사: 4,
-    오: 5,
-    육: 6,
-    칠: 7,
-    팔: 8,
-    구: 9,
+    '영': 0,
+    '공': 0, // Alternative for zero
+    '일': 1,
+    '이': 2,
+    '삼': 3,
+    '사': 4,
+    '오': 5,
+    '육': 6,
+    '칠': 7,
+    '팔': 8,
+    '구': 9,
 }
 
 /** Reverse mapping: digit to Hangul */
@@ -26,11 +26,11 @@ const HANGUL_DIGITS: string[] = ['영', '일', '이', '삼', '사', '오', '육'
 
 /** Multiplier mappings */
 const MULTIPLIER_MAP: Record<string, number> = {
-    십: 10,
-    백: 100,
-    천: 1000,
-    만: 10000,
-    억: 100000000,
+    '십': 10,
+    '백': 100,
+    '천': 1000,
+    '만': 10000,
+    '억': 100000000,
 }
 
 /**
@@ -151,8 +151,7 @@ function parseHangulNumber(text: string): number | null {
                 total = 0
             } else if (multiplier === 100000000) {
                 // 억 - hundred million
-                const eokValue = (manBuffer + total + (current || 1)) * 100000000
-                total = eokValue
+                total = (manBuffer + total + (current || 1)) * 100000000
                 manBuffer = 0
                 current = 0
             } else {

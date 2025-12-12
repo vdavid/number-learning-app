@@ -19,6 +19,14 @@ The app uses spaced repetition (FSRS algorithm) to optimize your learning, with 
 
 Currently supports **Sino-Korean** numbers. The architecture supports adding more languages.
 
+## Languages
+
+### Sino-Korean
+
+The Sino-Korean number system.
+Used for counting money, phone numbers, addresses, dates, and more.
+Follows Chinese-derived number words: 일, 이, 삼...
+
 ## Contributing
 
 Contributions welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.

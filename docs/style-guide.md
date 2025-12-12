@@ -47,3 +47,23 @@ page"
 
 Then a blank line. Then a more detailed description if needed, as a form of a concise bulleted list, or free text with
 meaningful extra details on what the commit does.
+
+## Comments
+
+Only add JSDoc that actually adds info.
+- DO NOT use JSDoc for stuff like `Gets the name` for a function called `getName` :D
+- DO NOT use JSDoc for redundant param and return val descriptions, or anything that TypeScript already defines.
+- USE JSDoc to mark caveats, tricky/unusual solutions, or formatting like "YYYY-MM-DD" for a date string or
+  "must end with a slash" for a path argument.
+- Before adding JSDoc, consider using a more descriptive name for the function/param/variable.
+
+## TypeScript
+
+- Only use functional components and modules. No classes anywhere.
+- Use pure functions wherever possible and makes sense.
+- Use `const` for everything, unless it makes the code unnecessarily verbose.
+- Start function names with a verb, unless unidiomatic in the specific case.
+- Use `camelCase` for variable and constant names, including module-level constants.
+- Put constants closest to where they are used. If a constant is only used in one function, put it in that function.
+- For maps, try to name them like `somethingToSomeethingElseMap`. That avoids unnecessary comments.
+- Keep interfaces minimal: only export what you must export.

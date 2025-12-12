@@ -42,7 +42,7 @@ const stateStyles: Record<DecayState, { bg: string; border: string; text: string
  * A single node in the level selector path.
  * Shows decay state through visual styling.
  */
-export function LevelNode({ mode, state, onClick, index }: LevelNodeProps) {
+function LevelNode({ mode, state, onClick, index }: LevelNodeProps) {
     const styles = stateStyles[state]
     const isLocked = state === 'locked'
     const isNew = state === 'new'

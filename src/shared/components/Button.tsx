@@ -11,9 +11,6 @@ interface ButtonProps {
     type?: 'button' | 'submit' | 'reset'
 }
 
-/**
- * Styled button component with variants.
- */
 export function Button({
     variant = 'primary',
     size = 'md',

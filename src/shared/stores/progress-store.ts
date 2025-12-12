@@ -103,8 +103,8 @@ function calculateStageWorstDecay(
 }
 
 interface ProgressState {
-    /** All cards by ID */
-    cards: Record<string, CardState>
+    /** All cards by ID (`${languageId}-${number}-${mode}`) */
+    allCardsByID: Record<string, CardState>
 
     /** Highest unlocked stage per language (0-indexed) */
     unlockedStages: Record<string, number>
@@ -112,19 +112,16 @@ interface ProgressState {
     /** Initialize cards for a language if not already done */
     initializeLanguage: (languageId: string) => void
 
-    /** Get or create a card */
     getOrCreateCard: (languageId: string, number: number, mode: CardMode, stageIndex: number) => CardState
 
     /** Review a card and update its FSRS data */
     reviewCard: (cardId: string, rating: ResponseRating) => void
 
-    /** Get all due cards for a language */
-    getDueCards: (languageId: string, quietMode: boolean) => CardState[]
+    getAllDueCards: (languageId: string, quietMode: boolean) => CardState[]
 
     /** Get new cards from the frontier stage */
     getNewCards: (languageId: string, quietMode: boolean, limit: number) => CardState[]
 
-    /** Check if a stage is unlocked */
     isStageUnlocked: (languageId: string, stageIndex: number) => boolean
 
     /** Unlock the next stage if conditions are met */
@@ -140,7 +137,7 @@ interface ProgressState {
 export const useProgressStore = create<ProgressState>()(
     persist(
         (set, get) => ({
-            cards: {},
+            allCardsByID: {},
             unlockedStages: {},
 
             initializeLanguage: (languageId: string) => {
@@ -159,7 +156,7 @@ export const useProgressStore = create<ProgressState>()(
 
             getOrCreateCard: (languageId: string, number: number, mode: CardMode, stageIndex: number) => {
                 const cardId = makeCardId(languageId, number, mode)
-                const existing = get().cards[cardId]
+                const existing = get().allCardsByID[cardId]
 
                 if (existing) {
                     return existing
@@ -184,14 +181,14 @@ export const useProgressStore = create<ProgressState>()(
                 }
 
                 set((state) => ({
-                    cards: { ...state.cards, [cardId]: newCard },
+                    allCardsByID: { ...state.allCardsByID, [cardId]: newCard },
                 }))
 
                 return newCard
             },
 
             reviewCard: (cardId: string, rating: ResponseRating) => {
-                const card = get().cards[cardId]
+                const card = get().allCardsByID[cardId]
                 if (!card) return
 
                 // Convert our card state to FSRS card
@@ -233,19 +230,19 @@ export const useProgressStore = create<ProgressState>()(
                 }
 
                 set((state) => ({
-                    cards: { ...state.cards, [cardId]: updatedCard },
+                    allCardsByID: { ...state.allCardsByID, [cardId]: updatedCard },
                 }))
 
                 // Check if we should unlock the next stage
                 get().checkAndUnlockNextStage(card.languageId)
             },
 
-            getDueCards: (languageId: string, quietMode: boolean) => {
+            getAllDueCards: (languageId: string, quietMode: boolean) => {
                 const state = get()
                 const now = new Date()
                 const unlockedStage = state.unlockedStages[languageId] ?? 0
 
-                return Object.values(state.cards)
+                return Object.values(state.allCardsByID)
                     .filter((card) => {
                         if (card.languageId !== languageId) return false
                         if (card.stageIndex > unlockedStage) return false
@@ -302,7 +299,7 @@ export const useProgressStore = create<ProgressState>()(
                 for (const number of currentStage.numbers) {
                     for (const mode of ['listen', 'speak'] as CardMode[]) {
                         const cardId = makeCardId(languageId, number, mode)
-                        const card = state.cards[cardId]
+                        const card = state.allCardsByID[cardId]
                         if (!card || card.fsrs.reps === 0) {
                             allReviewed = false
                             break
@@ -335,17 +332,17 @@ export const useProgressStore = create<ProgressState>()(
                 if (!stage) return 'locked'
 
                 const isFrontierStage = stageIndex === unlockedStage
-                return calculateStageWorstDecay(state.cards, languageId, stage.numbers, mode, isFrontierStage)
+                return calculateStageWorstDecay(state.allCardsByID, languageId, stage.numbers, mode, isFrontierStage)
             },
 
             resetProgress: () => {
-                set({ cards: {}, unlockedStages: {} })
+                set({ allCardsByID: {}, unlockedStages: {} })
             },
         }),
         {
             name: 'number-trainer-progress',
             partialize: (state) => ({
-                cards: state.cards,
+                cards: state.allCardsByID,
                 unlockedStages: state.unlockedStages,
             }),
         },

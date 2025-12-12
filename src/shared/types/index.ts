@@ -46,10 +46,3 @@ export interface Curriculum {
 
 /** Rating for FSRS based on response time */
 export type ResponseRating = 'again' | 'good' | 'easy'
-
-/** Session result for a single card */
-export interface CardResult {
-    cardId: string
-    rating: ResponseRating
-    responseTimeMs: number
-}

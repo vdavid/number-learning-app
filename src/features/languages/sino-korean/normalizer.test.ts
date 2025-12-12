@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 
-import { numberToSinoKorean, parseSinoKorean, getSinoKoreanVariations } from './normalizer'
+import { numberToSinoKorean, parseSinoKorean } from './normalizer'
 
 describe('Sino-Korean normalizer', () => {
     describe('numberToSinoKorean', () => {
@@ -114,18 +114,6 @@ describe('Sino-Korean normalizer', () => {
         it('should return null for invalid input', () => {
             expect(parseSinoKorean('')).toBeNull()
             expect(parseSinoKorean('   ')).toBeNull()
-        })
-    })
-
-    describe('getSinoKoreanVariations', () => {
-        it('should include digit string', () => {
-            const variations = getSinoKoreanVariations(54)
-            expect(variations).toContain('54')
-        })
-
-        it('should include Hangul form', () => {
-            const variations = getSinoKoreanVariations(54)
-            expect(variations).toContain('오십사')
         })
     })
 })

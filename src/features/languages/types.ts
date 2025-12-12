@@ -1,60 +1,33 @@
 import type { Curriculum } from '@shared/types'
 
-/**
- * Language definition interface.
- * Each supported language implements this to provide number learning functionality.
- */
 export interface Language {
-    /** Unique identifier (for example 'sino-korean', 'native-korean', 'japanese') */
+    // A lowercase, kebab-case ID like 'sino-korean' or 'native-korean'
     id: string
 
-    /** Display name (for example 'Sino-Korean', 'Native Korean') */
+    // Displayable name like 'Sino-Korean' or 'Native Korean'
     name: string
-
-    /** Language code for TTS (for example 'ko-KR', 'ja-JP') */
+    // Language code for Web Speech API. Like 'ko-KR', 'ja-JP'.
+    // Made from [ISO-639-1](https://en.wikipedia.org/wiki/List_of_ISO_639_language_codes), a dash,
+    // and [ISO_3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)
     ttsLanguageCode: string
 
-    /** Language code for STT (for example 'ko-KR', 'ja-JP') */
+    // Language code for speech-to-text. Like 'ko-KR', 'ja-JP'. Same idea as TTS language code.
     sttLanguageCode: string
-
-    /** Flag emoji for visual identification */
+    // Flag emoji for visual identification
     flag: string
 
-    /** Curriculum defining the learning path */
+    // The curriculum defining the learning path
     curriculum: Curriculum
 
-    /**
-     * Convert a number to its spoken representation.
-     * Used for TTS and display hints.
-     * @param num - The number to convert
-     * @returns The spoken form (for example 54 → "오십사")
-     */
+    // Used for TTS and display hints. 54 → "오십사"
     numberToWords: (num: number) => string
 
-    /**
-     * Parse spoken/transcribed text back to a number.
-     * Handles variations in STT output (digits, words, mixed).
-     * @param text - The transcribed text (for example "오십사", "54", "5십4")
-     * @returns The numeric value, or null if parsing fails
-     */
+    // Parses spoken/transcribed text back to a number. For example, "오십사", "54", "5십4" => 54. Null if parsing fails.
+    // Used for validation in speaking mode.
     parseSpokenNumber: (text: string) => number | null
 
-    /**
-     * Get acceptable spoken variations for a number.
-     * Used for fuzzy matching in STT validation.
-     * @param num - The number
-     * @returns Array of acceptable spoken forms
-     */
-    getAcceptableVariations: (num: number) => string[]
-
-    /**
-     * Convert a number to its romanized representation.
-     * Used for pronunciation guides.
-     * @param num - The number
-     * @returns The romanized form (for example "o-sip-sa")
-     */
+    // Returns romanized form, like "o-sip-sa")
     numberToRomanized?: (num: number) => string
 }
 
-/** Registry of all available languages */
 export type LanguageRegistry = Record<string, Language>

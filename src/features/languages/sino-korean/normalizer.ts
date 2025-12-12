@@ -93,6 +93,25 @@ export function numberToSinoKorean(num: number): string {
  */
 const ROMANIZED_DIGITS: string[] = ['yeong', 'il', 'i', 'sam', 'sa', 'o', 'yuk', 'chil', 'pal', 'gu']
 
+interface RomanizedPlaceValue {
+    divisor: number
+    suffix: string
+    useRecursive: boolean
+}
+
+const ROMANIZED_PLACE_VALUES: RomanizedPlaceValue[] = [
+    { divisor: 100000000, suffix: 'eok', useRecursive: true },
+    { divisor: 10000, suffix: 'man', useRecursive: true },
+    { divisor: 1000, suffix: 'cheon', useRecursive: false },
+    { divisor: 100, suffix: 'baek', useRecursive: false },
+    { divisor: 10, suffix: 'sip', useRecursive: false },
+]
+
+function getRomanizedPrefix(value: number, useRecursive: boolean, recursiveFn: (n: number) => string): string {
+    if (value === 1) return ''
+    return useRecursive ? recursiveFn(value) : ROMANIZED_DIGITS[value]
+}
+
 /**
  * Convert a number to its Romanized Sino-Korean representation.
  * Examples: 54 → "o-sip-sa"
@@ -105,45 +124,13 @@ export function numberToSinoKoreanRomanized(num: number): string {
     const parts: string[] = []
     let remaining = num
 
-    // Handle 억 (hundred million)
-    if (remaining >= 100000000) {
-        const eok = Math.floor(remaining / 100000000)
-        parts.push((eok === 1 ? '' : numberToSinoKoreanRomanized(eok)) + '-eok')
-        remaining %= 100000000
-    }
-
-    // Handle 만 (ten thousand)
-    if (remaining >= 10000) {
-        const man = Math.floor(remaining / 10000)
-        // If the prefix is 1, we usually drop the 'il' for man?
-        // Actually, usually 'il-man' is just 'man'.
-        const prefix = man === 1 ? '' : numberToSinoKoreanRomanized(man)
-        parts.push((prefix ? prefix + '-' : '') + 'man')
-        remaining %= 10000
-    }
-
-    // Handle 천 (thousand)
-    if (remaining >= 1000) {
-        const cheon = Math.floor(remaining / 1000)
-        const prefix = cheon === 1 ? '' : ROMANIZED_DIGITS[cheon]
-        parts.push((prefix ? prefix + '-' : '') + 'cheon')
-        remaining %= 1000
-    }
-
-    // Handle 백 (hundred)
-    if (remaining >= 100) {
-        const baek = Math.floor(remaining / 100)
-        const prefix = baek === 1 ? '' : ROMANIZED_DIGITS[baek]
-        parts.push((prefix ? prefix + '-' : '') + 'baek')
-        remaining %= 100
-    }
-
-    // Handle 십 (ten)
-    if (remaining >= 10) {
-        const sip = Math.floor(remaining / 10)
-        const prefix = sip === 1 ? '' : ROMANIZED_DIGITS[sip]
-        parts.push((prefix ? prefix + '-' : '') + 'sip')
-        remaining %= 10
+    for (const { divisor, suffix, useRecursive } of ROMANIZED_PLACE_VALUES) {
+        if (remaining >= divisor) {
+            const value = Math.floor(remaining / divisor)
+            const prefix = getRomanizedPrefix(value, useRecursive, numberToSinoKoreanRomanized)
+            parts.push((prefix ? prefix + '-' : '') + suffix)
+            remaining %= divisor
+        }
     }
 
     // Handle units

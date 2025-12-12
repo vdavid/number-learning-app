@@ -66,6 +66,42 @@ export function calculateDecayState(card: CardState, now: Date = new Date()): De
     return 'rusty'
 }
 
+/** Calculate the worst decay state for a stage's cards */
+function calculateStageWorstDecay(
+    cards: Record<string, CardState>,
+    languageId: string,
+    numbers: readonly number[],
+    mode: CardMode,
+    isFrontierStage: boolean,
+): DecayState {
+    let hasReviewedCards = false
+    let worstDecay: DecayState = 'gold'
+
+    for (const number of numbers) {
+        const cardId = makeCardId(languageId, number, mode)
+        const card = cards[cardId]
+
+        if (!card) continue
+        if (isFrontierStage && card.fsrs.reps === 0) continue
+
+        hasReviewedCards = true
+        const decay = calculateDecayState(card)
+
+        if (decay === 'rusty') {
+            if (!isFrontierStage) return 'rusty'
+            worstDecay = 'rusty'
+        } else if (decay === 'faded' && worstDecay !== 'rusty') {
+            worstDecay = 'faded'
+        }
+    }
+
+    if (isFrontierStage && !hasReviewedCards) {
+        return 'new'
+    }
+
+    return worstDecay
+}
+
 interface ProgressState {
     /** All cards by ID */
     cards: Record<string, CardState>
@@ -294,48 +330,12 @@ export const useProgressStore = create<ProgressState>()(
                     return 'locked'
                 }
 
-                // For the frontier stage, check if it has any reviewed cards
-                if (stageIndex === unlockedStage) {
-                    const language = getLanguage(languageId)
-                    const stage = language.curriculum.stages[stageIndex]
-                    if (!stage) return 'locked'
-
-                    // Check if any cards have been reviewed
-                    let hasReviewedCards = false
-                    let worstDecay: DecayState = 'gold'
-
-                    for (const number of stage.numbers) {
-                        const cardId = makeCardId(languageId, number, mode)
-                        const card = state.cards[cardId]
-
-                        if (card && card.fsrs.reps > 0) {
-                            hasReviewedCards = true
-                            const decay = calculateDecayState(card)
-                            if (decay === 'rusty') worstDecay = 'rusty'
-                            else if (decay === 'faded' && worstDecay !== 'rusty') worstDecay = 'faded'
-                        }
-                    }
-
-                    return hasReviewedCards ? worstDecay : 'new'
-                }
-
-                // For completed stages, calculate based on worst card
                 const language = getLanguage(languageId)
                 const stage = language.curriculum.stages[stageIndex]
                 if (!stage) return 'locked'
 
-                let worstDecay: DecayState = 'gold'
-                for (const number of stage.numbers) {
-                    const cardId = makeCardId(languageId, number, mode)
-                    const card = state.cards[cardId]
-                    if (card) {
-                        const decay = calculateDecayState(card)
-                        if (decay === 'rusty') return 'rusty'
-                        if (decay === 'faded') worstDecay = 'faded'
-                    }
-                }
-
-                return worstDecay
+                const isFrontierStage = stageIndex === unlockedStage
+                return calculateStageWorstDecay(state.cards, languageId, stage.numbers, mode, isFrontierStage)
             },
 
             resetProgress: () => {

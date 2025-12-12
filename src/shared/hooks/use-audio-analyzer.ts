@@ -1,5 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
 
+// Extend Window interface for webkit prefix
+interface WebkitWindow extends Window {
+    webkitAudioContext?: typeof AudioContext
+}
+
 /**
  * Hook to analyze audio volume from the microphone.
  * Returns a normalized volume level between 0 and 1.
@@ -24,7 +29,11 @@ export function useAudioAnalyzer(isListening: boolean) {
                 const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
                 streamRef.current = stream
 
-                const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)()
+                const AudioContextClass = window.AudioContext || (window as WebkitWindow).webkitAudioContext
+                if (!AudioContextClass) {
+                    return
+                }
+                const audioContext = new AudioContextClass()
                 audioContextRef.current = audioContext
 
                 const analyser = audioContext.createAnalyser()
@@ -59,12 +68,12 @@ export function useAudioAnalyzer(isListening: boolean) {
                 }
 
                 updateVolume()
-            } catch (error) {
-                console.error('Error initializing audio analyzer:', error)
+            } catch {
+                // Audio initialization failed - likely no microphone access
             }
         }
 
-        initAudio()
+        void initAudio()
 
         return cleanup
     }, [isListening])

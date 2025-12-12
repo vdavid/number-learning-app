@@ -6,11 +6,26 @@ interface KeypadProps {
     disabled?: boolean
 }
 
-const KEYS = [
-    ['1', '2', '3'],
-    ['4', '5', '6'],
-    ['7', '8', '9'],
-    ['', '0', '⌫'],
+interface KeypadKey {
+    id: string
+    value: string
+    isEmpty: boolean
+}
+
+// Pre-generate keys with stable IDs
+const KEYPAD_KEYS: KeypadKey[] = [
+    { id: 'key-1', value: '1', isEmpty: false },
+    { id: 'key-2', value: '2', isEmpty: false },
+    { id: 'key-3', value: '3', isEmpty: false },
+    { id: 'key-4', value: '4', isEmpty: false },
+    { id: 'key-5', value: '5', isEmpty: false },
+    { id: 'key-6', value: '6', isEmpty: false },
+    { id: 'key-7', value: '7', isEmpty: false },
+    { id: 'key-8', value: '8', isEmpty: false },
+    { id: 'key-9', value: '9', isEmpty: false },
+    { id: 'empty-bottom-left', value: '', isEmpty: true },
+    { id: 'key-0', value: '0', isEmpty: false },
+    { id: 'key-backspace', value: '⌫', isEmpty: false },
 ]
 
 /**
@@ -30,19 +45,19 @@ export function Keypad({ onKeyPress, onBackspace, disabled }: KeypadProps) {
 
     return (
         <div className='grid grid-cols-3 gap-3 w-full max-w-xs mx-auto'>
-            {KEYS.flat().map((key, index) => {
-                if (!key) {
-                    return <div key={`empty-${index}`} className='aspect-square' />
+            {KEYPAD_KEYS.map((keyData) => {
+                if (keyData.isEmpty) {
+                    return <div key={keyData.id} className='aspect-square' />
                 }
 
-                const isBackspace = key === '⌫'
+                const isBackspace = keyData.value === '⌫'
 
                 return (
                     <motion.button
-                        key={key}
+                        key={keyData.id}
                         type='button'
                         onClick={() => {
-                            handleKey(key)
+                            handleKey(keyData.value)
                         }}
                         disabled={disabled}
                         whileTap={{ scale: 0.95 }}
@@ -61,7 +76,7 @@ export function Keypad({ onKeyPress, onBackspace, disabled }: KeypadProps) {
                             shadow-lg shadow-black/20
                         `}
                     >
-                        {key}
+                        {keyData.value}
                     </motion.button>
                 )
             })}

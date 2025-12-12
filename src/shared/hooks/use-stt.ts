@@ -1,6 +1,57 @@
 import { getLanguage } from '@features/languages'
 import { useCallback, useEffect, useRef, useState } from 'react'
 
+// Web Speech API type definitions
+interface SpeechRecognitionResult {
+    readonly isFinal: boolean
+    readonly length: number
+    item(index: number): SpeechRecognitionAlternative
+    [index: number]: SpeechRecognitionAlternative
+}
+
+interface SpeechRecognitionAlternative {
+    readonly transcript: string
+    readonly confidence: number
+}
+
+interface SpeechRecognitionResultList {
+    readonly length: number
+    item(index: number): SpeechRecognitionResult
+    [index: number]: SpeechRecognitionResult
+}
+
+interface SpeechRecognitionEvent extends Event {
+    readonly results: SpeechRecognitionResultList
+}
+
+interface SpeechRecognitionErrorEvent extends Event {
+    readonly error: string
+}
+
+interface SpeechRecognition extends EventTarget {
+    continuous: boolean
+    interimResults: boolean
+    lang: string
+    maxAlternatives: number
+    onstart: ((this: SpeechRecognition, ev: Event) => void) | null
+    onend: ((this: SpeechRecognition, ev: Event) => void) | null
+    onerror: ((this: SpeechRecognition, ev: SpeechRecognitionErrorEvent) => void) | null
+    onresult: ((this: SpeechRecognition, ev: SpeechRecognitionEvent) => void) | null
+    onnomatch: ((this: SpeechRecognition, ev: Event) => void) | null
+    start(): void
+    stop(): void
+    abort(): void
+}
+
+interface SpeechRecognitionConstructor {
+    new (): SpeechRecognition
+}
+
+interface SpeechWindow extends Window {
+    SpeechRecognition?: SpeechRecognitionConstructor
+    webkitSpeechRecognition?: SpeechRecognitionConstructor
+}
+
 interface UseSTTOptions {
     languageId: string
     onResult?: (transcript: string, isFinal: boolean) => void
@@ -25,8 +76,7 @@ export function useSTT({ languageId, onResult, onError, onEnd, continuous = true
     const [isListening, setIsListening] = useState(false)
     const [isSupported, setIsSupported] = useState(true)
     const [error, setError] = useState<string | null>(null)
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const recognitionRef = useRef<any>(null)
+    const recognitionRef = useRef<SpeechRecognition | null>(null)
     const language = getLanguage(languageId)
 
     // Refs for callbacks to avoid re-initializing effect
@@ -42,72 +92,46 @@ export function useSTT({ languageId, onResult, onError, onEnd, continuous = true
 
     // Initialize recognition on mount
     useEffect(() => {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-        const SpeechRecognitionAPI = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition
+        const speechWindow = window as SpeechWindow
+        const SpeechRecognitionAPI = speechWindow.SpeechRecognition || speechWindow.webkitSpeechRecognition
 
         if (!SpeechRecognitionAPI) {
             setIsSupported(false)
             return
         }
 
-        console.log('[useSTT] Initializing SpeechRecognition', { language: language.sttLanguageCode, continuous })
-
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
         const recognition = new SpeechRecognitionAPI()
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         recognition.continuous = continuous
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         recognition.interimResults = true
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         recognition.lang = language.sttLanguageCode
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         recognition.maxAlternatives = 3
 
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         recognition.onstart = () => {
-            console.log('[useSTT] onstart')
             setIsListening(true)
             setError(null)
         }
 
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         recognition.onend = () => {
-            console.log('[useSTT] onend')
             setIsListening(false)
             onEndRef.current?.()
         }
 
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-explicit-any
-        recognition.onnomatch = (event: any) => {
-            console.log('[useSTT] onnomatch', event)
+        recognition.onnomatch = () => {
+            // No match found - this is expected sometimes
         }
 
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-explicit-any
-        recognition.onresult = (event: any) => {
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+        recognition.onresult = (event: SpeechRecognitionEvent) => {
             const results = event.results
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
             const lastResult = results[results.length - 1]
 
-            console.log('[useSTT] onresult', {
-                transcript: lastResult?.[0]?.transcript,
-                isFinal: lastResult?.isFinal,
-                confidence: lastResult?.[0]?.confidence,
-            })
-
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
             if (lastResult?.[0]) {
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-                const transcript: string = lastResult[0].transcript
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-                const isFinal: boolean = lastResult.isFinal
+                const transcript = lastResult[0].transcript
+                const isFinal = lastResult.isFinal
                 onResultRef.current?.(transcript, isFinal)
             }
         }
 
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        recognition.onerror = (event: { error: string }) => {
-            console.log('[useSTT] onerror', event.error)
+        recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
             setError(event.error)
 
             // If it's a fatal error, ensure we mark as not listening
@@ -121,12 +145,9 @@ export function useSTT({ languageId, onResult, onError, onEnd, continuous = true
             }
         }
 
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         recognitionRef.current = recognition
 
         return () => {
-            console.log('[useSTT] Cleaning up SpeechRecognition')
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
             recognition.abort()
         }
     }, [language.sttLanguageCode, continuous])
@@ -134,28 +155,19 @@ export function useSTT({ languageId, onResult, onError, onEnd, continuous = true
     const start = useCallback(() => {
         if (!recognitionRef.current) return
 
-        // Don't restart if already listening (though allow retrying if it thinks it is but isn't)
-        // Actually, for safety, just log and try call start
-        console.log('[useSTT] start called')
         setError(null)
 
         try {
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
             recognitionRef.current.start()
-            // We set isListening to true optimistically, but onstart will confirm it
-            // setIsListening(true)
-        } catch (e) {
-            console.warn('[useSTT] Failed to start recognition:', e)
+        } catch {
+            // Recognition may already be started
         }
     }, [])
 
     const stop = useCallback(() => {
         if (!recognitionRef.current) return
 
-        console.log('[useSTT] stop called')
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
         recognitionRef.current.stop()
-        // onend will handle state update
     }, [])
 
     return {

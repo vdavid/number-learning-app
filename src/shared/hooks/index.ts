@@ -1,2 +1,3 @@
-export { useTTS } from './use-tts'
-export { useSTT } from './use-stt'
+export * from './use-stt'
+export * from './use-tts'
+export * from './use-audio-analyzer'

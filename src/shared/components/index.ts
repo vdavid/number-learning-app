@@ -1,5 +1,6 @@
 export { Keypad } from './Keypad'
 export { DigitDisplay } from './DigitDisplay'
 export { MicButton } from './MicButton'
-export { ProgressBar } from './ProgressBar'
+export * from './ProgressBar'
+export * from './VUMeter'
 export { Button } from './Button'

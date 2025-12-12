@@ -46,6 +46,15 @@ export interface Language {
      * @returns Array of acceptable spoken forms
      */
     getAcceptableVariations: (num: number) => string[]
+
+    /**
+     * Convert a number to its romanized representation.
+     * Used for pronunciation guides.
+     * @param num - The number
+     * @returns The romanized form (for example "o-sip-sa")
+     */
+    numberToRomanized?: (num: number) => string
+
 }
 
 /** Registry of all available languages */

@@ -1,6 +1,6 @@
-import { Button, ProgressBar } from '@shared/components'
+import { ProgressBar } from '@shared/components'
 import { useSessionStore } from '@shared/stores'
-import { useCallback } from 'react'
+import { useCallback, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { ListenMode } from './ListenMode'
@@ -24,13 +24,14 @@ export function SessionScreen() {
     }, [endSession, navigate])
 
     // Redirect if no active session
+    useEffect(() => {
+        if (!isActive || !card) {
+            void navigate('/')
+        }
+    }, [isActive, card, navigate])
+
     if (!isActive || !card) {
-        return (
-            <div className='flex flex-col items-center justify-center h-full p-8 text-center'>
-                <p className='text-[var(--text-muted)] mb-6'>No active session</p>
-                <Button onClick={() => void navigate('/')}>Go home</Button>
-            </div>
-        )
+        return null
     }
 
     return (

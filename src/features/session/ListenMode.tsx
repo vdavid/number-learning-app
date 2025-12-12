@@ -1,6 +1,8 @@
 import { DigitDisplay, Keypad } from '@shared/components'
 import { useTTS } from '@shared/hooks'
 import { useSessionStore, useSettingsStore, useProgressStore } from '@shared/stores'
+import { ArrowRight, Volume2 } from 'lucide-react'
+import { motion } from 'motion/react'
 import { useCallback, useEffect, useRef } from 'react'
 
 const WRONG_ANSWER_DELAY = 500 // ms before marking wrong
@@ -50,11 +52,7 @@ export function ListenMode() {
                 setFeedback('correct')
                 const rating = calculateRating(true)
                 reviewCard(card.id, rating)
-
-                // Move to next after brief feedback
-                setTimeout(() => {
-                    nextCard()
-                }, 400)
+                // No auto-advance - user clicks Next
             } else {
                 // Wrong - wait briefly for correction
                 wrongTimeoutRef.current = setTimeout(() => {
@@ -63,11 +61,7 @@ export function ListenMode() {
 
                     // Show correct answer and replay audio
                     speakNumber(card.number)
-
-                    // Move to next after feedback
-                    setTimeout(() => {
-                        nextCard()
-                    }, 1500)
+                    // No auto-advance - user clicks Next
                 }, WRONG_ANSWER_DELAY)
             }
         } else {
@@ -97,6 +91,10 @@ export function ListenMode() {
             speakNumber(card.number)
         }
     }, [card, speakNumber])
+
+    const handleNext = useCallback(() => {
+        nextCard()
+    }, [nextCard])
 
     if (!card) return null
 
@@ -139,8 +137,41 @@ export function ListenMode() {
                 </div>
             )}
 
-            {/* Bottom: Keypad */}
-            <Keypad onKeyPress={handleKeyPress} onBackspace={handleBackspace} disabled={feedback !== null} />
+            {/* Bottom: Keypad or Next button */}
+            {feedback === 'correct' ? (
+                <motion.button
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    onClick={handleNext}
+                    className='h-14 px-8 rounded-full bg-[var(--success)] text-white font-medium flex items-center gap-2 hover:opacity-90 transition-opacity'
+                >
+                    Next <ArrowRight size={20} />
+                </motion.button>
+            ) : feedback === 'incorrect' ? (
+                <div className='flex items-center gap-6'>
+                    {/* Listen Again */}
+                    <motion.button
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        onClick={handleReplay}
+                        className='w-14 h-14 rounded-full bg-[var(--surface-overlay)] flex items-center justify-center text-[var(--text-primary)] hover:bg-[var(--surface-hover)] transition-colors'
+                    >
+                        <Volume2 size={24} />
+                    </motion.button>
+
+                    {/* Next Card */}
+                    <motion.button
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        onClick={handleNext}
+                        className='h-14 px-8 rounded-full bg-[var(--primary)] text-white font-medium flex items-center gap-2 hover:opacity-90 transition-opacity'
+                    >
+                        Next <ArrowRight size={20} />
+                    </motion.button>
+                </div>
+            ) : (
+                <Keypad onKeyPress={handleKeyPress} onBackspace={handleBackspace} disabled={feedback !== null} />
+            )}
         </div>
     )
 }

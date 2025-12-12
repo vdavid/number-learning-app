@@ -1,7 +1,7 @@
 import type { Language } from '../types'
 
 import { createSinoKoreanCurriculum } from './curriculum'
-import { getSinoKoreanVariations, numberToSinoKorean, parseSinoKorean } from './normalizer'
+import { getSinoKoreanVariations, numberToSinoKorean, numberToSinoKoreanRomanized, parseSinoKorean } from './normalizer'
 
 /**
  * Sino-Korean number system.
@@ -16,6 +16,7 @@ export const sinoKorean: Language = {
     flag: '🇰🇷',
     curriculum: createSinoKoreanCurriculum(),
     numberToWords: numberToSinoKorean,
+    numberToRomanized: numberToSinoKoreanRomanized,
     parseSpokenNumber: parseSinoKorean,
     getAcceptableVariations: getSinoKoreanVariations,
 }

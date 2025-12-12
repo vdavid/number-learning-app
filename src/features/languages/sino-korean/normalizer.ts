@@ -91,6 +91,78 @@ export function numberToSinoKorean(num: number): string {
  * Parse a potentially mixed Korean/digit string to a number.
  * Handles STT quirks like "5십4" or "오십4".
  */
+const ROMANIZED_DIGITS: string[] = ['yeong', 'il', 'i', 'sam', 'sa', 'o', 'yuk', 'chil', 'pal', 'gu']
+
+/**
+ * Convert a number to its Romanized Sino-Korean representation.
+ * Examples: 54 → "o-sip-sa"
+ */
+export function numberToSinoKoreanRomanized(num: number): string {
+    if (num === 0) return 'yeong'
+    // Negative numbers not strictly needed for this app but good for completeness
+    if (num < 0) return 'maineo-seu ' + numberToSinoKoreanRomanized(-num)
+
+    const parts: string[] = []
+    let remaining = num
+
+    // Handle 억 (hundred million)
+    if (remaining >= 100000000) {
+        const eok = Math.floor(remaining / 100000000)
+        parts.push((eok === 1 ? '' : numberToSinoKoreanRomanized(eok)) + '-eok')
+        remaining %= 100000000
+    }
+
+    // Handle 만 (ten thousand)
+    if (remaining >= 10000) {
+        const man = Math.floor(remaining / 10000)
+        // If the prefix is 1, we usually drop the 'il' for man? 
+        // Actually, usually 'il-man' is just 'man'.
+        const prefix = man === 1 ? '' : numberToSinoKoreanRomanized(man)
+        parts.push((prefix ? prefix + '-' : '') + 'man')
+        remaining %= 10000
+    }
+
+    // Handle 천 (thousand)
+    if (remaining >= 1000) {
+        const cheon = Math.floor(remaining / 1000)
+        const prefix = cheon === 1 ? '' : ROMANIZED_DIGITS[cheon]
+        parts.push((prefix ? prefix + '-' : '') + 'cheon')
+        remaining %= 1000
+    }
+
+    // Handle 백 (hundred)
+    if (remaining >= 100) {
+        const baek = Math.floor(remaining / 100)
+        const prefix = baek === 1 ? '' : ROMANIZED_DIGITS[baek]
+        parts.push((prefix ? prefix + '-' : '') + 'baek')
+        remaining %= 100
+    }
+
+    // Handle 십 (ten)
+    if (remaining >= 10) {
+        const sip = Math.floor(remaining / 10)
+        const prefix = sip === 1 ? '' : ROMANIZED_DIGITS[sip]
+        parts.push((prefix ? prefix + '-' : '') + 'sip')
+        remaining %= 10
+    }
+
+    // Handle units
+    if (remaining > 0) {
+        parts.push(ROMANIZED_DIGITS[remaining])
+    }
+
+    // Join and clean up dashes
+    let result = parts.join('-')
+    // Fix double dashes or edge cases if any
+    result = result.replace(/--+/g, '-').replace(/^-|-$/g, '')
+
+    return result || 'yeong'
+}
+
+/**
+ * Parse a potentially mixed Korean/digit string to a number.
+ * Handles STT quirks like "5십4" or "오십4".
+ */
 export function parseSinoKorean(text: string): number | null {
     // Remove whitespace and normalize
     const cleaned = text.trim().replace(/\s+/g, '')
@@ -107,11 +179,12 @@ export function parseSinoKorean(text: string): number | null {
         return 0
     }
 
-    // Replace any digit characters with their Hangul equivalents for consistent parsing
-    let normalized = cleaned
-    for (let i = 0; i <= 9; i++) {
-        normalized = normalized.replace(new RegExp(String(i), 'g'), HANGUL_DIGITS[i])
-    }
+    // Replace ANY digit sequence with its Hangul equivalent
+    // This handles "50" -> "오십" and "2백" -> "이백"
+    let normalized = cleaned.replace(/\d+/g, (match) => {
+        const val = parseInt(match, 10)
+        return numberToSinoKorean(val)
+    })
 
     // Now parse the pure Hangul string
     return parseHangulNumber(normalized)

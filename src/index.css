@@ -1,0 +1,181 @@
+@import 'tailwindcss';
+
+/* Design tokens */
+:root {
+    /* Background layers */
+    --bg-deep: #05050a;
+    --bg-base: #0a0a0f;
+    --bg-surface: #12121a;
+    --bg-elevated: #1a1a24;
+    --bg-hover: #22222e;
+
+    /* Accent - electric cyan/teal */
+    --accent-primary: #00f5d4;
+    --accent-primary-dim: #00c4aa;
+    --accent-primary-glow: rgba(0, 245, 212, 0.3);
+
+    /* Secondary accent - warm amber */
+    --accent-secondary: #fbbf24;
+    --accent-secondary-dim: #d99f0b;
+
+    /* State colors */
+    --success: #22c55e;
+    --success-glow: rgba(34, 197, 94, 0.3);
+    --error: #ef4444;
+    --error-glow: rgba(239, 68, 68, 0.3);
+    --warning: #f59e0b;
+
+    /* Text */
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    --text-disabled: #475569;
+
+    /* Node states (decay system) */
+    --node-locked: #334155;
+    --node-new: #f8fafc;
+    --node-gold: #fbbf24;
+    --node-faded: #a3a3a3;
+    --node-rusty: #78716c;
+
+    /* Fonts */
+    --font-display: 'Outfit', system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+    /* Shadows */
+    --shadow-glow: 0 0 40px var(--accent-primary-glow);
+    --shadow-success: 0 0 40px var(--success-glow);
+    --shadow-error: 0 0 40px var(--error-glow);
+}
+
+/* Reset & base */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    font-family: var(--font-display);
+    background-color: var(--bg-base);
+    color: var(--text-primary);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    margin: 0;
+    min-height: 100dvh;
+    overflow-x: hidden;
+}
+
+#root {
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Prevent zoom on iOS inputs */
+input,
+textarea,
+select {
+    font-size: 16px;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-surface);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--bg-hover);
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--text-muted);
+}
+
+/* Utility classes */
+.font-mono {
+    font-family: var(--font-mono);
+}
+
+/* Animations */
+@keyframes pulse-glow {
+    0%,
+    100% {
+        box-shadow:
+            0 0 20px var(--accent-primary-glow),
+            inset 0 0 20px rgba(0, 245, 212, 0.1);
+    }
+    50% {
+        box-shadow:
+            0 0 40px var(--accent-primary-glow),
+            inset 0 0 30px rgba(0, 245, 212, 0.15);
+    }
+}
+
+@keyframes flash-success {
+    0% {
+        background-color: var(--success);
+        box-shadow: var(--shadow-success);
+    }
+    100% {
+        background-color: transparent;
+        box-shadow: none;
+    }
+}
+
+@keyframes flash-error {
+    0% {
+        background-color: var(--error);
+        box-shadow: var(--shadow-error);
+    }
+    100% {
+        background-color: transparent;
+        box-shadow: none;
+    }
+}
+
+@keyframes mic-pulse {
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: 0.6;
+    }
+    50% {
+        transform: scale(1.3);
+        opacity: 0.2;
+    }
+}
+
+.animate-pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.animate-flash-success {
+    animation: flash-success 0.4s ease-out forwards;
+}
+
+.animate-flash-error {
+    animation: flash-error 0.4s ease-out forwards;
+}
+
+.animate-mic-pulse {
+    animation: mic-pulse 1.5s ease-in-out infinite;
+}
+
+/* Background pattern */
+.bg-grid-pattern {
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+    background-size: 40px 40px;
+}
+

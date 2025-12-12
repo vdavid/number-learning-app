@@ -16,7 +16,7 @@ export default [
     },
     js.configs.recommended,
     prettierConfig,
-    ...tseslint.configs.strictTypeChecked.map(config => ({
+    ...tseslint.configs.strictTypeChecked.map((config) => ({
         ...config,
         files: ['**/*.{ts,tsx}'],
     })),
@@ -50,7 +50,12 @@ export default [
                 ecmaFeatures: {
                     jsx: true,
                 },
-                project: ['./tsconfig.node.json', './tsconfig.app.json', './tsconfig.e2e.json'],
+                project: [
+                    './tsconfig.node.json',
+                    './tsconfig.app.json',
+                    './tsconfig.e2e.json',
+                    './scripts/tsconfig.json',
+                ],
                 tsconfigRootDir: import.meta.dirname,
             },
         },
@@ -97,14 +102,7 @@ export default [
             'import/order': [
                 'error',
                 {
-                    groups: [
-                        'builtin',
-                        'external',
-                        'internal',
-                        'parent',
-                        'sibling',
-                        'index',
-                    ],
+                    groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
                     'newlines-between': 'always',
                     alphabetize: {
                         order: 'asc',
@@ -129,6 +127,12 @@ export default [
             ecmaVersion: 'latest',
             sourceType: 'module',
         },
+        rules: {
+            'no-console': 'off', // Scripts can use console
+        },
+    },
+    {
+        files: ['scripts/**/*.ts'],
         rules: {
             'no-console': 'off', // Scripts can use console
         },

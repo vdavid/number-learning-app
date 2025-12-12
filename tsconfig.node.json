@@ -23,4 +23,3 @@
     },
     "include": ["vite.config.ts", "eslint.config.js", "vitest.config.ts"]
 }
-

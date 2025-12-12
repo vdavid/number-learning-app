@@ -63,14 +63,14 @@ export function useSTT({ languageId, onResult, onError, onEnd, continuous = true
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         recognition.maxAlternatives = 3
 
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         recognition.onstart = () => {
             console.log('[useSTT] onstart')
             setIsListening(true)
             setError(null)
         }
 
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         recognition.onend = () => {
             console.log('[useSTT] onend')
             setIsListening(false)
@@ -92,7 +92,7 @@ export function useSTT({ languageId, onResult, onError, onEnd, continuous = true
             console.log('[useSTT] onresult', {
                 transcript: lastResult?.[0]?.transcript,
                 isFinal: lastResult?.isFinal,
-                confidence: lastResult?.[0]?.confidence
+                confidence: lastResult?.[0]?.confidence,
             })
 
             // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
@@ -143,7 +143,7 @@ export function useSTT({ languageId, onResult, onError, onEnd, continuous = true
             // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
             recognitionRef.current.start()
             // We set isListening to true optimistically, but onstart will confirm it
-            // setIsListening(true) 
+            // setIsListening(true)
         } catch (e) {
             console.warn('[useSTT] Failed to start recognition:', e)
         }

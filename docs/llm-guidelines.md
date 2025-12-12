@@ -1,6 +1,7 @@
 # LLM guidelines for curriculum generation
 
-This document provides prompts and guidelines for using LLMs to help generate language curricula and number parsing logic.
+This document provides prompts and guidelines for using LLMs to help generate language curricula and number parsing
+logic.
 
 ## Generating a curriculum
 
@@ -77,7 +78,7 @@ The function signature is:
 function numberToWords(num: number): string
 
 Consider:
-- How multipliers work (for example Korean: 이십 = 2*10 = 20)
+- How multipliers work (for example, Korean: 이십 = 2*10 = 20)
 - Special cases like implicit "one" (백 = 100, not 일백)
 - Pronunciation of 0 (might have multiple forms)
 - Very large numbers (millions, billions)
@@ -113,25 +114,26 @@ Here are the word mappings:
 After generating code with an LLM, always:
 
 1. **Test edge cases:**
-   - Zero (often has special forms)
-   - Numbers requiring implicit "one" (100, 1000)
-   - Large numbers (10000+)
-   - Round numbers vs compound numbers
+    - Zero (often has special forms)
+    - Numbers requiring implicit "one" (100, 1000)
+    - Large numbers (10000+)
+    - Round numbers vs compound numbers
 
 2. **Test STT variations:**
-   - All-digit input
-   - All-word input
-   - Mixed input
-   - With/without spaces
+    - All-digit input
+    - All-word input
+    - Mixed input
+    - With/without spaces
 
 3. **Verify curriculum coverage:**
-   - All stages build on previous ones
-   - No gaps in number coverage
-   - Appropriate difficulty progression
+    - All stages build on previous ones
+    - No gaps in number coverage
+    - Appropriate difficulty progression
 
 ## Example: generating Native Korean numbers
 
-Native Korean (as opposed to Sino-Korean) is only used for numbers 1-99 (for counting items, ages, hours). Here's an example prompt:
+Native Korean (as opposed to Sino-Korean) is only used for numbers 1-99 (for counting items, ages, hours). Here's an
+example prompt:
 
 ```
 Generate a curriculum for Native Korean numbers (하나, 둘, 셋...).
@@ -152,13 +154,9 @@ Please structure the curriculum appropriately for this limited range.
 
 ## Tips for better LLM output
 
-1. **Be specific about the language variant** - Korean has Sino-Korean and Native Korean; Chinese has multiple counting systems.
-
-2. **Provide examples** - Show the LLM what format you expect with 2-3 examples.
-
-3. **Ask for edge cases** - Explicitly ask about zeros, large numbers, and irregularities.
-
-4. **Iterate** - Start with basic digits, verify, then expand to larger numbers.
-
-5. **Cross-reference** - Verify LLM output against authoritative sources (textbooks, language references).
-
+1. **Be specific about the language variant**: Korean has Sino-Korean and Native Korean; Chinese has multiple counting
+   systems.
+2. **Provide examples**: Show the LLM what format you expect with 2-3 examples.
+3. **Ask for edge cases**: Explicitly ask about zeros, large numbers, and irregularities.
+4. **Iterate**: Start with basic digits, verify, then expand to larger numbers.
+5. **Cross-reference**: Verify LLM output against authoritative sources (textbooks, language references).

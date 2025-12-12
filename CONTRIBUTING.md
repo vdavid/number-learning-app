@@ -1,8 +1,7 @@
 # Contributing
 
-Thanks for your interest in contributing this game! You're most welcome to do so.
-The easiest way to contribute is to fork the repo, make your changes, and submit a PR.
-This doc is here to help you get started.
+Thanks for your interest in contributing this game! You're most welcome to do so. The easiest way to contribute is to
+fork the repo, make your changes, and submit a PR. This doc is here to help you get started.
 
 ## Running the app locally in dev mode
 
@@ -21,7 +20,7 @@ This doc is here to help you get started.
 ## Scripts
 
 | Command        | Description               |
-|----------------|---------------------------|
+| -------------- | ------------------------- |
 | `pnpm dev`     | Start development server  |
 | `pnpm build`   | Build for production      |
 | `pnpm preview` | Preview production build  |
@@ -60,6 +59,7 @@ src/
 See [docs/adding-a-language.md](docs/adding-a-language.md) for detailed instructions.
 
 The quick version:
+
 1. Create a new directory in `src/features/languages/`
 2. Implement the `Language` interface
 3. Add the language to the registry in `src/features/languages/index.ts`

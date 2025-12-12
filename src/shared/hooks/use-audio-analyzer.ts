@@ -85,7 +85,9 @@ export function useAudioAnalyzer(isListening: boolean) {
         }
 
         if (streamRef.current) {
-            streamRef.current.getTracks().forEach((track) => track.stop())
+            streamRef.current.getTracks().forEach((track) => {
+                track.stop()
+            })
             streamRef.current = null
         }
 

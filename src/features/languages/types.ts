@@ -54,7 +54,6 @@ export interface Language {
      * @returns The romanized form (for example "o-sip-sa")
      */
     numberToRomanized?: (num: number) => string
-
 }
 
 /** Registry of all available languages */

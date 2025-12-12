@@ -36,6 +36,7 @@ src/
 ### Features
 
 Features are vertical slices of functionality. Each feature:
+
 - Has its own directory under `src/features/`
 - Contains all related components, hooks, and logic
 - Exports a clean public API via `index.ts`
@@ -44,6 +45,7 @@ Features are vertical slices of functionality. Each feature:
 ### Languages
 
 Languages are pluggable modules that define:
+
 - **Curriculum**: The learning stages and which numbers they contain
 - **Normalizer**: Converts between numbers and spoken words
 - **Metadata**: TTS/STT language codes, display name, flag
@@ -55,17 +57,17 @@ See [adding-a-language.md](adding-a-language.md) for how to add new languages.
 We use Zustand for state management with three stores:
 
 1. **Progress store** (`progress-store.ts`)
-   - Persisted to localStorage
-   - Tracks all cards and their FSRS scheduling data
-   - Manages stage unlocking
+    - Persisted to localStorage
+    - Tracks all cards and their FSRS scheduling data
+    - Manages stage unlocking
 
 2. **Session store** (`session-store.ts`)
-   - In-memory only (not persisted)
-   - Tracks current session state (queue, current card, input)
+    - In-memory only (not persisted)
+    - Tracks current session state (queue, current card, input)
 
 3. **Settings store** (`settings-store.ts`)
-   - Persisted to localStorage
-   - User preferences (current language, quiet mode)
+    - Persisted to localStorage
+    - User preferences (current language, quiet mode)
 
 ### FSRS integration
 
@@ -79,13 +81,13 @@ We use [ts-fsrs](https://github.com/open-spaced-repetition/ts-fsrs) for spaced r
 
 The "rotting" visual system shows card freshness:
 
-| State | Meaning | Visual |
-|-------|---------|--------|
-| `locked` | Stage not unlocked | Grey, locked icon |
-| `new` | Not yet practiced | Pulsing white |
-| `gold` | Recently reviewed, high stability | Gold glow |
-| `faded` | Due soon (within 7 days) | Muted |
-| `rusty` | Overdue (> 7 days) | Brown, warning dot |
+| State    | Meaning                           | Visual             |
+| -------- | --------------------------------- | ------------------ |
+| `locked` | Stage not unlocked                | Grey, locked icon  |
+| `new`    | Not yet practiced                 | Pulsing white      |
+| `gold`   | Recently reviewed, high stability | Gold glow          |
+| `faded`  | Due soon (within 7 days)          | Muted              |
+| `rusty`  | Overdue (> 7 days)                | Brown, warning dot |
 
 ## Data flow
 
@@ -130,6 +132,7 @@ We use Tailwind CSS 4 with custom design tokens defined in `index.css`:
 ## PWA
 
 The app is PWA-ready with:
+
 - Service worker (via vite-plugin-pwa)
 - Offline support
 - Install prompt
@@ -146,4 +149,3 @@ pnpm test:coverage # With coverage report
 ```
 
 Tests are co-located with source files (`*.test.ts`).
-

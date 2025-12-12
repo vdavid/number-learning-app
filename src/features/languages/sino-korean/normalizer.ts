@@ -8,17 +8,17 @@
 
 /** Sino-Korean digit mappings */
 const DIGIT_MAP: Record<string, number> = {
-    '영': 0,
-    '공': 0, // Alternative for zero
-    '일': 1,
-    '이': 2,
-    '삼': 3,
-    '사': 4,
-    '오': 5,
-    '육': 6,
-    '칠': 7,
-    '팔': 8,
-    '구': 9,
+    영: 0,
+    공: 0, // Alternative for zero
+    일: 1,
+    이: 2,
+    삼: 3,
+    사: 4,
+    오: 5,
+    육: 6,
+    칠: 7,
+    팔: 8,
+    구: 9,
 }
 
 /** Reverse mapping: digit to Hangul */
@@ -26,11 +26,11 @@ const HANGUL_DIGITS: string[] = ['영', '일', '이', '삼', '사', '오', '육'
 
 /** Multiplier mappings */
 const MULTIPLIER_MAP: Record<string, number> = {
-    '십': 10,
-    '백': 100,
-    '천': 1000,
-    '만': 10000,
-    '억': 100000000,
+    십: 10,
+    백: 100,
+    천: 1000,
+    만: 10000,
+    억: 100000000,
 }
 
 /**
@@ -115,7 +115,7 @@ export function numberToSinoKoreanRomanized(num: number): string {
     // Handle 만 (ten thousand)
     if (remaining >= 10000) {
         const man = Math.floor(remaining / 10000)
-        // If the prefix is 1, we usually drop the 'il' for man? 
+        // If the prefix is 1, we usually drop the 'il' for man?
         // Actually, usually 'il-man' is just 'man'.
         const prefix = man === 1 ? '' : numberToSinoKoreanRomanized(man)
         parts.push((prefix ? prefix + '-' : '') + 'man')
@@ -181,7 +181,7 @@ export function parseSinoKorean(text: string): number | null {
 
     // Replace ANY digit sequence with its Hangul equivalent
     // This handles "50" -> "오십" and "2백" -> "이백"
-    let normalized = cleaned.replace(/\d+/g, (match) => {
+    const normalized = cleaned.replace(/\d+/g, (match) => {
         const val = parseInt(match, 10)
         return numberToSinoKorean(val)
     })

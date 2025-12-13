@@ -77,7 +77,7 @@ window.Audio = vi.fn().mockImplementation(() => ({
     onerror: null,
 })) as unknown as typeof Audio
 
-// Mock fetch for manifest loading
+// Mock fetch for curriculum loading
 global.fetch = vi.fn(() =>
     Promise.resolve({
         ok: false,

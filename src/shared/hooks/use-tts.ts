@@ -1,7 +1,9 @@
 import { getLanguage } from '@features/languages'
+import type { Curriculum } from '@shared/types'
 import { useCallback, useEffect, useRef } from 'react'
 
 import { createDebugLogger } from '../utils'
+
 
 const log = createDebugLogger('app:tts')
 
@@ -45,16 +47,10 @@ type UseTTSOptions = {
     onEnd?: () => void
 }
 
-type AudioManifest = {
-    language: string
-    voices: { id: string; name: string }[]
-}
+const languageIdToCurriculumCache = new Map<string, Curriculum | null>()
 
-/** Cache for loaded manifests */
-const manifestCache = new Map<string, AudioManifest | null>()
-
-/** Track in-flight manifest loads to allow awaiting */
-const pendingManifestLoads = new Map<string, Promise<AudioManifest | null>>()
+/** Track in-flight curriculum loads to allow awaiting */
+const pendingCurriculumLoads = new Map<string, Promise<Curriculum | null>>()
 
 /** Cache for chosen audio URLs per (languageId, number) - persists across renders */
 const chosenAudioCache = new Map<string, string>()
@@ -63,45 +59,45 @@ const chosenAudioCache = new Map<string, string>()
 const pendingAudioSelection = new Map<string, Promise<string | null>>()
 
 /**
- * Load the audio manifest for a language.
- * Returns null if manifest doesn't exist or fails to load.
+ * Load the curriculum for a language.
+ * Returns null if the curriculum doesn't exist or fails to load.
  * Multiple calls for the same language will share the same promise.
  */
-async function loadManifest(languageId: string): Promise<AudioManifest | null> {
+async function loadCurriculum(languageId: string): Promise<Curriculum | null> {
     // Return cached result if available
-    if (manifestCache.has(languageId)) {
-        return manifestCache.get(languageId) ?? null
+    if (languageIdToCurriculumCache.has(languageId)) {
+        return languageIdToCurriculumCache.get(languageId) ?? null
     }
 
     // Return pending load if in progress
-    const pending = pendingManifestLoads.get(languageId)
+    const pending = pendingCurriculumLoads.get(languageId)
     if (pending) {
         return pending
     }
 
     // Start new load
-    const loadPromise = (async (): Promise<AudioManifest | null> => {
+    const loadPromise = (async (): Promise<Curriculum | null> => {
         try {
-            const response = await fetch(`/audio/${languageId}/manifest.json`)
+            const response = await fetch(`/${languageId}/curriculum.json`)
             if (!response.ok) {
-                manifestCache.set(languageId, null)
+                languageIdToCurriculumCache.set(languageId, null)
                 return null
             }
-            const manifest = (await response.json()) as AudioManifest
-            manifestCache.set(languageId, manifest)
-            return manifest
+            const curriculum = (await response.json()) as Curriculum
+            languageIdToCurriculumCache.set(languageId, curriculum)
+            return curriculum
         } catch {
-            manifestCache.set(languageId, null)
+            languageIdToCurriculumCache.set(languageId, null)
             return null
         }
     })()
 
-    pendingManifestLoads.set(languageId, loadPromise)
+    pendingCurriculumLoads.set(languageId, loadPromise)
 
     try {
         return await loadPromise
     } finally {
-        pendingManifestLoads.delete(languageId)
+        pendingCurriculumLoads.delete(languageId)
     }
 }
 
@@ -115,7 +111,7 @@ function buildAudioUrls(languageId: string, num: number, voices: { id: string }[
     const urls: string[] = []
     for (const voice of voices) {
         for (const format of audioFormats) {
-            urls.push(`/audio/${languageId}/${num}-${voice.id}.${format}`)
+            urls.push(`/${languageId}/audio/${num}-${voice.id}.${format}`)
         }
     }
     return urls
@@ -214,9 +210,9 @@ export function useTTS({ languageId, onEnd }: UseTTSOptions) {
     const onEndRef = useRef(onEnd)
     onEndRef.current = onEnd
 
-    // Pre-warm manifest cache on mount (non-blocking)
+    // Pre-warm curriculum cache on mount (non-blocking)
     useEffect(() => {
-        void loadManifest(languageId)
+        void loadCurriculum(languageId)
     }, [languageId])
 
     // Cleanup on unmount
@@ -280,7 +276,7 @@ export function useTTS({ languageId, onEnd }: UseTTSOptions) {
 
     /**
      * Select an audio URL for a number (with deduplication to prevent race conditions).
-     * Waits for manifest to load if not yet available.
+     * Waits for curriculum to load if not yet available.
      */
     const selectAudioUrl = useCallback(
         async (num: number): Promise<string | null> => {
@@ -296,11 +292,11 @@ export function useTTS({ languageId, onEnd }: UseTTSOptions) {
 
             // Start new selection
             const selectionPromise = (async (): Promise<string | null> => {
-                // Wait for manifest to load (this is fast if already cached)
-                const currentManifest = await loadManifest(languageId)
-                if (!currentManifest?.voices || currentManifest.voices.length === 0) return null
+                // Wait for the curriculum to load (this is fast if already cached)
+                const curriculum = await loadCurriculum(languageId)
+                if (!curriculum?.voices || curriculum.voices.length === 0) return null
 
-                const potentialUrls = buildAudioUrls(languageId, num, currentManifest.voices)
+                const potentialUrls = buildAudioUrls(languageId, num, curriculum.voices)
                 const existingUrls = await findExistingAudioFiles(potentialUrls)
 
                 if (existingUrls.length > 0) {

@@ -3,7 +3,7 @@
  * Sino-Korean audio generator.
  *
  * Generates audio files for numbers in the curriculum using ElevenLabs.
- * Reads from the curriculum manifest and generates opus files for each number/voice combo.
+ * Reads from the curriculum JSON and generates opus files for each number/voice combo.
  *
  * Usage:
  *   # Generate all audio for all voices
@@ -21,22 +21,20 @@
  *   # Skip existing files (default: true)
  *   npx tsx scripts/audio-gen/sino-korean/generate.ts --skip-existing
  */
-
-import * as fs from 'node:fs'
 import * as path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 import 'dotenv/config'
+import { loadCurriculum } from '@scripts/index.js'
 
-import type { CurriculumManifest, VoiceConfig } from '../../types.js'
+import { VoiceConfig } from '../../../src/shared/types/index.js'
 import { audioFileExists, createClient, generateAudio } from '../lib/elevenlabs.js'
 
 import { numberToSinoKorean } from './number-to-words.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const projectRoot = path.resolve(__dirname, '../../..')
-const audioDirectory = path.join(projectRoot, 'public/audio/sino-korean')
-const manifestFilePath = path.join(audioDirectory, 'manifest.json')
+const outputDirectory = path.join(projectRoot, 'public/sino-korean')
 
 type GenerateOptions = {
     voiceFilter?: string
@@ -77,37 +75,29 @@ function parseArgs(): GenerateOptions {
     return options
 }
 
-function loadManifest(): CurriculumManifest {
-    if (!fs.existsSync(manifestFilePath)) {
-        throw new Error(`Manifest not found at ${manifestFilePath}. Run the curriculum generator first.`)
-    }
-    const content = fs.readFileSync(manifestFilePath, 'utf-8')
-    return JSON.parse(content) as CurriculumManifest
-}
-
 function getOutputPath(num: number, voiceId: string, format: 'mp3' | 'opus'): string {
-    return path.join(audioDirectory, `${num}-${voiceId}.${format}`)
+    return path.join(outputDirectory, `${num}-${voiceId}.${format}`)
 }
 
 async function main() {
     const options = parseArgs()
-    const manifest = loadManifest()
+    const curriculum = loadCurriculum('sino-korean')
 
     console.log('🎙️  Sino-Korean Audio Generator\n')
 
     // Filter voices
-    let voices: VoiceConfig[] = manifest.voices
+    let voices: VoiceConfig[] = curriculum.voices
     if (options.voiceFilter) {
         voices = voices.filter((v) => v.id === options.voiceFilter)
         if (voices.length === 0) {
-            throw new Error(`Voice "${options.voiceFilter}" not found in manifest`)
+            throw new Error(`Voice "${options.voiceFilter}" not found in curriculum file`)
         }
     }
     console.log(`📢 Voices: ${voices.map((v) => v.name).join(', ')}`)
 
     // Collect all unique numbers to generate
     const numbersSet = new Set<number>()
-    manifest.stages.forEach((stage, idx) => {
+    curriculum.stages.forEach((stage, idx) => {
         if (options.stageFilter !== undefined && idx !== options.stageFilter) {
             return
         }
@@ -121,7 +111,7 @@ async function main() {
 
     const numbers = [...numbersSet].sort((a, b) => a - b)
     console.log(`🔢 Numbers to generate: ${numbers.length}`)
-    console.log(`📁 Output directory: ${audioDirectory}\n`)
+    console.log(`📁 Output directory: ${outputDirectory}\n`)
 
     if (numbers.length === 0) {
         console.log('No numbers to generate. Check your filters.')

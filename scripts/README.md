@@ -1,6 +1,6 @@
 # Scripts
 
-This folder contains build-time scripts for generating curriculum manifests and audio files.
+This folder contains build-time scripts for generating curriculum and audio files.
 
 ## Prerequisites
 
@@ -23,7 +23,7 @@ scripts/
 ├── tsconfig.json              # TypeScript config for scripts
 ├── curriculum-gen/            # Curriculum generation scripts
 │   └── sino-korean/
-│       ├── generate.ts        # Generates manifest.json
+│       ├── generate.ts        # Generates curriculum.json
 │       └── romanizer.ts       # Number-to-romanization
 └── audio-gen/                 # Audio generation scripts
     ├── lib/
@@ -35,16 +35,16 @@ scripts/
 
 ## Curriculum generation
 
-Generates a deterministic curriculum manifest with all numbers and their romanizations.
+Generates a deterministic curriculum JSON with all numbers and their romanizations.
 
 ```bash
 # Generate Sino-Korean curriculum
 npx tsx scripts/curriculum-gen/sino-korean/generate.ts
 ```
 
-Output: `public/audio/sino-korean/manifest.json`
+Output: `public/sino-korean/curriculum.json`
 
-The manifest contains:
+The file contains:
 
 - Language metadata (id, display name, language code)
 - Voice configurations (id, ElevenLabs voice ID, name)
@@ -54,7 +54,7 @@ The manifest contains:
 
 Generates audio files for each number using ElevenLabs TTS.
 
-**Important**: Run the curriculum generator first to create the manifest.
+**Important**: Run the curriculum generator first to create `curriculum.json.
 
 ```bash
 # Generate all audio for all voices (slow, many API calls)
@@ -76,7 +76,7 @@ npx tsx scripts/audio-gen/sino-korean/generate.ts --min 1 --max 10
 npx tsx scripts/audio-gen/sino-korean/generate.ts --no-skip-existing
 ```
 
-Output: `public/audio/sino-korean/{number}-{voice}.{extension}`
+Output: `public/sino-korean/audio/{number}-{voice}.{extension}`
 
 Examples:
 
@@ -101,7 +101,7 @@ Audio is generated in mp3/Opus format at 48kHz/128kbps, which provides:
     - `generate.ts` - Main generator script
     - `number-to-words.ts` - Number-to-native-words logic
 
-3. Run the curriculum generator to create the manifest
+3. Run the curriculum generator to create the JSON file
 4. Run the audio generator to create audio files
 
 See `sino-korean/` implementations as reference.

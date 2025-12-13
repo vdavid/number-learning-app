@@ -1,6 +1,7 @@
+import { loadCurriculum } from '@features/languages'
+
 import type { Language } from '../types'
 
-import { createSinoKoreanCurriculum } from './curriculum'
 import { numberToSinoKorean, numberToSinoKoreanRomanized, parseSinoKorean } from './normalizer'
 
 export const sinoKorean: Language = {
@@ -9,7 +10,7 @@ export const sinoKorean: Language = {
     ttsLanguageCode: 'ko-KR',
     sttLanguageCode: 'ko-KR',
     flag: '🇰🇷',
-    curriculum: createSinoKoreanCurriculum(),
+    curriculum: loadCurriculum('sino-korean'),
     numberToWords: numberToSinoKorean,
     numberToRomanized: numberToSinoKoreanRomanized,
     parseSpokenNumber: parseSinoKorean,

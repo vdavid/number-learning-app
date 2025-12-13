@@ -117,8 +117,8 @@ export const languages: LanguageRegistry = {
 
 ## Using LLMs to help
 
-You can use an LLM to help generate curriculum and word mappings. See [adding-new-language.md](adding-new-language.md) for prompts
-and guidelines.
+You can use an LLM to help generate curriculum and word mappings. See [adding-new-language.md](adding-new-language.md)
+for prompts and guidelines.
 
 This section provides prompts and guidelines for using LLMs to help generate language curricula and number parsing
 logic.
@@ -316,7 +316,7 @@ scripts/curriculum-gen/your-language/
 └── romanizer.ts     # Number-to-romanization logic
 ```
 
-The generator should output a manifest to `public/audio/your-language/manifest.json`.
+The generator should output a manifest to `public/your-language/curriculum.json`.
 
 See `scripts/curriculum-gen/sino-korean/` for reference.
 
@@ -340,7 +340,7 @@ npx tsx scripts/curriculum-gen/your-language/generate.ts
 npx tsx scripts/audio-gen/your-language/generate.ts
 ```
 
-Audio files are saved as `public/audio/your-language/{number}-{voice}.{extension}`.
+Audio files are saved as `public/your-language/audio/{number}-{voice}.{extension}`.
 
 See [scripts/README.md](../scripts/README.md) for detailed usage.
 

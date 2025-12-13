@@ -19,7 +19,9 @@ pnpm build        # Production build
 pnpm test         # Run tests (watch mode)
 pnpm test --run   # Run tests once
 pnpm test:e2e     # Run E2E tests
-pnpm lint         # ESLint + Prettier check
+pnpm format:check # Check Prettier formatting
+pnpm knip         # Check for unused files and exports
+pnpm lint         # ESLint check
 pnpm lint:fix     # Auto-fix lint issues
 ```
 
@@ -42,7 +44,7 @@ docs/                   # Architecture, style guide, how-tos
 - `docs/adding-a-language.md` — How to add a new language module
 - `docs/llm-guidelines.md` — Prompts for generating curricula
 
-## Code style (enforced by Prettier + ESLint)
+## Code style (enforced by Prettier + ESLint + knip)
 
 **Prettier**:
 - Single quotes, no semicolons
@@ -58,6 +60,9 @@ docs/                   # Architecture, style guide, how-tos
 - **Import order enforced** — builtin → external → internal → relative, alphabetized
 - **No console** (warning) — remove before committing or use a logger
 - **Complexity max 15** — split large functions
+
+**knip**:
+- **No unused files and exports** — all exported items must be imported somewhere
 
 ## Code conventions
 

@@ -3,9 +3,8 @@
  * Only initialized when import.meta.env.MODE === 'test'.
  */
 
+import { clearAudioPlayLog } from '@shared/hooks'
 import { setShuffleSeed } from '@shared/stores'
-
-import { clearAudioPlayLog } from './hooks/use-tts'
 
 interface AudioPlayLogEntry {
     url: string

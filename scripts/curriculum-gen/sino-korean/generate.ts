@@ -16,8 +16,6 @@ import { fileURLToPath } from 'node:url'
 
 import type { CurriculumManifest, NumberEntry, StageManifest } from '../../types.js'
 
-import { numberToRomanized } from './romanizer.js'
-
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const projectRoot = path.resolve(__dirname, '../../..')
 const outputDirectory = path.join(projectRoot, 'public/audio/sino-korean')

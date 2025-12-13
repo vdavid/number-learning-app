@@ -24,1878 +24,510 @@
             "name": "Digits (1–10)",
             "description": "Learn the basic building blocks: 일, 이, 삼... 십",
             "numbers": [
-                {
-                    "value": 1,
-                    "romanization": "il"
-                },
-                {
-                    "value": 2,
-                    "romanization": "i"
-                },
-                {
-                    "value": 3,
-                    "romanization": "sam"
-                },
-                {
-                    "value": 4,
-                    "romanization": "sa"
-                },
-                {
-                    "value": 5,
-                    "romanization": "o"
-                },
-                {
-                    "value": 6,
-                    "romanization": "yuk"
-                },
-                {
-                    "value": 7,
-                    "romanization": "chil"
-                },
-                {
-                    "value": 8,
-                    "romanization": "pal"
-                },
-                {
-                    "value": 9,
-                    "romanization": "gu"
-                },
-                {
-                    "value": 10,
-                    "romanization": "sip"
-                }
+                { "value": 1 },
+                { "value": 2 },
+                { "value": 3 },
+                { "value": 4 },
+                { "value": 5 },
+                { "value": 6 },
+                { "value": 7 },
+                { "value": 8 },
+                { "value": 9 },
+                { "value": 10 }
             ]
         },
         {
             "name": "Teens (11–20)",
             "description": "Combine ten with digits: 십일, 십이... 이십",
             "numbers": [
-                {
-                    "value": 11,
-                    "romanization": "sip-il"
-                },
-                {
-                    "value": 12,
-                    "romanization": "sip-i"
-                },
-                {
-                    "value": 13,
-                    "romanization": "sip-sam"
-                },
-                {
-                    "value": 14,
-                    "romanization": "sip-sa"
-                },
-                {
-                    "value": 15,
-                    "romanization": "sip-o"
-                },
-                {
-                    "value": 16,
-                    "romanization": "sip-yuk"
-                },
-                {
-                    "value": 17,
-                    "romanization": "sip-chil"
-                },
-                {
-                    "value": 18,
-                    "romanization": "sip-pal"
-                },
-                {
-                    "value": 19,
-                    "romanization": "sip-gu"
-                },
-                {
-                    "value": 20,
-                    "romanization": "i-sip"
-                }
+                { "value": 11 },
+                { "value": 12 },
+                { "value": 13 },
+                { "value": 14 },
+                { "value": 15 },
+                { "value": 16 },
+                { "value": 17 },
+                { "value": 18 },
+                { "value": 19 },
+                { "value": 20 }
             ]
         },
         {
             "name": "Twenties (21–30)",
             "description": "Practice the twenties: 이십일... 삼십",
             "numbers": [
-                {
-                    "value": 21,
-                    "romanization": "i-sip-il"
-                },
-                {
-                    "value": 22,
-                    "romanization": "i-sip-i"
-                },
-                {
-                    "value": 23,
-                    "romanization": "i-sip-sam"
-                },
-                {
-                    "value": 24,
-                    "romanization": "i-sip-sa"
-                },
-                {
-                    "value": 25,
-                    "romanization": "i-sip-o"
-                },
-                {
-                    "value": 26,
-                    "romanization": "i-sip-yuk"
-                },
-                {
-                    "value": 27,
-                    "romanization": "i-sip-chil"
-                },
-                {
-                    "value": 28,
-                    "romanization": "i-sip-pal"
-                },
-                {
-                    "value": 29,
-                    "romanization": "i-sip-gu"
-                },
-                {
-                    "value": 30,
-                    "romanization": "sam-sip"
-                }
+                { "value": 21 },
+                { "value": 22 },
+                { "value": 23 },
+                { "value": 24 },
+                { "value": 25 },
+                { "value": 26 },
+                { "value": 27 },
+                { "value": 28 },
+                { "value": 29 },
+                { "value": 30 }
             ]
         },
         {
             "name": "Decades",
             "description": "Round numbers: 십, 이십, 삼십... 백",
             "numbers": [
-                {
-                    "value": 10,
-                    "romanization": "sip"
-                },
-                {
-                    "value": 20,
-                    "romanization": "i-sip"
-                },
-                {
-                    "value": 30,
-                    "romanization": "sam-sip"
-                },
-                {
-                    "value": 40,
-                    "romanization": "sa-sip"
-                },
-                {
-                    "value": 50,
-                    "romanization": "o-sip"
-                },
-                {
-                    "value": 60,
-                    "romanization": "yuk-sip"
-                },
-                {
-                    "value": 70,
-                    "romanization": "chil-sip"
-                },
-                {
-                    "value": 80,
-                    "romanization": "pal-sip"
-                },
-                {
-                    "value": 90,
-                    "romanization": "gu-sip"
-                },
-                {
-                    "value": 100,
-                    "romanization": "baek"
-                }
+                { "value": 10 },
+                { "value": 20 },
+                { "value": 30 },
+                { "value": 40 },
+                { "value": 50 },
+                { "value": 60 },
+                { "value": 70 },
+                { "value": 80 },
+                { "value": 90 },
+                { "value": 100 }
             ]
         },
         {
             "name": "Two digits (31–99)",
             "description": "Master any two-digit number",
             "numbers": [
-                {
-                    "value": 31,
-                    "romanization": "sam-sip-il"
-                },
-                {
-                    "value": 32,
-                    "romanization": "sam-sip-i"
-                },
-                {
-                    "value": 33,
-                    "romanization": "sam-sip-sam"
-                },
-                {
-                    "value": 34,
-                    "romanization": "sam-sip-sa"
-                },
-                {
-                    "value": 35,
-                    "romanization": "sam-sip-o"
-                },
-                {
-                    "value": 36,
-                    "romanization": "sam-sip-yuk"
-                },
-                {
-                    "value": 37,
-                    "romanization": "sam-sip-chil"
-                },
-                {
-                    "value": 38,
-                    "romanization": "sam-sip-pal"
-                },
-                {
-                    "value": 39,
-                    "romanization": "sam-sip-gu"
-                },
-                {
-                    "value": 40,
-                    "romanization": "sa-sip"
-                },
-                {
-                    "value": 41,
-                    "romanization": "sa-sip-il"
-                },
-                {
-                    "value": 42,
-                    "romanization": "sa-sip-i"
-                },
-                {
-                    "value": 43,
-                    "romanization": "sa-sip-sam"
-                },
-                {
-                    "value": 44,
-                    "romanization": "sa-sip-sa"
-                },
-                {
-                    "value": 45,
-                    "romanization": "sa-sip-o"
-                },
-                {
-                    "value": 46,
-                    "romanization": "sa-sip-yuk"
-                },
-                {
-                    "value": 47,
-                    "romanization": "sa-sip-chil"
-                },
-                {
-                    "value": 48,
-                    "romanization": "sa-sip-pal"
-                },
-                {
-                    "value": 49,
-                    "romanization": "sa-sip-gu"
-                },
-                {
-                    "value": 50,
-                    "romanization": "o-sip"
-                },
-                {
-                    "value": 51,
-                    "romanization": "o-sip-il"
-                },
-                {
-                    "value": 52,
-                    "romanization": "o-sip-i"
-                },
-                {
-                    "value": 53,
-                    "romanization": "o-sip-sam"
-                },
-                {
-                    "value": 54,
-                    "romanization": "o-sip-sa"
-                },
-                {
-                    "value": 55,
-                    "romanization": "o-sip-o"
-                },
-                {
-                    "value": 56,
-                    "romanization": "o-sip-yuk"
-                },
-                {
-                    "value": 57,
-                    "romanization": "o-sip-chil"
-                },
-                {
-                    "value": 58,
-                    "romanization": "o-sip-pal"
-                },
-                {
-                    "value": 59,
-                    "romanization": "o-sip-gu"
-                },
-                {
-                    "value": 60,
-                    "romanization": "yuk-sip"
-                },
-                {
-                    "value": 61,
-                    "romanization": "yuk-sip-il"
-                },
-                {
-                    "value": 62,
-                    "romanization": "yuk-sip-i"
-                },
-                {
-                    "value": 63,
-                    "romanization": "yuk-sip-sam"
-                },
-                {
-                    "value": 64,
-                    "romanization": "yuk-sip-sa"
-                },
-                {
-                    "value": 65,
-                    "romanization": "yuk-sip-o"
-                },
-                {
-                    "value": 66,
-                    "romanization": "yuk-sip-yuk"
-                },
-                {
-                    "value": 67,
-                    "romanization": "yuk-sip-chil"
-                },
-                {
-                    "value": 68,
-                    "romanization": "yuk-sip-pal"
-                },
-                {
-                    "value": 69,
-                    "romanization": "yuk-sip-gu"
-                },
-                {
-                    "value": 70,
-                    "romanization": "chil-sip"
-                },
-                {
-                    "value": 71,
-                    "romanization": "chil-sip-il"
-                },
-                {
-                    "value": 72,
-                    "romanization": "chil-sip-i"
-                },
-                {
-                    "value": 73,
-                    "romanization": "chil-sip-sam"
-                },
-                {
-                    "value": 74,
-                    "romanization": "chil-sip-sa"
-                },
-                {
-                    "value": 75,
-                    "romanization": "chil-sip-o"
-                },
-                {
-                    "value": 76,
-                    "romanization": "chil-sip-yuk"
-                },
-                {
-                    "value": 77,
-                    "romanization": "chil-sip-chil"
-                },
-                {
-                    "value": 78,
-                    "romanization": "chil-sip-pal"
-                },
-                {
-                    "value": 79,
-                    "romanization": "chil-sip-gu"
-                },
-                {
-                    "value": 80,
-                    "romanization": "pal-sip"
-                }
+                { "value": 31 },
+                { "value": 32 },
+                { "value": 33 },
+                { "value": 34 },
+                { "value": 35 },
+                { "value": 36 },
+                { "value": 37 },
+                { "value": 38 },
+                { "value": 39 },
+                { "value": 40 },
+                { "value": 41 },
+                { "value": 42 },
+                { "value": 43 },
+                { "value": 44 },
+                { "value": 45 },
+                { "value": 46 },
+                { "value": 47 },
+                { "value": 48 },
+                { "value": 49 },
+                { "value": 50 },
+                { "value": 51 },
+                { "value": 52 },
+                { "value": 53 },
+                { "value": 54 },
+                { "value": 55 },
+                { "value": 56 },
+                { "value": 57 },
+                { "value": 58 },
+                { "value": 59 },
+                { "value": 60 },
+                { "value": 61 },
+                { "value": 62 },
+                { "value": 63 },
+                { "value": 64 },
+                { "value": 65 },
+                { "value": 66 },
+                { "value": 67 },
+                { "value": 68 },
+                { "value": 69 },
+                { "value": 70 },
+                { "value": 71 },
+                { "value": 72 },
+                { "value": 73 },
+                { "value": 74 },
+                { "value": 75 },
+                { "value": 76 },
+                { "value": 77 },
+                { "value": 78 },
+                { "value": 79 },
+                { "value": 80 }
             ]
         },
         {
             "name": "Hundreds",
             "description": "Round hundreds: 백, 이백... 천",
             "numbers": [
-                {
-                    "value": 100,
-                    "romanization": "baek"
-                },
-                {
-                    "value": 200,
-                    "romanization": "i-baek"
-                },
-                {
-                    "value": 300,
-                    "romanization": "sam-baek"
-                },
-                {
-                    "value": 400,
-                    "romanization": "sa-baek"
-                },
-                {
-                    "value": 500,
-                    "romanization": "o-baek"
-                },
-                {
-                    "value": 600,
-                    "romanization": "yuk-baek"
-                },
-                {
-                    "value": 700,
-                    "romanization": "chil-baek"
-                },
-                {
-                    "value": 800,
-                    "romanization": "pal-baek"
-                },
-                {
-                    "value": 900,
-                    "romanization": "gu-baek"
-                },
-                {
-                    "value": 1000,
-                    "romanization": "cheon"
-                }
+                { "value": 100 },
+                { "value": 200 },
+                { "value": 300 },
+                { "value": 400 },
+                { "value": 500 },
+                { "value": 600 },
+                { "value": 700 },
+                { "value": 800 },
+                { "value": 900 },
+                { "value": 1000 }
             ]
         },
         {
             "name": "Three digits (101–999)",
             "description": "Any number up to a thousand",
             "numbers": [
-                {
-                    "value": 101,
-                    "romanization": "baek-il"
-                },
-                {
-                    "value": 114,
-                    "romanization": "baek-sip-sa"
-                },
-                {
-                    "value": 122,
-                    "romanization": "baek-i-sip-i"
-                },
-                {
-                    "value": 130,
-                    "romanization": "baek-sam-sip"
-                },
-                {
-                    "value": 140,
-                    "romanization": "baek-sa-sip"
-                },
-                {
-                    "value": 141,
-                    "romanization": "baek-sa-sip-il"
-                },
-                {
-                    "value": 156,
-                    "romanization": "baek-o-sip-yuk"
-                },
-                {
-                    "value": 160,
-                    "romanization": "baek-yuk-sip"
-                },
-                {
-                    "value": 172,
-                    "romanization": "baek-chil-sip-i"
-                },
-                {
-                    "value": 174,
-                    "romanization": "baek-chil-sip-sa"
-                },
-                {
-                    "value": 181,
-                    "romanization": "baek-pal-sip-il"
-                },
-                {
-                    "value": 189,
-                    "romanization": "baek-pal-sip-gu"
-                },
-                {
-                    "value": 199,
-                    "romanization": "baek-gu-sip-gu"
-                },
-                {
-                    "value": 208,
-                    "romanization": "i-baek-pal"
-                },
-                {
-                    "value": 217,
-                    "romanization": "i-baek-sip-chil"
-                },
-                {
-                    "value": 228,
-                    "romanization": "i-baek-i-sip-pal"
-                },
-                {
-                    "value": 229,
-                    "romanization": "i-baek-i-sip-gu"
-                },
-                {
-                    "value": 242,
-                    "romanization": "i-baek-sa-sip-i"
-                },
-                {
-                    "value": 252,
-                    "romanization": "i-baek-o-sip-i"
-                },
-                {
-                    "value": 255,
-                    "romanization": "i-baek-o-sip-o"
-                },
-                {
-                    "value": 266,
-                    "romanization": "i-baek-yuk-sip-yuk"
-                },
-                {
-                    "value": 270,
-                    "romanization": "i-baek-chil-sip"
-                },
-                {
-                    "value": 281,
-                    "romanization": "i-baek-pal-sip-il"
-                },
-                {
-                    "value": 291,
-                    "romanization": "i-baek-gu-sip-il"
-                },
-                {
-                    "value": 293,
-                    "romanization": "i-baek-gu-sip-sam"
-                },
-                {
-                    "value": 308,
-                    "romanization": "sam-baek-pal"
-                },
-                {
-                    "value": 313,
-                    "romanization": "sam-baek-sip-sam"
-                },
-                {
-                    "value": 324,
-                    "romanization": "sam-baek-i-sip-sa"
-                },
-                {
-                    "value": 328,
-                    "romanization": "sam-baek-i-sip-pal"
-                },
-                {
-                    "value": 337,
-                    "romanization": "sam-baek-sam-sip-chil"
-                },
-                {
-                    "value": 343,
-                    "romanization": "sam-baek-sa-sip-sam"
-                },
-                {
-                    "value": 353,
-                    "romanization": "sam-baek-o-sip-sam"
-                },
-                {
-                    "value": 359,
-                    "romanization": "sam-baek-o-sip-gu"
-                },
-                {
-                    "value": 370,
-                    "romanization": "sam-baek-chil-sip"
-                },
-                {
-                    "value": 375,
-                    "romanization": "sam-baek-chil-sip-o"
-                },
-                {
-                    "value": 384,
-                    "romanization": "sam-baek-pal-sip-sa"
-                },
-                {
-                    "value": 395,
-                    "romanization": "sam-baek-gu-sip-o"
-                },
-                {
-                    "value": 402,
-                    "romanization": "sa-baek-i"
-                },
-                {
-                    "value": 412,
-                    "romanization": "sa-baek-sip-i"
-                },
-                {
-                    "value": 420,
-                    "romanization": "sa-baek-i-sip"
-                },
-                {
-                    "value": 424,
-                    "romanization": "sa-baek-i-sip-sa"
-                },
-                {
-                    "value": 433,
-                    "romanization": "sa-baek-sam-sip-sam"
-                },
-                {
-                    "value": 439,
-                    "romanization": "sa-baek-sam-sip-gu"
-                },
-                {
-                    "value": 445,
-                    "romanization": "sa-baek-sa-sip-o"
-                },
-                {
-                    "value": 458,
-                    "romanization": "sa-baek-o-sip-pal"
-                },
-                {
-                    "value": 463,
-                    "romanization": "sa-baek-yuk-sip-sam"
-                },
-                {
-                    "value": 475,
-                    "romanization": "sa-baek-chil-sip-o"
-                },
-                {
-                    "value": 484,
-                    "romanization": "sa-baek-pal-sip-sa"
-                },
-                {
-                    "value": 485,
-                    "romanization": "sa-baek-pal-sip-o"
-                },
-                {
-                    "value": 496,
-                    "romanization": "sa-baek-gu-sip-yuk"
-                },
-                {
-                    "value": 507,
-                    "romanization": "o-baek-chil"
-                },
-                {
-                    "value": 510,
-                    "romanization": "o-baek-sip"
-                },
-                {
-                    "value": 524,
-                    "romanization": "o-baek-i-sip-sa"
-                },
-                {
-                    "value": 526,
-                    "romanization": "o-baek-i-sip-yuk"
-                },
-                {
-                    "value": 538,
-                    "romanization": "o-baek-sam-sip-pal"
-                },
-                {
-                    "value": 546,
-                    "romanization": "o-baek-sa-sip-yuk"
-                },
-                {
-                    "value": 550,
-                    "romanization": "o-baek-o-sip"
-                },
-                {
-                    "value": 560,
-                    "romanization": "o-baek-yuk-sip"
-                },
-                {
-                    "value": 566,
-                    "romanization": "o-baek-yuk-sip-yuk"
-                },
-                {
-                    "value": 578,
-                    "romanization": "o-baek-chil-sip-pal"
-                },
-                {
-                    "value": 583,
-                    "romanization": "o-baek-pal-sip-sam"
-                },
-                {
-                    "value": 590,
-                    "romanization": "o-baek-gu-sip"
-                },
-                {
-                    "value": 602,
-                    "romanization": "yuk-baek-i"
-                },
-                {
-                    "value": 612,
-                    "romanization": "yuk-baek-sip-i"
-                },
-                {
-                    "value": 615,
-                    "romanization": "yuk-baek-sip-o"
-                },
-                {
-                    "value": 627,
-                    "romanization": "yuk-baek-i-sip-chil"
-                },
-                {
-                    "value": 632,
-                    "romanization": "yuk-baek-sam-sip-i"
-                },
-                {
-                    "value": 638,
-                    "romanization": "yuk-baek-sam-sip-pal"
-                },
-                {
-                    "value": 651,
-                    "romanization": "yuk-baek-o-sip-il"
-                },
-                {
-                    "value": 655,
-                    "romanization": "yuk-baek-o-sip-o"
-                },
-                {
-                    "value": 661,
-                    "romanization": "yuk-baek-yuk-sip-il"
-                },
-                {
-                    "value": 674,
-                    "romanization": "yuk-baek-chil-sip-sa"
-                },
-                {
-                    "value": 682,
-                    "romanization": "yuk-baek-pal-sip-i"
-                },
-                {
-                    "value": 692,
-                    "romanization": "yuk-baek-gu-sip-i"
-                },
-                {
-                    "value": 700,
-                    "romanization": "chil-baek"
-                },
-                {
-                    "value": 702,
-                    "romanization": "chil-baek-i"
-                },
-                {
-                    "value": 713,
-                    "romanization": "chil-baek-sip-sam"
-                },
-                {
-                    "value": 720,
-                    "romanization": "chil-baek-i-sip"
-                },
-                {
-                    "value": 726,
-                    "romanization": "chil-baek-i-sip-yuk"
-                },
-                {
-                    "value": 733,
-                    "romanization": "chil-baek-sam-sip-sam"
-                },
-                {
-                    "value": 746,
-                    "romanization": "chil-baek-sa-sip-yuk"
-                },
-                {
-                    "value": 754,
-                    "romanization": "chil-baek-o-sip-sa"
-                },
-                {
-                    "value": 759,
-                    "romanization": "chil-baek-o-sip-gu"
-                },
-                {
-                    "value": 767,
-                    "romanization": "chil-baek-yuk-sip-chil"
-                },
-                {
-                    "value": 775,
-                    "romanization": "chil-baek-chil-sip-o"
-                },
-                {
-                    "value": 781,
-                    "romanization": "chil-baek-pal-sip-il"
-                },
-                {
-                    "value": 790,
-                    "romanization": "chil-baek-gu-sip"
-                },
-                {
-                    "value": 804,
-                    "romanization": "pal-baek-sa"
-                },
-                {
-                    "value": 809,
-                    "romanization": "pal-baek-gu"
-                },
-                {
-                    "value": 820,
-                    "romanization": "pal-baek-i-sip"
-                },
-                {
-                    "value": 822,
-                    "romanization": "pal-baek-i-sip-i"
-                },
-                {
-                    "value": 830,
-                    "romanization": "pal-baek-sam-sip"
-                },
-                {
-                    "value": 841,
-                    "romanization": "pal-baek-sa-sip-il"
-                },
-                {
-                    "value": 847,
-                    "romanization": "pal-baek-sa-sip-chil"
-                },
-                {
-                    "value": 856,
-                    "romanization": "pal-baek-o-sip-yuk"
-                },
-                {
-                    "value": 864,
-                    "romanization": "pal-baek-yuk-sip-sa"
-                },
-                {
-                    "value": 872,
-                    "romanization": "pal-baek-chil-sip-i"
-                },
-                {
-                    "value": 882,
-                    "romanization": "pal-baek-pal-sip-i"
-                },
-                {
-                    "value": 888,
-                    "romanization": "pal-baek-pal-sip-pal"
-                },
-                {
-                    "value": 895,
-                    "romanization": "pal-baek-gu-sip-o"
-                }
+                { "value": 101 },
+                { "value": 114 },
+                { "value": 122 },
+                { "value": 130 },
+                { "value": 140 },
+                { "value": 141 },
+                { "value": 156 },
+                { "value": 160 },
+                { "value": 172 },
+                { "value": 174 },
+                { "value": 181 },
+                { "value": 189 },
+                { "value": 199 },
+                { "value": 208 },
+                { "value": 217 },
+                { "value": 228 },
+                { "value": 229 },
+                { "value": 242 },
+                { "value": 252 },
+                { "value": 255 },
+                { "value": 266 },
+                { "value": 270 },
+                { "value": 281 },
+                { "value": 291 },
+                { "value": 293 },
+                { "value": 308 },
+                { "value": 313 },
+                { "value": 324 },
+                { "value": 328 },
+                { "value": 337 },
+                { "value": 343 },
+                { "value": 353 },
+                { "value": 359 },
+                { "value": 370 },
+                { "value": 375 },
+                { "value": 384 },
+                { "value": 395 },
+                { "value": 402 },
+                { "value": 412 },
+                { "value": 420 },
+                { "value": 424 },
+                { "value": 433 },
+                { "value": 439 },
+                { "value": 445 },
+                { "value": 458 },
+                { "value": 463 },
+                { "value": 475 },
+                { "value": 484 },
+                { "value": 485 },
+                { "value": 496 },
+                { "value": 507 },
+                { "value": 510 },
+                { "value": 524 },
+                { "value": 526 },
+                { "value": 538 },
+                { "value": 546 },
+                { "value": 550 },
+                { "value": 560 },
+                { "value": 566 },
+                { "value": 578 },
+                { "value": 583 },
+                { "value": 590 },
+                { "value": 602 },
+                { "value": 612 },
+                { "value": 615 },
+                { "value": 627 },
+                { "value": 632 },
+                { "value": 638 },
+                { "value": 651 },
+                { "value": 655 },
+                { "value": 661 },
+                { "value": 674 },
+                { "value": 682 },
+                { "value": 692 },
+                { "value": 700 },
+                { "value": 702 },
+                { "value": 713 },
+                { "value": 720 },
+                { "value": 726 },
+                { "value": 733 },
+                { "value": 746 },
+                { "value": 754 },
+                { "value": 759 },
+                { "value": 767 },
+                { "value": 775 },
+                { "value": 781 },
+                { "value": 790 },
+                { "value": 804 },
+                { "value": 809 },
+                { "value": 820 },
+                { "value": 822 },
+                { "value": 830 },
+                { "value": 841 },
+                { "value": 847 },
+                { "value": 856 },
+                { "value": 864 },
+                { "value": 872 },
+                { "value": 882 },
+                { "value": 888 },
+                { "value": 895 }
             ]
         },
         {
             "name": "Thousands (1000–9999)",
             "description": "Numbers in the thousands",
             "numbers": [
-                {
-                    "value": 1008,
-                    "romanization": "cheon-pal"
-                },
-                {
-                    "value": 1092,
-                    "romanization": "cheon-gu-sip-i"
-                },
-                {
-                    "value": 1182,
-                    "romanization": "cheon-baek-pal-sip-i"
-                },
-                {
-                    "value": 1273,
-                    "romanization": "cheon-i-baek-chil-sip-sam"
-                },
-                {
-                    "value": 1361,
-                    "romanization": "cheon-sam-baek-yuk-sip-il"
-                },
-                {
-                    "value": 1450,
-                    "romanization": "cheon-sa-baek-o-sip"
-                },
-                {
-                    "value": 1536,
-                    "romanization": "cheon-o-baek-sam-sip-yuk"
-                },
-                {
-                    "value": 1626,
-                    "romanization": "cheon-yuk-baek-i-sip-yuk"
-                },
-                {
-                    "value": 1714,
-                    "romanization": "cheon-chil-baek-sip-sa"
-                },
-                {
-                    "value": 1804,
-                    "romanization": "cheon-pal-baek-sa"
-                },
-                {
-                    "value": 1896,
-                    "romanization": "cheon-pal-baek-gu-sip-yuk"
-                },
-                {
-                    "value": 1981,
-                    "romanization": "cheon-gu-baek-pal-sip-il"
-                },
-                {
-                    "value": 2069,
-                    "romanization": "i-cheon-yuk-sip-gu"
-                },
-                {
-                    "value": 2163,
-                    "romanization": "i-cheon-baek-yuk-sip-sam"
-                },
-                {
-                    "value": 2249,
-                    "romanization": "i-cheon-i-baek-sa-sip-gu"
-                },
-                {
-                    "value": 2336,
-                    "romanization": "i-cheon-sam-baek-sam-sip-yuk"
-                },
-                {
-                    "value": 2427,
-                    "romanization": "i-cheon-sa-baek-i-sip-chil"
-                },
-                {
-                    "value": 2513,
-                    "romanization": "i-cheon-o-baek-sip-sam"
-                },
-                {
-                    "value": 2607,
-                    "romanization": "i-cheon-yuk-baek-chil"
-                },
-                {
-                    "value": 2693,
-                    "romanization": "i-cheon-yuk-baek-gu-sip-sam"
-                },
-                {
-                    "value": 2784,
-                    "romanization": "i-cheon-chil-baek-pal-sip-sa"
-                },
-                {
-                    "value": 2872,
-                    "romanization": "i-cheon-pal-baek-chil-sip-i"
-                },
-                {
-                    "value": 2965,
-                    "romanization": "i-cheon-gu-baek-yuk-sip-o"
-                },
-                {
-                    "value": 3056,
-                    "romanization": "sam-cheon-o-sip-yuk"
-                },
-                {
-                    "value": 3144,
-                    "romanization": "sam-cheon-baek-sa-sip-sa"
-                },
-                {
-                    "value": 3229,
-                    "romanization": "sam-cheon-i-baek-i-sip-gu"
-                },
-                {
-                    "value": 3315,
-                    "romanization": "sam-cheon-sam-baek-sip-o"
-                },
-                {
-                    "value": 3411,
-                    "romanization": "sam-cheon-sa-baek-sip-il"
-                },
-                {
-                    "value": 3497,
-                    "romanization": "sam-cheon-sa-baek-gu-sip-chil"
-                },
-                {
-                    "value": 3589,
-                    "romanization": "sam-cheon-o-baek-pal-sip-gu"
-                },
-                {
-                    "value": 3678,
-                    "romanization": "sam-cheon-yuk-baek-chil-sip-pal"
-                },
-                {
-                    "value": 3763,
-                    "romanization": "sam-cheon-chil-baek-yuk-sip-sam"
-                },
-                {
-                    "value": 3849,
-                    "romanization": "sam-cheon-pal-baek-sa-sip-gu"
-                },
-                {
-                    "value": 3943,
-                    "romanization": "sam-cheon-gu-baek-sa-sip-sam"
-                },
-                {
-                    "value": 4034,
-                    "romanization": "sa-cheon-sam-sip-sa"
-                },
-                {
-                    "value": 4117,
-                    "romanization": "sa-cheon-baek-sip-chil"
-                },
-                {
-                    "value": 4207,
-                    "romanization": "sa-cheon-i-baek-chil"
-                },
-                {
-                    "value": 4298,
-                    "romanization": "sa-cheon-i-baek-gu-sip-pal"
-                },
-                {
-                    "value": 4391,
-                    "romanization": "sa-cheon-sam-baek-gu-sip-il"
-                },
-                {
-                    "value": 4475,
-                    "romanization": "sa-cheon-sa-baek-chil-sip-o"
-                },
-                {
-                    "value": 4568,
-                    "romanization": "sa-cheon-o-baek-yuk-sip-pal"
-                },
-                {
-                    "value": 4657,
-                    "romanization": "sa-cheon-yuk-baek-o-sip-chil"
-                },
-                {
-                    "value": 4745,
-                    "romanization": "sa-cheon-chil-baek-sa-sip-o"
-                },
-                {
-                    "value": 4827,
-                    "romanization": "sa-cheon-pal-baek-i-sip-chil"
-                },
-                {
-                    "value": 4916,
-                    "romanization": "sa-cheon-gu-baek-sip-yuk"
-                },
-                {
-                    "value": 5006,
-                    "romanization": "o-cheon-yuk"
-                },
-                {
-                    "value": 5099,
-                    "romanization": "o-cheon-gu-sip-gu"
-                },
-                {
-                    "value": 5189,
-                    "romanization": "o-cheon-baek-pal-sip-gu"
-                },
-                {
-                    "value": 5279,
-                    "romanization": "o-cheon-i-baek-chil-sip-gu"
-                },
-                {
-                    "value": 5370,
-                    "romanization": "o-cheon-sam-baek-chil-sip"
-                },
-                {
-                    "value": 5458,
-                    "romanization": "o-cheon-sa-baek-o-sip-pal"
-                },
-                {
-                    "value": 5545,
-                    "romanization": "o-cheon-o-baek-sa-sip-o"
-                },
-                {
-                    "value": 5636,
-                    "romanization": "o-cheon-yuk-baek-sam-sip-yuk"
-                },
-                {
-                    "value": 5725,
-                    "romanization": "o-cheon-chil-baek-i-sip-o"
-                },
-                {
-                    "value": 5811,
-                    "romanization": "o-cheon-pal-baek-sip-il"
-                },
-                {
-                    "value": 5898,
-                    "romanization": "o-cheon-pal-baek-gu-sip-pal"
-                },
-                {
-                    "value": 5988,
-                    "romanization": "o-cheon-gu-baek-pal-sip-pal"
-                },
-                {
-                    "value": 6081,
-                    "romanization": "yuk-cheon-pal-sip-il"
-                },
-                {
-                    "value": 6168,
-                    "romanization": "yuk-cheon-baek-yuk-sip-pal"
-                },
-                {
-                    "value": 6254,
-                    "romanization": "yuk-cheon-i-baek-o-sip-sa"
-                },
-                {
-                    "value": 6349,
-                    "romanization": "yuk-cheon-sam-baek-sa-sip-gu"
-                },
-                {
-                    "value": 6435,
-                    "romanization": "yuk-cheon-sa-baek-sam-sip-o"
-                },
-                {
-                    "value": 6521,
-                    "romanization": "yuk-cheon-o-baek-i-sip-il"
-                },
-                {
-                    "value": 6615,
-                    "romanization": "yuk-cheon-yuk-baek-sip-o"
-                },
-                {
-                    "value": 6697,
-                    "romanization": "yuk-cheon-yuk-baek-gu-sip-chil"
-                },
-                {
-                    "value": 6788,
-                    "romanization": "yuk-cheon-chil-baek-pal-sip-pal"
-                },
-                {
-                    "value": 6874,
-                    "romanization": "yuk-cheon-pal-baek-chil-sip-sa"
-                },
-                {
-                    "value": 6963,
-                    "romanization": "yuk-cheon-gu-baek-yuk-sip-sam"
-                },
-                {
-                    "value": 7058,
-                    "romanization": "chil-cheon-o-sip-pal"
-                },
-                {
-                    "value": 7148,
-                    "romanization": "chil-cheon-baek-sa-sip-pal"
-                },
-                {
-                    "value": 7239,
-                    "romanization": "chil-cheon-i-baek-sam-sip-gu"
-                },
-                {
-                    "value": 7327,
-                    "romanization": "chil-cheon-sam-baek-i-sip-chil"
-                },
-                {
-                    "value": 7412,
-                    "romanization": "chil-cheon-sa-baek-sip-i"
-                },
-                {
-                    "value": 7504,
-                    "romanization": "chil-cheon-o-baek-sa"
-                },
-                {
-                    "value": 7587,
-                    "romanization": "chil-cheon-o-baek-pal-sip-chil"
-                },
-                {
-                    "value": 7677,
-                    "romanization": "chil-cheon-yuk-baek-chil-sip-chil"
-                },
-                {
-                    "value": 7765,
-                    "romanization": "chil-cheon-chil-baek-yuk-sip-o"
-                },
-                {
-                    "value": 7853,
-                    "romanization": "chil-cheon-pal-baek-o-sip-sam"
-                },
-                {
-                    "value": 7944,
-                    "romanization": "chil-cheon-gu-baek-sa-sip-sa"
-                },
-                {
-                    "value": 8035,
-                    "romanization": "pal-cheon-sam-sip-o"
-                },
-                {
-                    "value": 8125,
-                    "romanization": "pal-cheon-baek-i-sip-o"
-                },
-                {
-                    "value": 8216,
-                    "romanization": "pal-cheon-i-baek-sip-yuk"
-                },
-                {
-                    "value": 8305,
-                    "romanization": "pal-cheon-sam-baek-o"
-                },
-                {
-                    "value": 8394,
-                    "romanization": "pal-cheon-sam-baek-gu-sip-sa"
-                },
-                {
-                    "value": 8477,
-                    "romanization": "pal-cheon-sa-baek-chil-sip-chil"
-                },
-                {
-                    "value": 8571,
-                    "romanization": "pal-cheon-o-baek-chil-sip-il"
-                },
-                {
-                    "value": 8659,
-                    "romanization": "pal-cheon-yuk-baek-o-sip-gu"
-                },
-                {
-                    "value": 8747,
-                    "romanization": "pal-cheon-chil-baek-sa-sip-chil"
-                },
-                {
-                    "value": 8836,
-                    "romanization": "pal-cheon-pal-baek-sam-sip-yuk"
-                },
-                {
-                    "value": 8925,
-                    "romanization": "pal-cheon-gu-baek-i-sip-o"
-                },
-                {
-                    "value": 9014,
-                    "romanization": "gu-cheon-sip-sa"
-                },
-                {
-                    "value": 9102,
-                    "romanization": "gu-cheon-baek-i"
-                },
-                {
-                    "value": 9191,
-                    "romanization": "gu-cheon-baek-gu-sip-il"
-                },
-                {
-                    "value": 9278,
-                    "romanization": "gu-cheon-i-baek-chil-sip-pal"
-                },
-                {
-                    "value": 9371,
-                    "romanization": "gu-cheon-sam-baek-chil-sip-il"
-                },
-                {
-                    "value": 9457,
-                    "romanization": "gu-cheon-sa-baek-o-sip-chil"
-                },
-                {
-                    "value": 9549,
-                    "romanization": "gu-cheon-o-baek-sa-sip-gu"
-                },
-                {
-                    "value": 9638,
-                    "romanization": "gu-cheon-yuk-baek-sam-sip-pal"
-                },
-                {
-                    "value": 9728,
-                    "romanization": "gu-cheon-chil-baek-i-sip-pal"
-                },
-                {
-                    "value": 9815,
-                    "romanization": "gu-cheon-pal-baek-sip-o"
-                }
+                { "value": 1008 },
+                { "value": 1092 },
+                { "value": 1182 },
+                { "value": 1273 },
+                { "value": 1361 },
+                { "value": 1450 },
+                { "value": 1536 },
+                { "value": 1626 },
+                { "value": 1714 },
+                { "value": 1804 },
+                { "value": 1896 },
+                { "value": 1981 },
+                { "value": 2069 },
+                { "value": 2163 },
+                { "value": 2249 },
+                { "value": 2336 },
+                { "value": 2427 },
+                { "value": 2513 },
+                { "value": 2607 },
+                { "value": 2693 },
+                { "value": 2784 },
+                { "value": 2872 },
+                { "value": 2965 },
+                { "value": 3056 },
+                { "value": 3144 },
+                { "value": 3229 },
+                { "value": 3315 },
+                { "value": 3411 },
+                { "value": 3497 },
+                { "value": 3589 },
+                { "value": 3678 },
+                { "value": 3763 },
+                { "value": 3849 },
+                { "value": 3943 },
+                { "value": 4034 },
+                { "value": 4117 },
+                { "value": 4207 },
+                { "value": 4298 },
+                { "value": 4391 },
+                { "value": 4475 },
+                { "value": 4568 },
+                { "value": 4657 },
+                { "value": 4745 },
+                { "value": 4827 },
+                { "value": 4916 },
+                { "value": 5006 },
+                { "value": 5099 },
+                { "value": 5189 },
+                { "value": 5279 },
+                { "value": 5370 },
+                { "value": 5458 },
+                { "value": 5545 },
+                { "value": 5636 },
+                { "value": 5725 },
+                { "value": 5811 },
+                { "value": 5898 },
+                { "value": 5988 },
+                { "value": 6081 },
+                { "value": 6168 },
+                { "value": 6254 },
+                { "value": 6349 },
+                { "value": 6435 },
+                { "value": 6521 },
+                { "value": 6615 },
+                { "value": 6697 },
+                { "value": 6788 },
+                { "value": 6874 },
+                { "value": 6963 },
+                { "value": 7058 },
+                { "value": 7148 },
+                { "value": 7239 },
+                { "value": 7327 },
+                { "value": 7412 },
+                { "value": 7504 },
+                { "value": 7587 },
+                { "value": 7677 },
+                { "value": 7765 },
+                { "value": 7853 },
+                { "value": 7944 },
+                { "value": 8035 },
+                { "value": 8125 },
+                { "value": 8216 },
+                { "value": 8305 },
+                { "value": 8394 },
+                { "value": 8477 },
+                { "value": 8571 },
+                { "value": 8659 },
+                { "value": 8747 },
+                { "value": 8836 },
+                { "value": 8925 },
+                { "value": 9014 },
+                { "value": 9102 },
+                { "value": 9191 },
+                { "value": 9278 },
+                { "value": 9371 },
+                { "value": 9457 },
+                { "value": 9549 },
+                { "value": 9638 },
+                { "value": 9728 },
+                { "value": 9815 }
             ]
         },
         {
             "name": "Man (10000+)",
             "description": "The Korean \"ten thousand\" unit: 만",
             "numbers": [
-                {
-                    "value": 10000,
-                    "romanization": "man"
-                },
-                {
-                    "value": 20000,
-                    "romanization": "i-man"
-                },
-                {
-                    "value": 50000,
-                    "romanization": "o-man"
-                },
-                {
-                    "value": 100000,
-                    "romanization": "sip-man"
-                },
-                {
-                    "value": 10002,
-                    "romanization": "man-i"
-                },
-                {
-                    "value": 10900,
-                    "romanization": "man-gu-baek"
-                },
-                {
-                    "value": 11800,
-                    "romanization": "man-cheon-pal-baek"
-                },
-                {
-                    "value": 12707,
-                    "romanization": "man-i-cheon-chil-baek-chil"
-                },
-                {
-                    "value": 13597,
-                    "romanization": "man-sam-cheon-o-baek-gu-sip-chil"
-                },
-                {
-                    "value": 14504,
-                    "romanization": "man-sa-cheon-o-baek-sa"
-                },
-                {
-                    "value": 15399,
-                    "romanization": "man-o-cheon-sam-baek-gu-sip-gu"
-                },
-                {
-                    "value": 16299,
-                    "romanization": "man-yuk-cheon-i-baek-gu-sip-gu"
-                },
-                {
-                    "value": 17193,
-                    "romanization": "man-chil-cheon-baek-gu-sip-sam"
-                },
-                {
-                    "value": 18100,
-                    "romanization": "man-pal-cheon-baek"
-                },
-                {
-                    "value": 18991,
-                    "romanization": "man-pal-cheon-gu-baek-gu-sip-il"
-                },
-                {
-                    "value": 19893,
-                    "romanization": "man-gu-cheon-pal-baek-gu-sip-sam"
-                },
-                {
-                    "value": 20791,
-                    "romanization": "i-man-chil-baek-gu-sip-il"
-                },
-                {
-                    "value": 21695,
-                    "romanization": "i-man-cheon-yuk-baek-gu-sip-o"
-                },
-                {
-                    "value": 22592,
-                    "romanization": "i-man-i-cheon-o-baek-gu-sip-i"
-                },
-                {
-                    "value": 23486,
-                    "romanization": "i-man-sam-cheon-sa-baek-pal-sip-yuk"
-                },
-                {
-                    "value": 24394,
-                    "romanization": "i-man-sa-cheon-sam-baek-gu-sip-sa"
-                },
-                {
-                    "value": 25291,
-                    "romanization": "i-man-o-cheon-i-baek-gu-sip-il"
-                },
-                {
-                    "value": 26189,
-                    "romanization": "i-man-yuk-cheon-baek-pal-sip-gu"
-                },
-                {
-                    "value": 27089,
-                    "romanization": "i-man-chil-cheon-pal-sip-gu"
-                },
-                {
-                    "value": 27986,
-                    "romanization": "i-man-chil-cheon-gu-baek-pal-sip-yuk"
-                },
-                {
-                    "value": 28888,
-                    "romanization": "i-man-pal-cheon-pal-baek-pal-sip-pal"
-                },
-                {
-                    "value": 29784,
-                    "romanization": "i-man-gu-cheon-chil-baek-pal-sip-sa"
-                },
-                {
-                    "value": 30679,
-                    "romanization": "sam-man-yuk-baek-chil-sip-gu"
-                },
-                {
-                    "value": 31577,
-                    "romanization": "sam-man-cheon-o-baek-chil-sip-chil"
-                },
-                {
-                    "value": 32476,
-                    "romanization": "sam-man-i-cheon-sa-baek-chil-sip-yuk"
-                },
-                {
-                    "value": 33375,
-                    "romanization": "sam-man-sam-cheon-sam-baek-chil-sip-o"
-                },
-                {
-                    "value": 34276,
-                    "romanization": "sam-man-sa-cheon-i-baek-chil-sip-yuk"
-                },
-                {
-                    "value": 35179,
-                    "romanization": "sam-man-o-cheon-baek-chil-sip-gu"
-                },
-                {
-                    "value": 36078,
-                    "romanization": "sam-man-yuk-cheon-chil-sip-pal"
-                },
-                {
-                    "value": 36976,
-                    "romanization": "sam-man-yuk-cheon-gu-baek-chil-sip-yuk"
-                },
-                {
-                    "value": 37879,
-                    "romanization": "sam-man-chil-cheon-pal-baek-chil-sip-gu"
-                },
-                {
-                    "value": 38769,
-                    "romanization": "sam-man-pal-cheon-chil-baek-yuk-sip-gu"
-                },
-                {
-                    "value": 39671,
-                    "romanization": "sam-man-gu-cheon-yuk-baek-chil-sip-il"
-                },
-                {
-                    "value": 40570,
-                    "romanization": "sa-man-o-baek-chil-sip"
-                },
-                {
-                    "value": 41468,
-                    "romanization": "sa-man-cheon-sa-baek-yuk-sip-pal"
-                },
-                {
-                    "value": 42373,
-                    "romanization": "sa-man-i-cheon-sam-baek-chil-sip-sam"
-                },
-                {
-                    "value": 43269,
-                    "romanization": "sa-man-sam-cheon-i-baek-yuk-sip-gu"
-                },
-                {
-                    "value": 44165,
-                    "romanization": "sa-man-sa-cheon-baek-yuk-sip-o"
-                },
-                {
-                    "value": 45071,
-                    "romanization": "sa-man-o-cheon-chil-sip-il"
-                },
-                {
-                    "value": 45970,
-                    "romanization": "sa-man-o-cheon-gu-baek-chil-sip"
-                },
-                {
-                    "value": 46862,
-                    "romanization": "sa-man-yuk-cheon-pal-baek-yuk-sip-i"
-                },
-                {
-                    "value": 47764,
-                    "romanization": "sa-man-chil-cheon-chil-baek-yuk-sip-sa"
-                },
-                {
-                    "value": 48666,
-                    "romanization": "sa-man-pal-cheon-yuk-baek-yuk-sip-yuk"
-                },
-                {
-                    "value": 49566,
-                    "romanization": "sa-man-gu-cheon-o-baek-yuk-sip-yuk"
-                },
-                {
-                    "value": 50462,
-                    "romanization": "o-man-sa-baek-yuk-sip-i"
-                },
-                {
-                    "value": 51360,
-                    "romanization": "o-man-cheon-sam-baek-yuk-sip"
-                },
-                {
-                    "value": 52262,
-                    "romanization": "o-man-i-cheon-i-baek-yuk-sip-i"
-                },
-                {
-                    "value": 53156,
-                    "romanization": "o-man-sam-cheon-baek-o-sip-yuk"
-                },
-                {
-                    "value": 54056,
-                    "romanization": "o-man-sa-cheon-o-sip-yuk"
-                },
-                {
-                    "value": 54958,
-                    "romanization": "o-man-sa-cheon-gu-baek-o-sip-pal"
-                },
-                {
-                    "value": 55855,
-                    "romanization": "o-man-o-cheon-pal-baek-o-sip-o"
-                },
-                {
-                    "value": 56755,
-                    "romanization": "o-man-yuk-cheon-chil-baek-o-sip-o"
-                },
-                {
-                    "value": 57653,
-                    "romanization": "o-man-chil-cheon-yuk-baek-o-sip-sam"
-                },
-                {
-                    "value": 58552,
-                    "romanization": "o-man-pal-cheon-o-baek-o-sip-i"
-                },
-                {
-                    "value": 59455,
-                    "romanization": "o-man-gu-cheon-sa-baek-o-sip-o"
-                },
-                {
-                    "value": 60354,
-                    "romanization": "yuk-man-sam-baek-o-sip-sa"
-                },
-                {
-                    "value": 61251,
-                    "romanization": "yuk-man-cheon-i-baek-o-sip-il"
-                },
-                {
-                    "value": 62146,
-                    "romanization": "yuk-man-i-cheon-baek-sa-sip-yuk"
-                },
-                {
-                    "value": 63048,
-                    "romanization": "yuk-man-sam-cheon-sa-sip-pal"
-                },
-                {
-                    "value": 63947,
-                    "romanization": "yuk-man-sam-cheon-gu-baek-sa-sip-chil"
-                },
-                {
-                    "value": 64848,
-                    "romanization": "yuk-man-sa-cheon-pal-baek-sa-sip-pal"
-                },
-                {
-                    "value": 65742,
-                    "romanization": "yuk-man-o-cheon-chil-baek-sa-sip-i"
-                },
-                {
-                    "value": 66646,
-                    "romanization": "yuk-man-yuk-cheon-yuk-baek-sa-sip-yuk"
-                },
-                {
-                    "value": 67540,
-                    "romanization": "yuk-man-chil-cheon-o-baek-sa-sip"
-                },
-                {
-                    "value": 68444,
-                    "romanization": "yuk-man-pal-cheon-sa-baek-sa-sip-sa"
-                },
-                {
-                    "value": 69339,
-                    "romanization": "yuk-man-gu-cheon-sam-baek-sam-sip-gu"
-                },
-                {
-                    "value": 70237,
-                    "romanization": "chil-man-i-baek-sam-sip-chil"
-                },
-                {
-                    "value": 71138,
-                    "romanization": "chil-man-cheon-baek-sam-sip-pal"
-                },
-                {
-                    "value": 72040,
-                    "romanization": "chil-man-i-cheon-sa-sip"
-                },
-                {
-                    "value": 72937,
-                    "romanization": "chil-man-i-cheon-gu-baek-sam-sip-chil"
-                },
-                {
-                    "value": 73838,
-                    "romanization": "chil-man-sam-cheon-pal-baek-sam-sip-pal"
-                },
-                {
-                    "value": 74735,
-                    "romanization": "chil-man-sa-cheon-chil-baek-sam-sip-o"
-                },
-                {
-                    "value": 75629,
-                    "romanization": "chil-man-o-cheon-yuk-baek-i-sip-gu"
-                },
-                {
-                    "value": 76529,
-                    "romanization": "chil-man-yuk-cheon-o-baek-i-sip-gu"
-                },
-                {
-                    "value": 77435,
-                    "romanization": "chil-man-chil-cheon-sa-baek-sam-sip-o"
-                },
-                {
-                    "value": 78329,
-                    "romanization": "chil-man-pal-cheon-sam-baek-i-sip-gu"
-                },
-                {
-                    "value": 79226,
-                    "romanization": "chil-man-gu-cheon-i-baek-i-sip-yuk"
-                },
-                {
-                    "value": 80129,
-                    "romanization": "pal-man-baek-i-sip-gu"
-                },
-                {
-                    "value": 81029,
-                    "romanization": "pal-man-cheon-i-sip-gu"
-                },
-                {
-                    "value": 81928,
-                    "romanization": "pal-man-cheon-gu-baek-i-sip-pal"
-                },
-                {
-                    "value": 82827,
-                    "romanization": "pal-man-i-cheon-pal-baek-i-sip-chil"
-                },
-                {
-                    "value": 83720,
-                    "romanization": "pal-man-sam-cheon-chil-baek-i-sip"
-                },
-                {
-                    "value": 84626,
-                    "romanization": "pal-man-sa-cheon-yuk-baek-i-sip-yuk"
-                },
-                {
-                    "value": 85526,
-                    "romanization": "pal-man-o-cheon-o-baek-i-sip-yuk"
-                },
-                {
-                    "value": 86421,
-                    "romanization": "pal-man-yuk-cheon-sa-baek-i-sip-il"
-                },
-                {
-                    "value": 87319,
-                    "romanization": "pal-man-chil-cheon-sam-baek-sip-gu"
-                },
-                {
-                    "value": 88214,
-                    "romanization": "pal-man-pal-cheon-i-baek-sip-sa"
-                },
-                {
-                    "value": 89117,
-                    "romanization": "pal-man-gu-cheon-baek-sip-chil"
-                },
-                {
-                    "value": 90020,
-                    "romanization": "gu-man-i-sip"
-                },
-                {
-                    "value": 90917,
-                    "romanization": "gu-man-gu-baek-sip-chil"
-                },
-                {
-                    "value": 91814,
-                    "romanization": "gu-man-cheon-pal-baek-sip-sa"
-                },
-                {
-                    "value": 92713,
-                    "romanization": "gu-man-i-cheon-chil-baek-sip-sam"
-                },
-                {
-                    "value": 93614,
-                    "romanization": "gu-man-sam-cheon-yuk-baek-sip-sa"
-                },
-                {
-                    "value": 94514,
-                    "romanization": "gu-man-sa-cheon-o-baek-sip-sa"
-                },
-                {
-                    "value": 95411,
-                    "romanization": "gu-man-o-cheon-sa-baek-sip-il"
-                },
-                {
-                    "value": 96305,
-                    "romanization": "gu-man-yuk-cheon-sam-baek-o"
-                },
-                {
-                    "value": 97205,
-                    "romanization": "gu-man-chil-cheon-i-baek-o"
-                },
-                {
-                    "value": 98103,
-                    "romanization": "gu-man-pal-cheon-baek-sam"
-                },
-                {
-                    "value": 99003,
-                    "romanization": "gu-man-gu-cheon-sam"
-                },
-                {
-                    "value": 100003,
-                    "romanization": "sip-man-sam"
-                },
-                {
-                    "value": 118007,
-                    "romanization": "sip-il-man-pal-cheon-chil"
-                },
-                {
-                    "value": 136006,
-                    "romanization": "sip-sam-man-yuk-cheon-yuk"
-                },
-                {
-                    "value": 154003,
-                    "romanization": "sip-o-man-sa-cheon-sam"
-                },
-                {
-                    "value": 171996,
-                    "romanization": "sip-chil-man-cheon-gu-baek-gu-sip-yuk"
-                },
-                {
-                    "value": 189995,
-                    "romanization": "sip-pal-man-gu-cheon-gu-baek-gu-sip-o"
-                },
-                {
-                    "value": 207996,
-                    "romanization": "i-sip-man-chil-cheon-gu-baek-gu-sip-yuk"
-                },
-                {
-                    "value": 226000,
-                    "romanization": "i-sip-i-man-yuk-cheon"
-                },
-                {
-                    "value": 243994,
-                    "romanization": "i-sip-sa-man-sam-cheon-gu-baek-gu-sip-sa"
-                },
-                {
-                    "value": 261999,
-                    "romanization": "i-sip-yuk-man-cheon-gu-baek-gu-sip-gu"
-                },
-                {
-                    "value": 279996,
-                    "romanization": "i-sip-chil-man-gu-cheon-gu-baek-gu-sip-yuk"
-                },
-                {
-                    "value": 297998,
-                    "romanization": "i-sip-gu-man-chil-cheon-gu-baek-gu-sip-pal"
-                },
-                {
-                    "value": 315996,
-                    "romanization": "sam-sip-il-man-o-cheon-gu-baek-gu-sip-yuk"
-                },
-                {
-                    "value": 333990,
-                    "romanization": "sam-sip-sam-man-sam-cheon-gu-baek-gu-sip"
-                },
-                {
-                    "value": 351986,
-                    "romanization": "sam-sip-o-man-cheon-gu-baek-pal-sip-yuk"
-                },
-                {
-                    "value": 369991,
-                    "romanization": "sam-sip-yuk-man-gu-cheon-gu-baek-gu-sip-il"
-                },
-                {
-                    "value": 387986,
-                    "romanization": "sam-sip-pal-man-chil-cheon-gu-baek-pal-sip-yuk"
-                },
-                {
-                    "value": 405987,
-                    "romanization": "sa-sip-man-o-cheon-gu-baek-pal-sip-chil"
-                },
-                {
-                    "value": 423984,
-                    "romanization": "sa-sip-i-man-sam-cheon-gu-baek-pal-sip-sa"
-                },
-                {
-                    "value": 441983,
-                    "romanization": "sa-sip-sa-man-cheon-gu-baek-pal-sip-sam"
-                },
-                {
-                    "value": 459987,
-                    "romanization": "sa-sip-o-man-gu-cheon-gu-baek-pal-sip-chil"
-                },
-                {
-                    "value": 477984,
-                    "romanization": "sa-sip-chil-man-chil-cheon-gu-baek-pal-sip-sa"
-                },
-                {
-                    "value": 495982,
-                    "romanization": "sa-sip-gu-man-o-cheon-gu-baek-pal-sip-i"
-                },
-                {
-                    "value": 513982,
-                    "romanization": "o-sip-il-man-sam-cheon-gu-baek-pal-sip-i"
-                },
-                {
-                    "value": 531977,
-                    "romanization": "o-sip-sam-man-cheon-gu-baek-chil-sip-chil"
-                },
-                {
-                    "value": 549982,
-                    "romanization": "o-sip-sa-man-gu-cheon-gu-baek-pal-sip-i"
-                },
-                {
-                    "value": 567980,
-                    "romanization": "o-sip-yuk-man-chil-cheon-gu-baek-pal-sip"
-                },
-                {
-                    "value": 585982,
-                    "romanization": "o-sip-pal-man-o-cheon-gu-baek-pal-sip-i"
-                },
-                {
-                    "value": 603973,
-                    "romanization": "yuk-sip-man-sam-cheon-gu-baek-chil-sip-sam"
-                },
-                {
-                    "value": 621971,
-                    "romanization": "yuk-sip-i-man-cheon-gu-baek-chil-sip-il"
-                },
-                {
-                    "value": 639970,
-                    "romanization": "yuk-sip-sam-man-gu-cheon-gu-baek-chil-sip"
-                },
-                {
-                    "value": 657972,
-                    "romanization": "yuk-sip-o-man-chil-cheon-gu-baek-chil-sip-i"
-                },
-                {
-                    "value": 675970,
-                    "romanization": "yuk-sip-chil-man-o-cheon-gu-baek-chil-sip"
-                },
-                {
-                    "value": 693969,
-                    "romanization": "yuk-sip-gu-man-sam-cheon-gu-baek-yuk-sip-gu"
-                },
-                {
-                    "value": 711975,
-                    "romanization": "chil-sip-il-man-cheon-gu-baek-chil-sip-o"
-                },
-                {
-                    "value": 729970,
-                    "romanization": "chil-sip-i-man-gu-cheon-gu-baek-chil-sip"
-                },
-                {
-                    "value": 747972,
-                    "romanization": "chil-sip-sa-man-chil-cheon-gu-baek-chil-sip-i"
-                },
-                {
-                    "value": 765966,
-                    "romanization": "chil-sip-yuk-man-o-cheon-gu-baek-yuk-sip-yuk"
-                },
-                {
-                    "value": 783968,
-                    "romanization": "chil-sip-pal-man-sam-cheon-gu-baek-yuk-sip-pal"
-                },
-                {
-                    "value": 801961,
-                    "romanization": "pal-sip-man-cheon-gu-baek-yuk-sip-il"
-                },
-                {
-                    "value": 819967,
-                    "romanization": "pal-sip-il-man-gu-cheon-gu-baek-yuk-sip-chil"
-                },
-                {
-                    "value": 837966,
-                    "romanization": "pal-sip-sam-man-chil-cheon-gu-baek-yuk-sip-yuk"
-                },
-                {
-                    "value": 855961,
-                    "romanization": "pal-sip-o-man-o-cheon-gu-baek-yuk-sip-il"
-                },
-                {
-                    "value": 873959,
-                    "romanization": "pal-sip-chil-man-sam-cheon-gu-baek-o-sip-gu"
-                },
-                {
-                    "value": 891963,
-                    "romanization": "pal-sip-gu-man-cheon-gu-baek-yuk-sip-sam"
-                },
-                {
-                    "value": 909960,
-                    "romanization": "gu-sip-man-gu-cheon-gu-baek-yuk-sip"
-                },
-                {
-                    "value": 927955,
-                    "romanization": "gu-sip-i-man-chil-cheon-gu-baek-o-sip-o"
-                },
-                {
-                    "value": 945953,
-                    "romanization": "gu-sip-sa-man-o-cheon-gu-baek-o-sip-sam"
-                },
-                {
-                    "value": 963959,
-                    "romanization": "gu-sip-yuk-man-sam-cheon-gu-baek-o-sip-gu"
-                },
-                {
-                    "value": 981955,
-                    "romanization": "gu-sip-pal-man-cheon-gu-baek-o-sip-o"
-                },
-                {
-                    "value": 1000000,
-                    "romanization": "baek-man"
-                },
-                {
-                    "value": 10000000,
-                    "romanization": "cheon-man"
-                }
+                { "value": 10000 },
+                { "value": 20000 },
+                { "value": 50000 },
+                { "value": 100000 },
+                { "value": 10002 },
+                { "value": 10900 },
+                { "value": 11800 },
+                { "value": 12707 },
+                { "value": 13597 },
+                { "value": 14504 },
+                { "value": 15399 },
+                { "value": 16299 },
+                { "value": 17193 },
+                { "value": 18100 },
+                { "value": 18991 },
+                { "value": 19893 },
+                { "value": 20791 },
+                { "value": 21695 },
+                { "value": 22592 },
+                { "value": 23486 },
+                { "value": 24394 },
+                { "value": 25291 },
+                { "value": 26189 },
+                { "value": 27089 },
+                { "value": 27986 },
+                { "value": 28888 },
+                { "value": 29784 },
+                { "value": 30679 },
+                { "value": 31577 },
+                { "value": 32476 },
+                { "value": 33375 },
+                { "value": 34276 },
+                { "value": 35179 },
+                { "value": 36078 },
+                { "value": 36976 },
+                { "value": 37879 },
+                { "value": 38769 },
+                { "value": 39671 },
+                { "value": 40570 },
+                { "value": 41468 },
+                { "value": 42373 },
+                { "value": 43269 },
+                { "value": 44165 },
+                { "value": 45071 },
+                { "value": 45970 },
+                { "value": 46862 },
+                { "value": 47764 },
+                { "value": 48666 },
+                { "value": 49566 },
+                { "value": 50462 },
+                { "value": 51360 },
+                { "value": 52262 },
+                { "value": 53156 },
+                { "value": 54056 },
+                { "value": 54958 },
+                { "value": 55855 },
+                { "value": 56755 },
+                { "value": 57653 },
+                { "value": 58552 },
+                { "value": 59455 },
+                { "value": 60354 },
+                { "value": 61251 },
+                { "value": 62146 },
+                { "value": 63048 },
+                { "value": 63947 },
+                { "value": 64848 },
+                { "value": 65742 },
+                { "value": 66646 },
+                { "value": 67540 },
+                { "value": 68444 },
+                { "value": 69339 },
+                { "value": 70237 },
+                { "value": 71138 },
+                { "value": 72040 },
+                { "value": 72937 },
+                { "value": 73838 },
+                { "value": 74735 },
+                { "value": 75629 },
+                { "value": 76529 },
+                { "value": 77435 },
+                { "value": 78329 },
+                { "value": 79226 },
+                { "value": 80129 },
+                { "value": 81029 },
+                { "value": 81928 },
+                { "value": 82827 },
+                { "value": 83720 },
+                { "value": 84626 },
+                { "value": 85526 },
+                { "value": 86421 },
+                { "value": 87319 },
+                { "value": 88214 },
+                { "value": 89117 },
+                { "value": 90020 },
+                { "value": 90917 },
+                { "value": 91814 },
+                { "value": 92713 },
+                { "value": 93614 },
+                { "value": 94514 },
+                { "value": 95411 },
+                { "value": 96305 },
+                { "value": 97205 },
+                { "value": 98103 },
+                { "value": 99003 },
+                { "value": 100003 },
+                { "value": 118007 },
+                { "value": 136006 },
+                { "value": 154003 },
+                { "value": 171996 },
+                { "value": 189995 },
+                { "value": 207996 },
+                { "value": 226000 },
+                { "value": 243994 },
+                { "value": 261999 },
+                { "value": 279996 },
+                { "value": 297998 },
+                { "value": 315996 },
+                { "value": 333990 },
+                { "value": 351986 },
+                { "value": 369991 },
+                { "value": 387986 },
+                { "value": 405987 },
+                { "value": 423984 },
+                { "value": 441983 },
+                { "value": 459987 },
+                { "value": 477984 },
+                { "value": 495982 },
+                { "value": 513982 },
+                { "value": 531977 },
+                { "value": 549982 },
+                { "value": 567980 },
+                { "value": 585982 },
+                { "value": 603973 },
+                { "value": 621971 },
+                { "value": 639970 },
+                { "value": 657972 },
+                { "value": 675970 },
+                { "value": 693969 },
+                { "value": 711975 },
+                { "value": 729970 },
+                { "value": 747972 },
+                { "value": 765966 },
+                { "value": 783968 },
+                { "value": 801961 },
+                { "value": 819967 },
+                { "value": 837966 },
+                { "value": 855961 },
+                { "value": 873959 },
+                { "value": 891963 },
+                { "value": 909960 },
+                { "value": 927955 },
+                { "value": 945953 },
+                { "value": 963959 },
+                { "value": 981955 },
+                { "value": 1000000 },
+                { "value": 10000000 }
             ]
         }
     ]

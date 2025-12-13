@@ -13,8 +13,7 @@ test.describe('Listen Mode - Happy Path', () => {
         await setShuffleSeed(page, 0)
 
         // Wait for the page to load and show the level selector
-        await expect(page.getByText('Sino-Korean')).toBeVisible()
-        await expect(page.getByText('Number trainer')).toBeVisible()
+        await expect(page.getByText('Start learning')).toBeVisible()
 
         // Click "Start learning" button
         const learnButton = page.getByRole('button', { name: /Start learning/i })

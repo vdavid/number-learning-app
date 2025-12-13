@@ -4,118 +4,28 @@ This folder contains build-time scripts for generating curriculum and audio file
 
 ## Prerequisites
 
-1. Install dependencies from the project root:
+1. `pnpm install` at the project root to install deps.
+2. `cp .env.example .env` and set your secrets in `.env`.
 
-    ```bash
-    pnpm install
-    ```
+## Curriculum generators
 
-2. Create a `.env` file in the project root with your ElevenLabs API key:
-    ```
-    ELEVENLABS_API_KEY=your_api_key_here
-    ```
+These generators are language-specific. They generate deterministic curriculum with all numbers and help texts.
 
-## Folder structure
+Run `npx tsx scripts/curriculum-gen/{language-id}/generate.ts` to generate curriculum.
 
-```
-scripts/
-├── types.ts                    # Shared TypeScript types
-├── tsconfig.json              # TypeScript config for scripts
-├── curriculum-gen/            # Curriculum generation scripts
-│   └── sino-korean/
-│       ├── generate.ts        # Generates curriculum.json
-│       └── romanizer.ts       # Number-to-romanization
-└── audio-gen/                 # Audio generation scripts
-    ├── lib/
-    │   └── elevenlabs.ts      # ElevenLabs API client
-    └── sino-korean/
-        ├── generate.ts        # Generates audio files
-        └── number-to-words.ts # Number-to-Korean words
-```
+Outputs will be at `public/{language-id}/curriculum.json`.
 
-## Curriculum generation
+The scripts overwrite existing files.
 
-Generates a deterministic curriculum JSON with all numbers and their romanizations.
+## Audio generator
 
-```bash
-# Generate Sino-Korean curriculum
-npx tsx scripts/curriculum-gen/sino-korean/generate.ts
-```
+Generates audio files for a given language, for each number. Uses ElevenLabs TTS.
 
-Output: `public/sino-korean/curriculum.json`
+Run the curriculum generator first to create `curriculum.json`. This script uses the generated voice IDs from the JSON.
 
-The file contains:
+It's at `scripts/audio-gen/generate.ts`. See the example usages at the top of the file.
 
-- Language metadata (id, display name, language code)
-- Voice configurations (id, ElevenLabs voice ID, name)
-- Stages with numbers and romanizations
+Output will be at: `public/{language-id}/audio/{number}-{voice}.{extension}`. Examples:
 
-## Audio generation
-
-Generates audio files for each number using ElevenLabs TTS.
-
-**Important**: Run the curriculum generator first to create `curriculum.json.
-
-```bash
-# Generate all audio for all voices (slow, many API calls)
-npx tsx scripts/audio-gen/sino-korean/generate.ts
-
-# Generate for a specific voice only. (By default, it generates for all known voices)
-npx tsx scripts/audio-gen/sino-korean/generate.ts --voice charlie
-
-# Generate for a specific stage (0-indexed)
-npx tsx scripts/audio-gen/sino-korean/generate.ts --stage 0
-
-# Generate in a specific format (default is mp3)
-npx tsx scripts/audio-gen/sino-korean/generate.ts --format opus
-
-# Generate for a specific number range
-npx tsx scripts/audio-gen/sino-korean/generate.ts --min 1 --max 10
-
-# Force regeneration (don't skip existing files)
-npx tsx scripts/audio-gen/sino-korean/generate.ts --no-skip-existing
-```
-
-Output: `public/sino-korean/audio/{number}-{voice}.{extension}`
-
-Examples:
-
-- `1-charlie.{extension}` - Number 1 spoken by Charlie
-- `54-matilda.{extension}` - Number 54 spoken by Matilda
-
-### Audio format
-
-Audio is generated in mp3/Opus format at 48kHz/128kbps, which provides:
-
-- Excellent quality for speech
-- Small file sizes (~10-15KB per number)
-- Good browser support (Chrome, Firefox, Safari 11+, Edge)
-
-## Adding a new language
-
-1. Create curriculum generator: `scripts/curriculum-gen/{language}/`
-    - `generate.ts` - Main generator script
-    - `romanizer.ts` - Number-to-romanization logic
-
-2. Create audio generator: `scripts/audio-gen/{language}/`
-    - `generate.ts` - Main generator script
-    - `number-to-words.ts` - Number-to-native-words logic
-
-3. Run the curriculum generator to create the JSON file
-4. Run the audio generator to create audio files
-
-See `sino-korean/` implementations as reference.
-
-## Voice IDs
-
-Voice IDs for ElevenLabs can be found using:
-
-```bash
-curl "https://api.elevenlabs.io/v2/voices?search=VoiceName" \
-  -H "xi-api-key: YOUR_API_KEY"
-```
-
-Current voices:
-
-- **Charlie** (Korean): `IKne3meq5aSn9XLyUdCD`
-- **Matilda** (Korean): `XrExE9yKIg1WjnnlVkGX`
+- `1-charlie.mp3` - Number 1 spoken by Charlie, mp3 format (44kHz/128kbps)
+- `54-matilda.opus` - Number 54 spoken by Matilda, Opus format (48kHz/128kbps)

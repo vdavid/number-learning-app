@@ -7,11 +7,12 @@
         "strict": true,
         "skipLibCheck": true,
         "resolveJsonModule": true,
-        "outDir": "./dist",
-        "rootDir": ".",
+        "noEmit": true,
         "baseUrl": ".",
         "paths": {
-            "@scripts/*": ["./*"]
+            "@scripts/*": ["./*"],
+            "@features/*": ["../src/features/*"],
+            "@shared/*": ["../src/shared/*"]
         }
     },
     "include": ["./**/*.ts"],

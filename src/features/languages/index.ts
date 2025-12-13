@@ -1,13 +1,7 @@
-import fs from 'node:fs'
-import path from 'node:path'
-import { fileURLToPath } from 'node:url'
+import { sinoKorean } from './sino-korean/index.js'
+import type { Language, LanguageRegistry } from './types.js'
 
-import type { Curriculum } from '@shared/types'
-
-import { sinoKorean } from './sino-korean'
-import type { Language, LanguageRegistry } from './types'
-
-export type { Language, LanguageRegistry } from './types'
+export type { Language, LanguageRegistry } from './types.js'
 
 const languageIdToLanguageMap: LanguageRegistry = {
     'sino-korean': sinoKorean,
@@ -27,13 +21,6 @@ export function getAllLanguages(): Array<{ id: string; language: Language }> {
     return Object.entries(languageIdToLanguageMap).map(([id, language]) => ({ id, language }))
 }
 
-export function loadCurriculum(languageId: string): Curriculum {
-    const __dirname = path.dirname(fileURLToPath(import.meta.url))
-    const projectRoot = path.resolve(__dirname, '../../../..')
-    const filePath = path.join(path.join(projectRoot, 'public/' + languageId), 'curriculum.json')
-    if (!fs.existsSync(filePath)) {
-        throw new Error(`Curriculum not found at ${filePath}. Run the curriculum generator first.`)
-    }
-    const content = fs.readFileSync(filePath, 'utf-8')
-    return JSON.parse(content) as Curriculum
+export function getAllLanguageIds(): string[] {
+    return Object.keys(languageIdToLanguageMap)
 }

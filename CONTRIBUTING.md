@@ -56,6 +56,23 @@ src/
 └── App.tsx             # Main app with routing
 ```
 
+## Debugging
+
+Debug logging is auto-enabled in dev mode. You can also enable it
+
+- Add `?debug` to the URL, or set `localStorage.debug = '1'` in the browser console
+
+The app uses a centralized logger in `src/shared/utils/logger.ts`:
+
+```ts
+import { logger } from '@/shared/utils/logger'
+
+logger.debug('Only in debug mode')
+logger.info('Always logs')
+logger.warn('Warning')
+logger.error('Error')
+```
+
 ## Adding a new language
 
 See [docs/adding-a-language.md](docs/adding-a-language.md) for detailed instructions.

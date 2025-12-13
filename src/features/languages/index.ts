@@ -15,4 +15,8 @@ export function getLanguage(id: string): Language {
     return language
 }
 
+export function getAllLanguages(): Array<{ id: string; language: Language }> {
+    return Object.entries(languageIdToLanguageMap).map(([id, language]) => ({ id, language }))
+}
+
 export const DEFAULT_LANGUAGE_ID = 'sino-korean'

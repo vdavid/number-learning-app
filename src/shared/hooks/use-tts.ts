@@ -1,6 +1,10 @@
 import { getLanguage } from '@features/languages'
 import { useCallback, useEffect, useRef } from 'react'
 
+import { createDebugLogger } from '../utils'
+
+const log = createDebugLogger('app:tts')
+
 // Test mode detection
 const isTestMode = import.meta.env.MODE === 'test'
 
@@ -159,6 +163,8 @@ const MOCK_AUDIO_DURATION = 100
  * In test mode, simulates playback without actual audio.
  */
 function playAudio(url: string, onEnd?: () => void): Promise<HTMLAudioElement | null> {
+    log('Playing audio: %s', url)
+
     // Log the audio play
     logAudioPlay(url, 'audio-file')
 

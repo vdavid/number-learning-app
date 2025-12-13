@@ -101,6 +101,23 @@ Three Zustand stores in `src/shared/stores/`:
 2. **session-store** — current game state, queue (in-memory)
 3. **settings-store** — user preferences (persisted)
 
+## Logging
+
+Use `logger` instead of `console.*`:
+
+```ts
+import { createDebugLogger, logger } from '@/shared/utils/logger'
+
+logger.info('User started session') // Always logs with [INFO] prefix
+logger.debug('Card state:', card) // Only logs when debug mode is enabled
+logger.warn('Deprecated API used')
+logger.error('Failed to load audio')
+const log = createDebugLogger('app:tts')
+log('Playing audio for %d', number) // Namespaced logs for debug mode only
+```
+
+Debug logs are enabled in dev mode.
+
 ## Adding a language
 
 See `docs/adding-a-language.md`. Summary:

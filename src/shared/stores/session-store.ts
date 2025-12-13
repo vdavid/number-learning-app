@@ -104,8 +104,8 @@ interface SessionState {
     getProgress: () => number
 }
 
-const SESSION_TIME_LIMIT_MS = 10 * 60 * 1000 // 10 minutes
-const EASY_THRESHOLD_MS = 2000 // 2 seconds for "easy" rating
+const sessionTimeLimitMs = 10 * 60 * 1000 // 10 minutes
+const easyThresholdMs = 2000 // 2 seconds for "easy" rating
 
 export const useSessionStore = create<SessionState>((set, get) => ({
     isActive: false,
@@ -194,7 +194,7 @@ export const useSessionStore = create<SessionState>((set, get) => ({
         if (!cardStartTime) return 'good'
 
         const responseTime = Date.now() - cardStartTime.getTime()
-        return responseTime < EASY_THRESHOLD_MS ? 'easy' : 'good'
+        return responseTime < easyThresholdMs ? 'easy' : 'good'
     },
 
     setIsListening: (listening: boolean) => {
@@ -208,7 +208,7 @@ export const useSessionStore = create<SessionState>((set, get) => ({
     isTimeLimitReached: () => {
         const { startTime } = get()
         if (!startTime) return false
-        return Date.now() - startTime.getTime() >= SESSION_TIME_LIMIT_MS
+        return Date.now() - startTime.getTime() >= sessionTimeLimitMs
     },
 
     getRemainingCount: () => {

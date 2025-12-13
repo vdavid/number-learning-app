@@ -19,9 +19,9 @@ import type { CurriculumManifest, NumberEntry, StageManifest } from '../../types
 import { numberToRomanized } from './romanizer.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
-const PROJECT_ROOT = path.resolve(__dirname, '../../..')
-const OUTPUT_DIR = path.join(PROJECT_ROOT, 'public/audio/sino-korean')
-const OUTPUT_FILE = path.join(OUTPUT_DIR, 'manifest.json')
+const projectRoot = path.resolve(__dirname, '../../..')
+const outputDirectory = path.join(projectRoot, 'public/audio/sino-korean')
+const outputFilePath = path.join(outputDirectory, 'manifest.json')
 
 /**
  * Seeded random number generator for deterministic sparse ranges.
@@ -63,10 +63,7 @@ function range(start: number, end: number): number[] {
 
 /** Convert a number array to NumberEntry array with romanization */
 function toNumberEntries(numbers: number[]): NumberEntry[] {
-    return numbers.map((value) => ({
-        value,
-        romanization: numberToRomanized(value),
-    }))
+    return numbers.map((value) => ({ value }))
 }
 
 /**
@@ -165,15 +162,15 @@ function main() {
     const manifest = generateCurriculum()
 
     // Ensure output directory exists
-    fs.mkdirSync(OUTPUT_DIR, { recursive: true })
+    fs.mkdirSync(outputDirectory, { recursive: true })
 
     // Write manifest
-    fs.writeFileSync(OUTPUT_FILE, JSON.stringify(manifest, null, 4))
+    fs.writeFileSync(outputFilePath, JSON.stringify(manifest, null, 4))
 
     // Summary
     const totalNumbers = manifest.stages.reduce((sum, stage) => sum + stage.numbers.length, 0)
     console.log(`✅ Generated curriculum with ${manifest.stages.length} stages and ${totalNumbers} numbers`)
-    console.log(`📁 Saved to: ${OUTPUT_FILE}\n`)
+    console.log(`📁 Saved to: ${outputFilePath}\n`)
 
     // Stage breakdown
     console.log('Stage breakdown:')

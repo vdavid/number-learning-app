@@ -13,7 +13,7 @@ interface KeypadKey {
 }
 
 // Pre-generate keys with stable IDs
-const KEYPAD_KEYS: KeypadKey[] = [
+const keypadKeys: KeypadKey[] = [
     { id: 'key-1', value: '1', isEmpty: false },
     { id: 'key-2', value: '2', isEmpty: false },
     { id: 'key-3', value: '3', isEmpty: false },
@@ -45,7 +45,7 @@ export function Keypad({ onKeyPress, onBackspace, disabled }: KeypadProps) {
 
     return (
         <div className='grid grid-cols-3 gap-3 w-full max-w-xs mx-auto'>
-            {KEYPAD_KEYS.map((keyData) => {
+            {keypadKeys.map((keyData) => {
                 if (keyData.isEmpty) {
                     return <div key={keyData.id} className='aspect-square' />
                 }

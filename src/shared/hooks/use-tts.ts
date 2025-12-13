@@ -105,16 +105,16 @@ async function loadManifest(languageId: string): Promise<AudioManifest | null> {
     }
 }
 
-/** Try multiple audio formats in order of preference. */
-const AUDIO_FORMATS = ['mp3', 'opus'] as const
-
 /**
  * Build potential audio URLs for a number.
  */
 function buildAudioUrls(languageId: string, num: number, voices: { id: string }[]): string[] {
+    /** Try multiple audio formats in order of preference. */
+    const audioFormats = ['mp3', 'opus'] as const
+
     const urls: string[] = []
     for (const voice of voices) {
-        for (const format of AUDIO_FORMATS) {
+        for (const format of audioFormats) {
             urls.push(`/audio/${languageId}/${num}-${voice.id}.${format}`)
         }
     }
@@ -156,7 +156,7 @@ function pickRandom<T>(items: T[]): T {
 }
 
 /** Simulated audio duration in test mode (ms) */
-const MOCK_AUDIO_DURATION = 100
+const mockAudioDurationMs = 100
 
 /**
  * Play an audio file, returns a promise that resolves when playback starts.
@@ -173,7 +173,7 @@ function playAudio(url: string, onEnd?: () => void): Promise<HTMLAudioElement | 
         return new Promise((resolve) => {
             setTimeout(() => {
                 onEnd?.()
-            }, MOCK_AUDIO_DURATION)
+            }, mockAudioDurationMs)
             resolve(null) // No actual audio element in test mode
         })
     }
@@ -243,7 +243,7 @@ export function useTTS({ languageId, onEnd }: UseTTSOptions) {
             if (isTestMode) {
                 setTimeout(() => {
                     onEndRef.current?.()
-                }, MOCK_AUDIO_DURATION)
+                }, mockAudioDurationMs)
                 return
             }
 

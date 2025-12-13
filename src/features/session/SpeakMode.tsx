@@ -6,8 +6,8 @@ import { ArrowRight, SkipForward, Volume2 } from 'lucide-react'
 import { motion } from 'motion/react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 
-const SILENCE_TIMEOUT = 1500 // ms of silence before checking answer
-const TTS_DELAY = 1500 // ms to wait for TTS to finish before restarting recognition
+const silenceTimeoutMs = 1500 // ms of silence before checking answer
+const ttsDelayMs = 1500 // ms to wait for TTS to finish before restarting recognition
 
 /**
  * Speak mode: Number shown, user speaks it.
@@ -44,7 +44,7 @@ export function SpeakMode() {
         setTimeout(() => {
             sttRef.current?.start()
             setIsListening(true)
-        }, TTS_DELAY)
+        }, ttsDelayMs)
     }, [card, speakNumber, setIsListening])
 
     const handleResult = useCallback(
@@ -75,7 +75,7 @@ export function SpeakMode() {
                     setResult('incorrect')
                     reviewCard(card.id, 'again')
                     playAndRestartRecognition()
-                }, SILENCE_TIMEOUT)
+                }, silenceTimeoutMs)
             }
         },
         [card, result, language, setTranscript, setResult, reviewCard, calculateRating, playAndRestartRecognition],
@@ -142,7 +142,7 @@ export function SpeakMode() {
         setTimeout(() => {
             start()
             setIsListening(true)
-        }, TTS_DELAY)
+        }, ttsDelayMs)
     }, [card, speakNumber, stop, start, setIsListening])
 
     const handleNext = useCallback(() => {

@@ -34,9 +34,9 @@ import { audioFileExists, createClient, generateAudio } from '../lib/elevenlabs.
 import { numberToSinoKorean } from './number-to-words.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
-const PROJECT_ROOT = path.resolve(__dirname, '../../..')
-const AUDIO_DIR = path.join(PROJECT_ROOT, 'public/audio/sino-korean')
-const MANIFEST_FILE = path.join(AUDIO_DIR, 'manifest.json')
+const projectRoot = path.resolve(__dirname, '../../..')
+const audioDirectory = path.join(projectRoot, 'public/audio/sino-korean')
+const manifestFilePath = path.join(audioDirectory, 'manifest.json')
 
 type GenerateOptions = {
     voiceFilter?: string
@@ -78,15 +78,15 @@ function parseArgs(): GenerateOptions {
 }
 
 function loadManifest(): CurriculumManifest {
-    if (!fs.existsSync(MANIFEST_FILE)) {
-        throw new Error(`Manifest not found at ${MANIFEST_FILE}. Run the curriculum generator first.`)
+    if (!fs.existsSync(manifestFilePath)) {
+        throw new Error(`Manifest not found at ${manifestFilePath}. Run the curriculum generator first.`)
     }
-    const content = fs.readFileSync(MANIFEST_FILE, 'utf-8')
+    const content = fs.readFileSync(manifestFilePath, 'utf-8')
     return JSON.parse(content) as CurriculumManifest
 }
 
 function getOutputPath(num: number, voiceId: string, format: 'mp3' | 'opus'): string {
-    return path.join(AUDIO_DIR, `${num}-${voiceId}.${format}`)
+    return path.join(audioDirectory, `${num}-${voiceId}.${format}`)
 }
 
 async function main() {
@@ -121,7 +121,7 @@ async function main() {
 
     const numbers = [...numbersSet].sort((a, b) => a - b)
     console.log(`🔢 Numbers to generate: ${numbers.length}`)
-    console.log(`📁 Output directory: ${AUDIO_DIR}\n`)
+    console.log(`📁 Output directory: ${audioDirectory}\n`)
 
     if (numbers.length === 0) {
         console.log('No numbers to generate. Check your filters.')

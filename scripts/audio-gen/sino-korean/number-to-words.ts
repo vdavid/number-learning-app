@@ -2,7 +2,7 @@
  * Convert numbers to Sino-Korean words for TTS.
  */
 
-const HANGUL_DIGITS: string[] = ['영', '일', '이', '삼', '사', '오', '육', '칠', '팔', '구']
+const hangulDigits: string[] = ['영', '일', '이', '삼', '사', '오', '육', '칠', '팔', '구']
 
 /**
  * Convert a number to Sino-Korean words.
@@ -32,27 +32,27 @@ export function numberToSinoKorean(num: number): string {
     // Handle 천 (thousand)
     if (remaining >= 1000) {
         const cheon = Math.floor(remaining / 1000)
-        result += (cheon === 1 ? '' : HANGUL_DIGITS[cheon]) + '천'
+        result += (cheon === 1 ? '' : hangulDigits[cheon]) + '천'
         remaining %= 1000
     }
 
     // Handle 백 (hundred)
     if (remaining >= 100) {
         const baek = Math.floor(remaining / 100)
-        result += (baek === 1 ? '' : HANGUL_DIGITS[baek]) + '백'
+        result += (baek === 1 ? '' : hangulDigits[baek]) + '백'
         remaining %= 100
     }
 
     // Handle 십 (ten)
     if (remaining >= 10) {
         const sip = Math.floor(remaining / 10)
-        result += (sip === 1 ? '' : HANGUL_DIGITS[sip]) + '십'
+        result += (sip === 1 ? '' : hangulDigits[sip]) + '십'
         remaining %= 10
     }
 
     // Handle units
     if (remaining > 0) {
-        result += HANGUL_DIGITS[remaining]
+        result += hangulDigits[remaining]
     }
 
     return result || '영'

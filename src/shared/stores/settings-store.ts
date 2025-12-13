@@ -1,4 +1,4 @@
-import { DEFAULT_LANGUAGE_ID } from '@features/languages'
+import { defaultLanguageID } from '@features/languages'
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
@@ -22,7 +22,7 @@ interface SettingsState {
 export const useSettingsStore = create<SettingsState>()(
     persist(
         (set) => ({
-            languageId: DEFAULT_LANGUAGE_ID,
+            languageId: defaultLanguageID,
             quietMode: false,
 
             setLanguage: (languageId: string) => set({ languageId }),

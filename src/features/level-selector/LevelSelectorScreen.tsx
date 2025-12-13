@@ -7,9 +7,9 @@ import { useNavigate } from 'react-router-dom'
 
 import { LevelNodePair } from './LevelNode'
 
-const MAX_NEW_CARDS_PER_SESSION = 10
-
 export function LevelSelectorScreen() {
+    const maxNewCardsPerSession = 10
+
     const navigate = useNavigate()
 
     const { languageId, quietMode, toggleQuietMode, setLanguage } = useSettingsStore()
@@ -28,7 +28,7 @@ export function LevelSelectorScreen() {
     // Handle "Learn" button - start a session with due cards + new cards
     const handleLearn = useCallback(() => {
         const dueCards = getAllDueCards(languageId, quietMode)
-        const newCards = getNewCards(languageId, quietMode, MAX_NEW_CARDS_PER_SESSION)
+        const newCards = getNewCards(languageId, quietMode, maxNewCardsPerSession)
 
         const sessionCards = [...dueCards, ...newCards]
 
@@ -43,7 +43,7 @@ export function LevelSelectorScreen() {
 
     // Get counts for the learn button
     const dueCards = getAllDueCards(languageId, quietMode)
-    const newCards = getNewCards(languageId, quietMode, MAX_NEW_CARDS_PER_SESSION)
+    const newCards = getNewCards(languageId, quietMode, maxNewCardsPerSession)
     const totalCards = dueCards.length + newCards.length
 
     return (

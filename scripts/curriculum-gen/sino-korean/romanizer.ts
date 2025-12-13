@@ -3,7 +3,7 @@
  * Converts numbers to their romanized Korean pronunciation.
  */
 
-const ROMANIZED_DIGITS: string[] = ['yeong', 'il', 'i', 'sam', 'sa', 'o', 'yuk', 'chil', 'pal', 'gu']
+const romanizedDigits: string[] = ['yeong', 'il', 'i', 'sam', 'sa', 'o', 'yuk', 'chil', 'pal', 'gu']
 
 interface PlaceValue {
     divisor: number
@@ -11,7 +11,7 @@ interface PlaceValue {
     useRecursive: boolean
 }
 
-const PLACE_VALUES: PlaceValue[] = [
+const placeValues: PlaceValue[] = [
     { divisor: 100000000, suffix: 'eok', useRecursive: true },
     { divisor: 10000, suffix: 'man', useRecursive: true },
     { divisor: 1000, suffix: 'cheon', useRecursive: false },
@@ -21,7 +21,7 @@ const PLACE_VALUES: PlaceValue[] = [
 
 function getPlacePrefix(value: number, useRecursive: boolean, recursiveFn: (n: number) => string): string {
     if (value === 1) return ''
-    return useRecursive ? recursiveFn(value) : ROMANIZED_DIGITS[value]
+    return useRecursive ? recursiveFn(value) : romanizedDigits[value]
 }
 
 /**
@@ -35,7 +35,7 @@ export function numberToRomanized(num: number): string {
     const parts: string[] = []
     let remaining = num
 
-    for (const { divisor, suffix, useRecursive } of PLACE_VALUES) {
+    for (const { divisor, suffix, useRecursive } of placeValues) {
         if (remaining >= divisor) {
             const value = Math.floor(remaining / divisor)
             const prefix = getPlacePrefix(value, useRecursive, numberToRomanized)
@@ -46,7 +46,7 @@ export function numberToRomanized(num: number): string {
 
     // Handle units
     if (remaining > 0) {
-        parts.push(ROMANIZED_DIGITS[remaining])
+        parts.push(romanizedDigits[remaining])
     }
 
     // Join and clean up dashes

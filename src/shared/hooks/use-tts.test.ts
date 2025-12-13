@@ -3,15 +3,15 @@ import { describe, expect, it } from 'vitest'
 // These are pure functions extracted from use-tts.ts for testing
 // Since they're module-private, we test the logic by re-implementing them here
 
-const AUDIO_FORMATS = ['mp3', 'opus'] as const
-
 /**
  * Build potential audio URLs for a number.
  */
 function buildAudioUrls(languageId: string, num: number, voices: { id: string }[]): string[] {
+    const audioFormats = ['mp3', 'opus'] as const
+
     const urls: string[] = []
     for (const voice of voices) {
-        for (const format of AUDIO_FORMATS) {
+        for (const format of audioFormats) {
             urls.push(`/audio/${languageId}/${num}-${voice.id}.${format}`)
         }
     }

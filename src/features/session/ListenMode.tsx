@@ -5,12 +5,12 @@ import { ArrowRight, Volume2 } from 'lucide-react'
 import { motion } from 'motion/react'
 import { useCallback, useEffect, useRef } from 'react'
 
-const WRONG_ANSWER_DELAY = 500 // ms before marking wrong
-
 /**
  * Listen mode: Audio plays, user types the number.
  */
 export function ListenMode() {
+    const wrongAnswerDelayMs = 500 // ms before marking wrong
+
     const languageId = useSettingsStore((s) => s.languageId)
     const { input, setInput, result, setResult, getCurrentCard, nextCard, calculateRating } = useSessionStore()
     const reviewCard = useProgressStore((s) => s.reviewCard)
@@ -62,7 +62,7 @@ export function ListenMode() {
                     // Show correct answer and replay audio
                     speakNumber(card.number)
                     // No auto-advance - user clicks Next
-                }, WRONG_ANSWER_DELAY)
+                }, wrongAnswerDelayMs)
             }
         } else {
             // Clear timeout if user is still typing

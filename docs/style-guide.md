@@ -51,10 +51,11 @@ meaningful extra details on what the commit does.
 ## Comments
 
 Only add JSDoc that actually adds info.
+
 - DO NOT use JSDoc for stuff like `Gets the name` for a function called `getName` :D
 - DO NOT use JSDoc for redundant param and return val descriptions, or anything that TypeScript already defines.
-- USE JSDoc to mark caveats, tricky/unusual solutions, or formatting like "YYYY-MM-DD" for a date string or
-  "must end with a slash" for a path argument.
+- USE JSDoc to mark caveats, tricky/unusual solutions, or formatting like "YYYY-MM-DD" for a date string or "must end
+  with a slash" for a path argument.
 - Before adding JSDoc, consider using a more descriptive name for the function/param/variable.
 
 ## TypeScript

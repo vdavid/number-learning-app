@@ -47,12 +47,14 @@ docs/                   # Architecture, style guide, how-tos
 ## Code style (enforced by Prettier + ESLint + knip)
 
 **Prettier**:
+
 - Single quotes, no semicolons
 - 4-space indent
 - Trailing commas everywhere
 - 120 char line width
 
 **ESLint (strict TypeScript)**:
+
 - **No `any`** — use `unknown` or proper types
 - **No unused variables** — remove or prefix with `_`
 - **No floating promises** — always `await` or `.catch()`
@@ -62,6 +64,7 @@ docs/                   # Architecture, style guide, how-tos
 - **Complexity max 15** — split large functions
 
 **knip**:
+
 - **No unused files and exports** — all exported items must be imported somewhere
 
 ## Code conventions
@@ -76,6 +79,7 @@ docs/                   # Architecture, style guide, how-tos
 ## JSDoc philosophy
 
 Only add JSDoc that provides value:
+
 - ❌ Don't document `getName` with "Gets the name"
 - ❌ Don't repeat TypeScript types in `@param`/`@returns`
 - ✅ Document caveats, formats (`YYYY-MM-DD`), constraints (`must end with /`)
@@ -92,6 +96,7 @@ Only add JSDoc that provides value:
 ## State management
 
 Three Zustand stores in `src/shared/stores/`:
+
 1. **progress-store** — FSRS card data, stage unlocking (persisted)
 2. **session-store** — current game state, queue (in-memory)
 3. **settings-store** — user preferences (persisted)
@@ -99,6 +104,7 @@ Three Zustand stores in `src/shared/stores/`:
 ## Adding a language
 
 See `docs/adding-a-language.md`. Summary:
+
 1. Create `src/features/languages/{lang}/` with curriculum, normalizer, index
 2. Register in `src/features/languages/index.ts`
 3. Add audio files to `public/audio/{lang}/`

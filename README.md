@@ -23,9 +23,8 @@ Currently supports **Sino-Korean** numbers. The architecture supports adding mor
 
 ### Sino-Korean
 
-The Sino-Korean number system.
-Used for counting money, phone numbers, addresses, dates, and more.
-Follows Chinese-derived number words: 일, 이, 삼...
+The Sino-Korean number system. Used for counting money, phone numbers, addresses, dates, and more. Follows
+Chinese-derived number words: 일, 이, 삼...
 
 ## Contributing
 

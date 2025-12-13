@@ -19,16 +19,16 @@ fork the repo, make your changes, and submit a PR. This doc is here to help you 
 
 ## Scripts
 
-| Command           | Description                         |
-| ----------------- | ----------------------------------- |
-| `pnpm dev`        | Start development server            |
-| `pnpm build`      | Build for production                |
-| `pnpm preview`    | Preview production build            |
-| `pnpm test`       | Run tests                           |
-| `pnpm format`     | Format code with Prettier           |
-| `pnpm format:check` | Check Prettier formatting         |
-| `pnpm knip`       | Check for unused files and exports  |
-| `pnpm lint`       | Run ESLint                          |
+| Command             | Description                        |
+| ------------------- | ---------------------------------- |
+| `pnpm dev`          | Start development server           |
+| `pnpm build`        | Build for production               |
+| `pnpm preview`      | Preview production build           |
+| `pnpm test`         | Run tests                          |
+| `pnpm format`       | Format code with Prettier          |
+| `pnpm format:check` | Check Prettier formatting          |
+| `pnpm knip`         | Check for unused files and exports |
+| `pnpm lint`         | Run ESLint                         |
 
 ## Tech stack
 

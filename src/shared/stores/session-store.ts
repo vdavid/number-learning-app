@@ -5,6 +5,37 @@ import type { CardState, ResponseRating } from '../types'
 /** Result after answering - null means still attempting */
 export type AttemptResult = 'correct' | 'incorrect' | null
 
+/**
+ * Seeded PRNG for deterministic shuffling in tests.
+ * Uses a simple LCG (Linear Congruential Generator).
+ */
+let shuffleSeed: number | null = null
+
+/** Set the shuffle seed for deterministic ordering (null = use Math.random) */
+export function setShuffleSeed(seed: number | null): void {
+    shuffleSeed = seed
+}
+
+/** Seeded random number generator */
+function seededRandom(): number {
+    if (shuffleSeed === null) {
+        return Math.random()
+    }
+    // LCG parameters (same as glibc)
+    shuffleSeed = (shuffleSeed * 1103515245 + 12345) & 0x7fffffff
+    return shuffleSeed / 0x7fffffff
+}
+
+/** Fisher-Yates shuffle with seeded random */
+function shuffleArray<T>(array: T[]): T[] {
+    const result = [...array]
+    for (let i = result.length - 1; i > 0; i--) {
+        const j = Math.floor(seededRandom() * (i + 1))
+        ;[result[i], result[j]] = [result[j], result[i]]
+    }
+    return result
+}
+
 interface SessionState {
     /** Whether a session is active */
     isActive: boolean
@@ -88,8 +119,8 @@ export const useSessionStore = create<SessionState>((set, get) => ({
     transcript: '',
 
     startSession: (cards: CardState[]) => {
-        // Shuffle the queue for variety
-        const shuffled = [...cards].sort(() => Math.random() - 0.5)
+        // Shuffle the queue for variety (uses seeded random if seed is set)
+        const shuffled = shuffleArray(cards)
         const now = new Date()
 
         set({

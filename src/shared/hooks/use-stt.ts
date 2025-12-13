@@ -1,6 +1,41 @@
 import { getLanguage } from '@features/languages'
 import { useCallback, useEffect, useRef, useState } from 'react'
 
+// Test mode detection
+const isTestMode = import.meta.env.MODE === 'test'
+
+// Mock STT interface for E2E testing
+interface MockSTTController {
+    injectTranscript: (text: string, isFinal: boolean) => void
+    _listeners: Set<(text: string, isFinal: boolean) => void>
+    _addListener: (callback: (text: string, isFinal: boolean) => void) => void
+    _removeListener: (callback: (text: string, isFinal: boolean) => void) => void
+}
+
+declare global {
+    interface Window {
+        __mockSTT?: MockSTTController
+    }
+}
+
+// Initialize mock controller in test mode
+if (isTestMode && typeof window !== 'undefined') {
+    window.__mockSTT = {
+        _listeners: new Set(),
+        injectTranscript: (text: string, isFinal: boolean) => {
+            window.__mockSTT?._listeners.forEach((listener) => {
+                listener(text, isFinal)
+            })
+        },
+        _addListener: (callback) => {
+            window.__mockSTT?._listeners.add(callback)
+        },
+        _removeListener: (callback) => {
+            window.__mockSTT?._listeners.delete(callback)
+        },
+    }
+}
+
 // Web Speech API type definitions
 interface SpeechRecognitionResult {
     readonly isFinal: boolean
@@ -78,6 +113,7 @@ interface STTResult {
 /**
  * Hook for speech-to-text functionality.
  * Uses the Web Speech API with continuous recognition.
+ * In test mode, uses a mock that can be controlled via window.__mockSTT.
  */
 export function useSTT({ languageId, onResult, onError, onEnd, continuous = true }: UseSTTOptions): STTResult {
     const [isListening, setIsListening] = useState(false)
@@ -86,7 +122,8 @@ export function useSTT({ languageId, onResult, onError, onEnd, continuous = true
     const language = getLanguage(languageId)
 
     // Check support once at initialization
-    const isSupported = isSpeechRecognitionSupported()
+    // In test mode, we're always "supported" via mock
+    const isSupported = isTestMode || isSpeechRecognitionSupported()
 
     // Refs for callbacks to avoid re-initializing effect
     const onResultRef = useRef(onResult)
@@ -99,8 +136,24 @@ export function useSTT({ languageId, onResult, onError, onEnd, continuous = true
         onEndRef.current = onEnd
     }, [onResult, onError, onEnd])
 
-    // Initialize recognition on mount
+    // Test mode: Listen for mock transcript injections
     useEffect(() => {
+        if (!isTestMode) return
+
+        const handleMockResult = (text: string, isFinal: boolean) => {
+            onResultRef.current?.(text, isFinal)
+        }
+
+        window.__mockSTT?._addListener(handleMockResult)
+        return () => {
+            window.__mockSTT?._removeListener(handleMockResult)
+        }
+    }, [])
+
+    // Initialize recognition on mount (real mode only)
+    useEffect(() => {
+        if (isTestMode) return
+
         const speechWindow = window as SpeechWindow
         const SpeechRecognitionAPI = speechWindow.SpeechRecognition || speechWindow.webkitSpeechRecognition
 
@@ -161,6 +214,12 @@ export function useSTT({ languageId, onResult, onError, onEnd, continuous = true
     }, [language.sttLanguageCode, continuous])
 
     const start = useCallback(() => {
+        if (isTestMode) {
+            setIsListening(true)
+            setError(null)
+            return
+        }
+
         if (!recognitionRef.current) return
 
         setError(null)
@@ -173,6 +232,12 @@ export function useSTT({ languageId, onResult, onError, onEnd, continuous = true
     }, [])
 
     const stop = useCallback(() => {
+        if (isTestMode) {
+            setIsListening(false)
+            onEndRef.current?.()
+            return
+        }
+
         if (!recognitionRef.current) return
 
         recognitionRef.current.stop()

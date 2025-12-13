@@ -1,11 +1,7 @@
-import { LevelSelectorScreen } from '@features/level-selector'
-import { SessionScreen } from '@features/session'
+import { LevelSelectorScreen } from '@features/level-selector/LevelSelectorScreen'
+import { SessionScreen } from '@features/session/SessionScreen'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
-/**
- * Main application component.
- * Sets up routing between the level selector and session screens.
- */
 export function App() {
     return (
         <BrowserRouter>

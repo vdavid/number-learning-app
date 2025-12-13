@@ -1,10 +1,7 @@
 import type { Curriculum, Stage } from '@shared/types'
 
-/**
- * Generate a sparse selection of numbers within a range.
- * Used for higher-number stages to avoid overwhelming card counts.
- */
-function sparseRange(min: number, max: number, count: number): number[] {
+/** Used for higher-number stages. */
+function generateRandomSparseRange(min: number, max: number, count: number): number[] {
     const numbers: number[] = []
     const step = Math.floor((max - min) / count)
 
@@ -19,31 +16,26 @@ function sparseRange(min: number, max: number, count: number): number[] {
     return [...new Set(numbers)].sort((a, b) => a - b)
 }
 
-/** Generate the full range of numbers */
-function range(start: number, end: number): number[] {
+function generateRange(start: number, end: number): number[] {
     return Array.from({ length: end - start + 1 }, (_, i) => start + i)
 }
 
-/**
- * Sino-Korean number curriculum.
- * Follows the spec's 9 stages, from basic digits to large numbers.
- */
 export function createSinoKoreanCurriculum(): Curriculum {
     const stages: Stage[] = [
         {
             name: 'Digits (1–10)',
             description: 'Learn the basic building blocks: 일, 이, 삼... 십',
-            numbers: range(1, 10),
+            numbers: generateRange(1, 10),
         },
         {
             name: 'Teens (11–20)',
             description: 'Combine ten with digits: 십일, 십이... 이십',
-            numbers: range(11, 20),
+            numbers: generateRange(11, 20),
         },
         {
             name: 'Twenties (21–30)',
             description: 'Practice the twenties: 이십일... 삼십',
-            numbers: range(21, 30),
+            numbers: generateRange(21, 30),
         },
         {
             name: 'Decades',
@@ -53,7 +45,7 @@ export function createSinoKoreanCurriculum(): Curriculum {
         {
             name: 'Two digits (31–99)',
             description: 'Master any two-digit number',
-            numbers: sparseRange(31, 99, 50),
+            numbers: generateRandomSparseRange(31, 99, 50),
         },
         {
             name: 'Hundreds',
@@ -63,12 +55,12 @@ export function createSinoKoreanCurriculum(): Curriculum {
         {
             name: 'Three digits (101–999)',
             description: 'Any number up to a thousand',
-            numbers: sparseRange(101, 999, 100),
+            numbers: generateRandomSparseRange(101, 999, 100),
         },
         {
             name: 'Thousands (1000–9999)',
             description: 'Numbers in the thousands',
-            numbers: sparseRange(1000, 9999, 100),
+            numbers: generateRandomSparseRange(1000, 9999, 100),
         },
         {
             name: 'Man (10000+)',
@@ -78,8 +70,8 @@ export function createSinoKoreanCurriculum(): Curriculum {
                 20000,
                 50000,
                 100000,
-                ...sparseRange(10001, 99999, 100),
-                ...sparseRange(100000, 999999, 50),
+                ...generateRandomSparseRange(10001, 99999, 100),
+                ...generateRandomSparseRange(100000, 999999, 50),
                 1000000,
                 10000000,
             ],

@@ -9,15 +9,11 @@ import { LevelNodePair } from './LevelNode'
 
 const MAX_NEW_CARDS_PER_SESSION = 10
 
-/**
- * Home screen with the level selector path.
- * Shows all stages with their decay states.
- */
 export function LevelSelectorScreen() {
     const navigate = useNavigate()
 
     const { languageId, quietMode, toggleQuietMode } = useSettingsStore()
-    const { initializeLanguage, getDueCards, getNewCards, getStageDecayState } = useProgressStore()
+    const { initializeLanguage, getAllDueCards, getNewCards, getStageDecayState } = useProgressStore()
     const { startSession } = useSessionStore()
 
     const language = getLanguage(languageId)
@@ -30,7 +26,7 @@ export function LevelSelectorScreen() {
 
     // Handle "Learn" button - start a session with due cards + new cards
     const handleLearn = useCallback(() => {
-        const dueCards = getDueCards(languageId, quietMode)
+        const dueCards = getAllDueCards(languageId, quietMode)
         const newCards = getNewCards(languageId, quietMode, MAX_NEW_CARDS_PER_SESSION)
 
         const sessionCards = [...dueCards, ...newCards]
@@ -42,10 +38,10 @@ export function LevelSelectorScreen() {
 
         startSession(sessionCards)
         void navigate('/session')
-    }, [languageId, quietMode, getDueCards, getNewCards, startSession, navigate])
+    }, [languageId, quietMode, getAllDueCards, getNewCards, startSession, navigate])
 
     // Get counts for the learn button
-    const dueCards = getDueCards(languageId, quietMode)
+    const dueCards = getAllDueCards(languageId, quietMode)
     const newCards = getNewCards(languageId, quietMode, MAX_NEW_CARDS_PER_SESSION)
     const totalCards = dueCards.length + newCards.length
 

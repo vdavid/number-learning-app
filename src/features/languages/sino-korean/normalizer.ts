@@ -6,37 +6,10 @@
  * - Mixed: "5십4" or "오십4"
  */
 
-/** Sino-Korean digit mappings */
-const DIGIT_MAP: Record<string, number> = {
-    영: 0,
-    공: 0, // Alternative for zero
-    일: 1,
-    이: 2,
-    삼: 3,
-    사: 4,
-    오: 5,
-    육: 6,
-    칠: 7,
-    팔: 8,
-    구: 9,
-}
+const digitToHangulMap: string[] = ['영', '일', '이', '삼', '사', '오', '육', '칠', '팔', '구']
 
-/** Reverse mapping: digit to Hangul */
-const HANGUL_DIGITS: string[] = ['영', '일', '이', '삼', '사', '오', '육', '칠', '팔', '구']
-
-/** Multiplier mappings */
-const MULTIPLIER_MAP: Record<string, number> = {
-    십: 10,
-    백: 100,
-    천: 1000,
-    만: 10000,
-    억: 100000000,
-}
-
-/**
- * Convert a number to Sino-Korean words.
- * Examples: 54 → "오십사", 123 → "백이십삼"
- */
+// 54 → "오십사"
+// 123 → "백이십삼"
 export function numberToSinoKorean(num: number): string {
     if (num === 0) return '영'
     if (num < 0) return '마이너스 ' + numberToSinoKorean(-num)
@@ -61,37 +34,33 @@ export function numberToSinoKorean(num: number): string {
     // Handle 천 (thousand)
     if (remaining >= 1000) {
         const cheon = Math.floor(remaining / 1000)
-        result += (cheon === 1 ? '' : HANGUL_DIGITS[cheon]) + '천'
+        result += (cheon === 1 ? '' : digitToHangulMap[cheon]) + '천'
         remaining %= 1000
     }
 
     // Handle 백 (hundred)
     if (remaining >= 100) {
         const baek = Math.floor(remaining / 100)
-        result += (baek === 1 ? '' : HANGUL_DIGITS[baek]) + '백'
+        result += (baek === 1 ? '' : digitToHangulMap[baek]) + '백'
         remaining %= 100
     }
 
     // Handle 십 (ten)
     if (remaining >= 10) {
         const sip = Math.floor(remaining / 10)
-        result += (sip === 1 ? '' : HANGUL_DIGITS[sip]) + '십'
+        result += (sip === 1 ? '' : digitToHangulMap[sip]) + '십'
         remaining %= 10
     }
 
     // Handle units
     if (remaining > 0) {
-        result += HANGUL_DIGITS[remaining]
+        result += digitToHangulMap[remaining]
     }
 
     return result || '영'
 }
 
-/**
- * Parse a potentially mixed Korean/digit string to a number.
- * Handles STT quirks like "5십4" or "오십4".
- */
-const ROMANIZED_DIGITS: string[] = ['yeong', 'il', 'i', 'sam', 'sa', 'o', 'yuk', 'chil', 'pal', 'gu']
+const digitToRomanizedMap: string[] = ['yeong', 'il', 'i', 'sam', 'sa', 'o', 'yuk', 'chil', 'pal', 'gu']
 
 interface RomanizedPlaceValue {
     divisor: number
@@ -99,23 +68,12 @@ interface RomanizedPlaceValue {
     useRecursive: boolean
 }
 
-const ROMANIZED_PLACE_VALUES: RomanizedPlaceValue[] = [
-    { divisor: 100000000, suffix: 'eok', useRecursive: true },
-    { divisor: 10000, suffix: 'man', useRecursive: true },
-    { divisor: 1000, suffix: 'cheon', useRecursive: false },
-    { divisor: 100, suffix: 'baek', useRecursive: false },
-    { divisor: 10, suffix: 'sip', useRecursive: false },
-]
-
 function getRomanizedPrefix(value: number, useRecursive: boolean, recursiveFn: (n: number) => string): string {
     if (value === 1) return ''
-    return useRecursive ? recursiveFn(value) : ROMANIZED_DIGITS[value]
+    return useRecursive ? recursiveFn(value) : digitToRomanizedMap[value]
 }
 
-/**
- * Convert a number to its Romanized Sino-Korean representation.
- * Examples: 54 → "o-sip-sa"
- */
+// 54 → "o-sip-sa"
 export function numberToSinoKoreanRomanized(num: number): string {
     if (num === 0) return 'yeong'
     // Negative numbers not strictly needed for this app but good for completeness
@@ -124,7 +82,15 @@ export function numberToSinoKoreanRomanized(num: number): string {
     const parts: string[] = []
     let remaining = num
 
-    for (const { divisor, suffix, useRecursive } of ROMANIZED_PLACE_VALUES) {
+    const romanizedPlaceValues: RomanizedPlaceValue[] = [
+        { divisor: 100000000, suffix: 'eok', useRecursive: true },
+        { divisor: 10000, suffix: 'man', useRecursive: true },
+        { divisor: 1000, suffix: 'cheon', useRecursive: false },
+        { divisor: 100, suffix: 'baek', useRecursive: false },
+        { divisor: 10, suffix: 'sip', useRecursive: false },
+    ]
+
+    for (const { divisor, suffix, useRecursive } of romanizedPlaceValues) {
         if (remaining >= divisor) {
             const value = Math.floor(remaining / divisor)
             const prefix = getRomanizedPrefix(value, useRecursive, numberToSinoKoreanRomanized)
@@ -135,7 +101,7 @@ export function numberToSinoKoreanRomanized(num: number): string {
 
     // Handle units
     if (remaining > 0) {
-        parts.push(ROMANIZED_DIGITS[remaining])
+        parts.push(digitToRomanizedMap[remaining])
     }
 
     // Join and clean up dashes
@@ -177,31 +143,52 @@ export function parseSinoKorean(text: string): number | null {
     return parseHangulNumber(normalized)
 }
 
-/**
- * Parse a pure Hangul number string.
- * Uses a state machine to handle multipliers correctly.
- */
-function parseHangulNumber(text: string): number | null {
-    if (!text) return null
+function parseHangulNumber(hangulNumberString: string): number | null {
+    if (!hangulNumberString) return null
 
     let total = 0
     let current = 0
     let manBuffer = 0 // Buffer for values before 만
 
     let i = 0
-    while (i < text.length) {
-        const char = text[i]
+
+    // noinspection NonAsciiCharacters
+    const hangulNumberStringToDigitMap: Record<string, number> = {
+        영: 0,
+        공: 0, // Alternative for zero
+        일: 1,
+        이: 2,
+        삼: 3,
+        사: 4,
+        오: 5,
+        육: 6,
+        칠: 7,
+        팔: 8,
+        구: 9,
+    }
+
+    // noinspection NonAsciiCharacters
+    const hangulNumberStringToMultiplierMap: Record<string, number> = {
+        십: 10,
+        백: 100,
+        천: 1000,
+        만: 10000,
+        억: 100000000,
+    }
+
+    while (i < hangulNumberString.length) {
+        const char = hangulNumberString[i]
 
         // Check for digits
-        if (char in DIGIT_MAP) {
-            current = DIGIT_MAP[char]
+        if (char in hangulNumberStringToDigitMap) {
+            current = hangulNumberStringToDigitMap[char]
             i++
             continue
         }
 
         // Check for multipliers
-        if (char in MULTIPLIER_MAP) {
-            const multiplier = MULTIPLIER_MAP[char]
+        if (char in hangulNumberStringToMultiplierMap) {
+            const multiplier = hangulNumberStringToMultiplierMap[char]
 
             if (multiplier === 10000) {
                 // 만 - ten thousand
@@ -234,27 +221,4 @@ function parseHangulNumber(text: string): number | null {
     total += manBuffer
 
     return total || null
-}
-
-/**
- * Get acceptable variations for a number.
- * Includes the numeric string and common spoken forms.
- */
-export function getSinoKoreanVariations(num: number): string[] {
-    const variations: string[] = [
-        String(num),
-        numberToSinoKorean(num),
-        // Add variations with spaces
-        numberToSinoKorean(num).replace(/만/g, '만 ').trim(),
-    ]
-
-    // For round numbers, add abbreviated forms
-    if (num % 10 === 0 && num >= 10) {
-        const tens = num / 10
-        if (tens <= 9) {
-            variations.push(HANGUL_DIGITS[tens] + '십')
-        }
-    }
-
-    return [...new Set(variations)]
 }

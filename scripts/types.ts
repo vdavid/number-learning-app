@@ -8,8 +8,6 @@
 export type NumberEntry = {
     /** The numeric value (e.g., 1, 54, 1000) */
     value: number
-    /** Romanized pronunciation (e.g., "il", "o-sip-sa") */
-    romanization: string
     /** Optional help text for tricky numbers */
     helpText?: string
 }

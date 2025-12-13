@@ -1,12 +1,4 @@
 {
-    "_generated": {
-        "isGenerated": true,
-        "generator": "scripts/curriculum-gen/sino-korean/generate.ts",
-        "timestamp": "2025-12-12T16:56:21.806Z"
-    },
-    "language": "sino-korean",
-    "displayName": "Sino-Korean",
-    "languageCode": "ko-KR",
     "voices": [
         {
             "id": "charlie",

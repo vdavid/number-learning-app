@@ -116,8 +116,8 @@ export function LevelSelectorScreen() {
                         <div className='relative flex flex-col items-center gap-8'>
                             {stages.map((stage, index) => (
                                 <LevelNodePair
-                                    key={stage.name}
-                                    stageName={stage.name}
+                                    key={stage.displayName}
+                                    stageName={stage.displayName}
                                     stageIndex={index}
                                     listenState={getStageDecayState(languageId, index, 'listen')}
                                     speakState={getStageDecayState(languageId, index, 'speak')}

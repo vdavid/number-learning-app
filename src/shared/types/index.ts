@@ -28,20 +28,34 @@ export interface CardState {
 /** Visual decay state for UI representation */
 export type DecayState = 'locked' | 'new' | 'gold' | 'faded' | 'rusty'
 
-/** A stage in the curriculum */
-export interface Stage {
-    /** Display name for the stage */
-    name: string
-    /** Description of what this stage covers */
-    description: string
-    /** Numbers included in this stage */
-    numbers: number[]
-}
-
-/** Curriculum structure for a language */
 export interface Curriculum {
     /** All stages in learning order */
     stages: Stage[]
+    /** Available voices for this language */
+    voices: VoiceConfig[]
+}
+
+export interface Stage {
+    displayName: string
+    description: string // What this stage covers
+    numbers: NumberEntry[]
+}
+
+export interface NumberEntry {
+    value: number
+    helpText?: string // Optional help text for tricky numbers
+}
+
+/**
+ * Voice configuration for audio generation.
+ */
+export type VoiceConfig = {
+    /** Voice identifier (used in filename) */
+    id: string
+    /** ElevenLabs voice ID */
+    elevenLabsVoiceId: string
+    /** Display name */
+    name: string
 }
 
 /** Rating for FSRS based on response time */

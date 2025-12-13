@@ -2,9 +2,9 @@
 /**
  * Sino-Korean curriculum generator.
  *
- * Generates a deterministic curriculum manifest with all numbers
+ * Generates a deterministic curriculum JSON with all numbers
  * pre-selected and romanized. The output is saved to:
- * public/audio/sino-korean/manifest.json
+ * public/sino-korean/curriculum.json
  *
  * Usage:
  *   npx tsx scripts/curriculum-gen/sino-korean/generate.ts
@@ -14,12 +14,34 @@ import * as fs from 'node:fs'
 import * as path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-import type { CurriculumManifest, NumberEntry, StageManifest } from '../../types.js'
+import type { Curriculum, NumberEntry, Stage } from '../../../src/shared/types/index.js'
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url))
-const projectRoot = path.resolve(__dirname, '../../..')
-const outputDirectory = path.join(projectRoot, 'public/audio/sino-korean')
-const outputFilePath = path.join(outputDirectory, 'manifest.json')
+/** Main entry point */
+function main() {
+    console.log('🎓 Generating Sino-Korean curriculum...\n')
+
+    // Generate curriculum curriculum
+    const curriculum = generateCurriculum()
+
+    // Write curriculum
+    const __dirname = path.dirname(fileURLToPath(import.meta.url))
+    const projectRoot = path.resolve(__dirname, '../../..')
+    const outputDirectory = path.join(projectRoot, 'public/sino-korean')
+    const outputFilePath = path.join(outputDirectory, 'curriculum.json')
+    fs.mkdirSync(outputDirectory, { recursive: true })
+    fs.writeFileSync(outputFilePath, JSON.stringify(curriculum, null, 4))
+
+    // Summary
+    const totalNumbers = curriculum.stages.reduce((sum, stage) => sum + stage.numbers.length, 0)
+    console.log(`✅ Generated curriculum with ${curriculum.stages.length} stages and ${totalNumbers} numbers`)
+    console.log(`📁 Saved to: ${outputFilePath}\n`)
+
+    // Stage breakdown
+    console.log('Stage breakdown:')
+    for (const stage of curriculum.stages) {
+        console.log(`  - ${stage.displayName}: ${stage.numbers.length} numbers`)
+    }
+}
 
 /**
  * Seeded random number generator for deterministic sparse ranges.
@@ -68,52 +90,52 @@ function toNumberEntries(numbers: number[]): NumberEntry[] {
  * Generate the Sino-Korean curriculum.
  * Uses a fixed seed (42) for deterministic output.
  */
-function generateCurriculum(): CurriculumManifest {
+function generateCurriculum(): Curriculum {
     const random = createSeededRandom(42)
 
-    const stages: StageManifest[] = [
+    const stages: Stage[] = [
         {
-            name: 'Digits (1–10)',
+            displayName: 'Digits (1–10)',
             description: 'Learn the basic building blocks: 일, 이, 삼... 십',
             numbers: toNumberEntries(range(1, 10)),
         },
         {
-            name: 'Teens (11–20)',
+            displayName: 'Teens (11–20)',
             description: 'Combine ten with digits: 십일, 십이... 이십',
             numbers: toNumberEntries(range(11, 20)),
         },
         {
-            name: 'Twenties (21–30)',
+            displayName: 'Twenties (21–30)',
             description: 'Practice the twenties: 이십일... 삼십',
             numbers: toNumberEntries(range(21, 30)),
         },
         {
-            name: 'Decades',
+            displayName: 'Decades',
             description: 'Round numbers: 십, 이십, 삼십... 백',
             numbers: toNumberEntries([10, 20, 30, 40, 50, 60, 70, 80, 90, 100]),
         },
         {
-            name: 'Two digits (31–99)',
+            displayName: 'Two digits (31–99)',
             description: 'Master any two-digit number',
             numbers: toNumberEntries(sparseRange(31, 99, 50, random)),
         },
         {
-            name: 'Hundreds',
+            displayName: 'Hundreds',
             description: 'Round hundreds: 백, 이백... 천',
             numbers: toNumberEntries([100, 200, 300, 400, 500, 600, 700, 800, 900, 1000]),
         },
         {
-            name: 'Three digits (101–999)',
+            displayName: 'Three digits (101–999)',
             description: 'Any number up to a thousand',
             numbers: toNumberEntries(sparseRange(101, 999, 100, random)),
         },
         {
-            name: 'Thousands (1000–9999)',
+            displayName: 'Thousands (1000–9999)',
             description: 'Numbers in the thousands',
             numbers: toNumberEntries(sparseRange(1000, 9999, 100, random)),
         },
         {
-            name: 'Man (10000+)',
+            displayName: 'Man (10000+)',
             description: 'The Korean "ten thousand" unit: 만',
             numbers: toNumberEntries([
                 10000,
@@ -129,14 +151,6 @@ function generateCurriculum(): CurriculumManifest {
     ]
 
     return {
-        _generated: {
-            isGenerated: true,
-            generator: 'scripts/curriculum-gen/sino-korean/generate.ts',
-            timestamp: new Date().toISOString(),
-        },
-        language: 'sino-korean',
-        displayName: 'Sino-Korean',
-        languageCode: 'ko-KR',
         voices: [
             {
                 id: 'charlie',
@@ -150,30 +164,6 @@ function generateCurriculum(): CurriculumManifest {
             },
         ],
         stages,
-    }
-}
-
-/** Main entry point */
-function main() {
-    console.log('🎓 Generating Sino-Korean curriculum...\n')
-
-    const manifest = generateCurriculum()
-
-    // Ensure output directory exists
-    fs.mkdirSync(outputDirectory, { recursive: true })
-
-    // Write manifest
-    fs.writeFileSync(outputFilePath, JSON.stringify(manifest, null, 4))
-
-    // Summary
-    const totalNumbers = manifest.stages.reduce((sum, stage) => sum + stage.numbers.length, 0)
-    console.log(`✅ Generated curriculum with ${manifest.stages.length} stages and ${totalNumbers} numbers`)
-    console.log(`📁 Saved to: ${outputFilePath}\n`)
-
-    // Stage breakdown
-    console.log('Stage breakdown:')
-    for (const stage of manifest.stages) {
-        console.log(`  - ${stage.name}: ${stage.numbers.length} numbers`)
     }
 }
 

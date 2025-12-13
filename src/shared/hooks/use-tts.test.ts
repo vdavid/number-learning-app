@@ -12,7 +12,7 @@ function buildAudioUrls(languageId: string, num: number, voices: { id: string }[
     const urls: string[] = []
     for (const voice of voices) {
         for (const format of audioFormats) {
-            urls.push(`/audio/${languageId}/${num}-${voice.id}.${format}`)
+            urls.push(`/${languageId}/audio/${num}-${voice.id}.${format}`)
         }
     }
     return urls
@@ -39,10 +39,10 @@ describe('TTS pure functions', () => {
             const urls = buildAudioUrls('sino-korean', 5, voices)
 
             expect(urls).toEqual([
-                '/audio/sino-korean/5-charlie.mp3',
-                '/audio/sino-korean/5-charlie.opus',
-                '/audio/sino-korean/5-matilda.mp3',
-                '/audio/sino-korean/5-matilda.opus',
+                '/sino-korean/audio/5-charlie.mp3',
+                '/sino-korean/audio/5-charlie.opus',
+                '/sino-korean/audio/5-matilda.mp3',
+                '/sino-korean/audio/5-matilda.opus',
             ])
         })
 
@@ -54,19 +54,19 @@ describe('TTS pure functions', () => {
         it('should handle single voice', () => {
             const urls = buildAudioUrls('sino-korean', 10, [{ id: 'charlie' }])
 
-            expect(urls).toEqual(['/audio/sino-korean/10-charlie.mp3', '/audio/sino-korean/10-charlie.opus'])
+            expect(urls).toEqual(['/sino-korean/audio/10-charlie.mp3', '/sino-korean/audio/10-charlie.opus'])
         })
 
         it('should include correct language in path', () => {
             const urls = buildAudioUrls('native-korean', 1, [{ id: 'voice1' }])
 
-            expect(urls[0]).toContain('/audio/native-korean/')
+            expect(urls[0]).toContain('/native-korean/audio/')
         })
 
         it('should handle multi-digit numbers', () => {
             const urls = buildAudioUrls('sino-korean', 12345, [{ id: 'v' }])
 
-            expect(urls).toContain('/audio/sino-korean/12345-v.mp3')
+            expect(urls).toContain('/sino-korean/audio/12345-v.mp3')
         })
     })
 

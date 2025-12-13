@@ -273,7 +273,7 @@ export const useProgressStore = create<ProgressState>()(
                     for (const mode of modes) {
                         if (newCards.length >= limit) break
 
-                        const card = state.getOrCreateCard(languageId, number, mode, unlockedStage)
+                        const card = state.getOrCreateCard(languageId, number.value, mode, unlockedStage)
                         if (card.fsrs.state === 'new' && card.fsrs.reps === 0) {
                             newCards.push(card)
                         }
@@ -301,7 +301,7 @@ export const useProgressStore = create<ProgressState>()(
                 let allReviewed = true
                 for (const number of currentStage.numbers) {
                     for (const mode of ['listen', 'speak'] as CardMode[]) {
-                        const cardId = makeCardId(languageId, number, mode)
+                        const cardId = makeCardId(languageId, number.value, mode)
                         const card = state.allCardsByID[cardId]
                         if (!card || card.fsrs.reps === 0) {
                             allReviewed = false
@@ -335,7 +335,13 @@ export const useProgressStore = create<ProgressState>()(
                 if (!stage) return 'locked'
 
                 const isFrontierStage = stageIndex === unlockedStage
-                return calculateStageWorstDecay(state.allCardsByID, languageId, stage.numbers, mode, isFrontierStage)
+                return calculateStageWorstDecay(
+                    state.allCardsByID,
+                    languageId,
+                    stage.numbers.map((num) => num.value),
+                    mode,
+                    isFrontierStage,
+                )
             },
 
             resetProgress: () => {

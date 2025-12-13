@@ -1,6 +1,41 @@
 import { getLanguage } from '@features/languages'
 import { useCallback, useEffect, useRef } from 'react'
 
+// Test mode detection
+const isTestMode = import.meta.env.MODE === 'test'
+
+// Audio play log for E2E testing
+interface AudioPlayLogEntry {
+    url: string
+    timestamp: number
+    type: 'audio-file' | 'web-speech'
+}
+
+declare global {
+    interface Window {
+        __audioPlayLog?: AudioPlayLogEntry[]
+    }
+}
+
+// Initialize audio play log in test mode
+if (isTestMode && typeof window !== 'undefined') {
+    window.__audioPlayLog = []
+}
+
+/** Log an audio play event (test mode only) */
+function logAudioPlay(url: string, type: 'audio-file' | 'web-speech'): void {
+    if (isTestMode && window.__audioPlayLog) {
+        window.__audioPlayLog.push({ url, timestamp: Date.now(), type })
+    }
+}
+
+/** Clear the audio play log (for E2E test setup) */
+export function clearAudioPlayLog(): void {
+    if (typeof window !== 'undefined') {
+        window.__audioPlayLog = []
+    }
+}
+
 type UseTTSOptions = {
     languageId: string
     onEnd?: () => void
@@ -116,10 +151,28 @@ function pickRandom<T>(items: T[]): T {
     return items[Math.floor(Math.random() * items.length)]
 }
 
+/** Simulated audio duration in test mode (ms) */
+const MOCK_AUDIO_DURATION = 100
+
 /**
  * Play an audio file, returns a promise that resolves when playback starts.
+ * In test mode, simulates playback without actual audio.
  */
-function playAudio(url: string, onEnd?: () => void): Promise<HTMLAudioElement> {
+function playAudio(url: string, onEnd?: () => void): Promise<HTMLAudioElement | null> {
+    // Log the audio play
+    logAudioPlay(url, 'audio-file')
+
+    // In test mode, simulate playback without actual audio
+    if (isTestMode) {
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                onEnd?.()
+            }, MOCK_AUDIO_DURATION)
+            resolve(null) // No actual audio element in test mode
+        })
+    }
+
+    // Real audio playback
     return new Promise((resolve, reject) => {
         const audio = new Audio(url)
 
@@ -173,9 +226,21 @@ export function useTTS({ languageId, onEnd }: UseTTSOptions) {
 
     /**
      * Speak text using Web Speech API (fallback).
+     * In test mode, simulates speech without actual audio.
      */
     const speakWithWebSpeech = useCallback(
         (text: string) => {
+            // Log the speech event
+            logAudioPlay(`web-speech:${text}`, 'web-speech')
+
+            // In test mode, simulate speech without actual audio
+            if (isTestMode) {
+                setTimeout(() => {
+                    onEndRef.current?.()
+                }, MOCK_AUDIO_DURATION)
+                return
+            }
+
             window.speechSynthesis.cancel()
 
             const utterance = new SpeechSynthesisUtterance(text)

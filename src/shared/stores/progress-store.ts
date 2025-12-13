@@ -5,8 +5,11 @@ import { persist } from 'zustand/middleware'
 
 import type { CardMode, CardState, DecayState, ResponseRating } from '../types'
 
+/** Disable fuzz in test mode for deterministic scheduling */
+const isTestMode = import.meta.env.MODE === 'test'
+
 /** Parameters for FSRS algorithm */
-const fsrsParams = generatorParameters({ enable_fuzz: true })
+const fsrsParams = generatorParameters({ enable_fuzz: !isTestMode })
 const scheduler = fsrs(fsrsParams)
 
 /** Generate a unique card ID */

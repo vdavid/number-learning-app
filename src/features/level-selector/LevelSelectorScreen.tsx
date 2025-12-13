@@ -1,4 +1,4 @@
-import { getLanguage } from '@features/languages'
+import { getAllLanguages, getLanguage } from '@features/languages'
 import { Button } from '@shared/components'
 import { useProgressStore, useSettingsStore, useSessionStore } from '@shared/stores'
 import { motion } from 'motion/react'
@@ -12,12 +12,13 @@ const MAX_NEW_CARDS_PER_SESSION = 10
 export function LevelSelectorScreen() {
     const navigate = useNavigate()
 
-    const { languageId, quietMode, toggleQuietMode } = useSettingsStore()
+    const { languageId, quietMode, toggleQuietMode, setLanguage } = useSettingsStore()
     const { initializeLanguage, getAllDueCards, getNewCards, getStageDecayState } = useProgressStore()
     const { startSession } = useSessionStore()
 
     const language = getLanguage(languageId)
     const stages = language.curriculum.stages
+    const allLanguages = getAllLanguages()
 
     // Initialize language on mount
     useEffect(() => {
@@ -53,7 +54,23 @@ export function LevelSelectorScreen() {
                     <div className='flex items-center gap-3'>
                         <span className='text-2xl'>{language.flag}</span>
                         <div>
-                            <h1 className='text-lg font-semibold text-[var(--text-primary)]'>{language.name}</h1>
+                            {import.meta.env.DEV ? (
+                                <select
+                                    value={languageId}
+                                    onChange={(e) => {
+                                        setLanguage(e.target.value)
+                                    }}
+                                    className='text-lg font-semibold text-[var(--text-primary)] bg-transparent border-none cursor-pointer focus:outline-none'
+                                >
+                                    {allLanguages.map(({ id, language: lang }) => (
+                                        <option key={id} value={id}>
+                                            {lang.flag} {lang.name}
+                                        </option>
+                                    ))}
+                                </select>
+                            ) : (
+                                <h1 className='text-lg font-semibold text-[var(--text-primary)]'>{language.name}</h1>
+                            )}
                             <p className='text-xs text-[var(--text-muted)]'>Number trainer</p>
                         </div>
                     </div>

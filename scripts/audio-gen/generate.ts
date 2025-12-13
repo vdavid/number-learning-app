@@ -1,43 +1,41 @@
 #!/usr/bin/env npx tsx
 /**
- * Sino-Korean audio generator.
+ * Multi-language audio generator.
  *
  * Generates audio files for numbers in the curriculum using ElevenLabs.
  * Reads from the curriculum JSON and generates opus files for each number/voice combo.
  *
  * Usage:
- *   # Generate all audio for all voices
- *   npx tsx scripts/audio-gen/sino-korean/generate.ts
+ *   # Generate all audio for all voices for sino-korean
+ *   npx tsx scripts/audio-gen/generate.ts --language sino-korean --voice all
  *
  *   # Generate for specific voice only
- *   npx tsx scripts/audio-gen/sino-korean/generate.ts --voice charlie
+ *   npx tsx scripts/audio-gen/generate.ts --language sino-korean --voice charlie
  *
  *   # Generate for specific stage only (0-indexed)
- *   npx tsx scripts/audio-gen/sino-korean/generate.ts --stage 0
+ *   npx tsx scripts/audio-gen/generate.ts --language sino-korean --voice charlie --stage 0
  *
- *   # Generate for specific number range
- *   npx tsx scripts/audio-gen/sino-korean/generate.ts --min 1 --max 10
+ *   # Generate for a specific number range
+ *   npx tsx scripts/audio-gen/generate.ts --language sino-korean --voice charlie --min 1 --max 10
  *
- *   # Skip existing files (default: true)
- *   npx tsx scripts/audio-gen/sino-korean/generate.ts --skip-existing
+ *   # To overwrite existing files
+ *   npx tsx scripts/audio-gen/generate.ts --language sino-korean --voice all --overwrite
  */
-import * as path from 'node:path'
-import { fileURLToPath } from 'node:url'
 
 import 'dotenv/config'
-import { loadCurriculum } from '@scripts/index.js'
 
-import { VoiceConfig } from '../../../src/shared/types/index.js'
-import { audioFileExists, createClient, generateAudio } from '../lib/elevenlabs.js'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 
-import { numberToSinoKorean } from './number-to-words.js'
+import { audioFileExists, createClient, generateAudio } from '@scripts/audio-gen/elevenlabs.js'
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url))
-const projectRoot = path.resolve(__dirname, '../../..')
-const outputDirectory = path.join(projectRoot, 'public/sino-korean')
+import { loadCurriculum } from '../../src/features/languages/curriculum.js'
+import { getAllLanguageIds, getLanguage } from '../../src/features/languages/index.js'
+import { VoiceConfig } from '../../src/shared/types/index.js'
 
 type GenerateOptions = {
-    voiceFilter?: string
+    languageId: string
+    voiceFilter: string // A voice name, e.g., "charlie" or "matilda", OR "all" to generate for all voices.
     stageFilter?: number
     minNumber?: number
     maxNumber?: number
@@ -45,15 +43,28 @@ type GenerateOptions = {
     format?: 'mp3' | 'opus'
 }
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
+const projectRoot = path.resolve(__dirname, '../../..')
+
+async function main() {
+    const options = parseArgs()
+
+    await generateAudioFiles(options)
+}
+
 function parseArgs(): GenerateOptions {
     const args = process.argv.slice(2)
     const options: GenerateOptions = {
         skipExisting: true,
+        languageId: '',
+        voiceFilter: 'all',
     }
 
     for (let i = 0; i < args.length; i++) {
         const arg = args[i]
-        if (arg === '--voice' && args[i + 1]) {
+        if (arg === '--language' && args[i + 1]) {
+            options.languageId = args[++i]
+        } else if (arg === '--voice' && args[i + 1]) {
             options.voiceFilter = args[++i]
         } else if (arg === '--stage' && args[i + 1]) {
             options.stageFilter = parseInt(args[++i], 10)
@@ -61,10 +72,8 @@ function parseArgs(): GenerateOptions {
             options.minNumber = parseInt(args[++i], 10)
         } else if (arg === '--max' && args[i + 1]) {
             options.maxNumber = parseInt(args[++i], 10)
-        } else if (arg === '--no-skip-existing') {
+        } else if (arg === '--overwrite') {
             options.skipExisting = false
-        } else if (arg === '--skip-existing') {
-            options.skipExisting = true
         } else if (arg === '--format' && args[i + 1]) {
             options.format = args[++i] as 'mp3' | 'opus'
         } else {
@@ -72,16 +81,30 @@ function parseArgs(): GenerateOptions {
         }
     }
 
+    if (!options.languageId) {
+        throw new Error(
+            `Please use the --language argument. The possible languages are: ${getAllLanguageIds().join(',')}`,
+        )
+    }
+
+    if (!options.voiceFilter) {
+        throw new Error('Please use the --voice argument. Use "all" to generate for all voices.')
+    }
+
+    if (!['mp3', 'opus'].includes(options.format ?? 'mp3')) {
+        throw new Error(`Invalid format: ${options.format}. Must be either "mp3" or "opus".`)
+    }
+
     return options
 }
 
-function getOutputPath(num: number, voiceId: string, format: 'mp3' | 'opus'): string {
+function getOutputPath(languageId: string, num: number, voiceId: string, format: 'mp3' | 'opus'): string {
+    const outputDirectory = path.join(projectRoot, `public/${languageId}`)
     return path.join(outputDirectory, `${num}-${voiceId}.${format}`)
 }
 
-async function main() {
-    const options = parseArgs()
-    const curriculum = loadCurriculum('sino-korean')
+export async function generateAudioFiles(options: GenerateOptions) {
+    const curriculum = loadCurriculum(options.languageId)
 
     console.log('🎙️  Sino-Korean Audio Generator\n')
 
@@ -111,7 +134,7 @@ async function main() {
 
     const numbers = [...numbersSet].sort((a, b) => a - b)
     console.log(`🔢 Numbers to generate: ${numbers.length}`)
-    console.log(`📁 Output directory: ${outputDirectory}\n`)
+    console.log(`📁 Output directory: ${path.join(projectRoot, `public/${options.languageId}`)}\n`)
 
     if (numbers.length === 0) {
         console.log('No numbers to generate. Check your filters.')
@@ -130,8 +153,8 @@ async function main() {
         console.log(`\n🎤 Generating audio for voice: ${voice.name}`)
 
         for (const num of numbers) {
-            const outputPath = getOutputPath(num, voice.id, options.format ?? 'mp3')
-            const word = numberToSinoKorean(num)
+            const outputPath = getOutputPath(options.languageId, num, voice.id, options.format ?? 'mp3')
+            const word = getLanguage(options.languageId).numberToWords(num)
 
             // Skip if exists and option is set
             if (options.skipExisting && audioFileExists(outputPath)) {

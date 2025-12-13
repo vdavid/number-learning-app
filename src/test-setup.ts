@@ -78,7 +78,7 @@ window.Audio = vi.fn().mockImplementation(() => ({
 })) as unknown as typeof Audio
 
 // Mock fetch for curriculum loading
-global.fetch = vi.fn(() =>
+globalThis.fetch = vi.fn(() =>
     Promise.resolve({
         ok: false,
         json: () => Promise.resolve({}),

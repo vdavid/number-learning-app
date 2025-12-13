@@ -4,7 +4,6 @@ import { useCallback, useEffect, useRef } from 'react'
 
 import { createDebugLogger } from '../utils'
 
-
 const log = createDebugLogger('app:tts')
 
 // Test mode detection

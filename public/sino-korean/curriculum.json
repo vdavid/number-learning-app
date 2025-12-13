@@ -13,7 +13,7 @@
     ],
     "stages": [
         {
-            "name": "Digits (1–10)",
+            "displayName": "Digits (1–10)",
             "description": "Learn the basic building blocks: 일, 이, 삼... 십",
             "numbers": [
                 { "value": 1 },
@@ -29,7 +29,7 @@
             ]
         },
         {
-            "name": "Teens (11–20)",
+            "displayName": "Teens (11–20)",
             "description": "Combine ten with digits: 십일, 십이... 이십",
             "numbers": [
                 { "value": 11 },
@@ -45,7 +45,7 @@
             ]
         },
         {
-            "name": "Twenties (21–30)",
+            "displayName": "Twenties (21–30)",
             "description": "Practice the twenties: 이십일... 삼십",
             "numbers": [
                 { "value": 21 },
@@ -61,7 +61,7 @@
             ]
         },
         {
-            "name": "Decades",
+            "displayName": "Decades",
             "description": "Round numbers: 십, 이십, 삼십... 백",
             "numbers": [
                 { "value": 10 },
@@ -77,7 +77,7 @@
             ]
         },
         {
-            "name": "Two digits (31–99)",
+            "displayName": "Two digits (31–99)",
             "description": "Master any two-digit number",
             "numbers": [
                 { "value": 31 },
@@ -133,7 +133,7 @@
             ]
         },
         {
-            "name": "Hundreds",
+            "displayName": "Hundreds",
             "description": "Round hundreds: 백, 이백... 천",
             "numbers": [
                 { "value": 100 },
@@ -149,7 +149,7 @@
             ]
         },
         {
-            "name": "Three digits (101–999)",
+            "displayName": "Three digits (101–999)",
             "description": "Any number up to a thousand",
             "numbers": [
                 { "value": 101 },
@@ -255,7 +255,7 @@
             ]
         },
         {
-            "name": "Thousands (1000–9999)",
+            "displayName": "Thousands (1000–9999)",
             "description": "Numbers in the thousands",
             "numbers": [
                 { "value": 1008 },
@@ -361,7 +361,7 @@
             ]
         },
         {
-            "name": "Man (10000+)",
+            "displayName": "Man (10000+)",
             "description": "The Korean \"ten thousand\" unit: 만",
             "numbers": [
                 { "value": 10000 },

@@ -1,8 +1,6 @@
-import { loadCurriculum } from '@features/languages'
+import type { Language } from '../types.js'
 
-import type { Language } from '../types'
-
-import { numberToSinoKorean, numberToSinoKoreanRomanized, parseSinoKorean } from './normalizer'
+import { numberToSinoKorean, numberToSinoKoreanRomanized, parseSinoKorean } from './normalizer.js'
 
 export const sinoKorean: Language = {
     id: 'sino-korean',

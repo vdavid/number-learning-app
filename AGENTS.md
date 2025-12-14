@@ -14,15 +14,9 @@ React 19, TypeScript 5.9, Zustand, Tailwind CSS 4, Vitest, pnpm
 ## Commands
 
 ```bash
+pnpm format && pnpm tsc --noEmit && pnpm knip && pnpm lint:fix && pnpm test --run && pnpm test:e2e # All-around helpful
 pnpm dev          # Start dev server
 pnpm build        # Production build
-pnpm test         # Run tests (watch mode)
-pnpm test --run   # Run tests once
-pnpm test:e2e     # Run E2E tests
-pnpm format:check # Check Prettier formatting
-pnpm knip         # Check for unused files and exports
-pnpm lint         # ESLint check
-pnpm lint:fix     # Auto-fix lint issues
 ```
 
 ## Directory structure
@@ -42,7 +36,6 @@ docs/                   # Architecture, style guide, how-tos
 - `docs/architecture.md` — Directory structure, state management, data flow
 - `docs/style-guide.md` — Writing style, code conventions, commit messages
 - `docs/adding-a-language.md` — How to add a new language module
-- `docs/llm-guidelines.md` — Prompts for generating curricula
 
 ## Code style (enforced by Prettier + ESLint + knip)
 

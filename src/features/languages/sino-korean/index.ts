@@ -1,3 +1,4 @@
+import { loadCurriculum } from '../curriculum.js'
 import type { Language } from '../types.js'
 
 import { numberToSinoKorean, numberToSinoKoreanRomanized, parseSinoKorean } from './normalizer.js'

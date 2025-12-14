@@ -2,7 +2,7 @@ import { getLanguage } from '@features/languages'
 import type { Curriculum } from '@shared/types'
 import { useCallback, useEffect, useRef } from 'react'
 
-import { createDebugLogger } from '../utils'
+import { createDebugLogger, logger } from '../utils'
 
 const log = createDebugLogger('app:tts')
 
@@ -63,29 +63,36 @@ const pendingAudioSelection = new Map<string, Promise<string | null>>()
  * Multiple calls for the same language will share the same promise.
  */
 async function loadCurriculum(languageId: string): Promise<Curriculum | null> {
-    // Return cached result if available
+    // Return the cached result if available
     if (languageIdToCurriculumCache.has(languageId)) {
-        return languageIdToCurriculumCache.get(languageId) ?? null
+        const cached = languageIdToCurriculumCache.get(languageId)
+        log('Curriculum cache hit for %s', languageId)
+        return cached ?? null
     }
 
-    // Return pending load if in progress
+    // Return the pending load if in progress
     const pending = pendingCurriculumLoads.get(languageId)
     if (pending) {
+        log('Curriculum load already in progress for %s', languageId)
         return pending
     }
 
     // Start new load
+    log('Loading curriculum for %s', languageId)
     const loadPromise = (async (): Promise<Curriculum | null> => {
         try {
             const response = await fetch(`/${languageId}/curriculum.json`)
             if (!response.ok) {
+                logger.warn('[WARN] Failed to load curriculum for %s: %d', languageId, response.status)
                 languageIdToCurriculumCache.set(languageId, null)
                 return null
             }
             const curriculum = (await response.json()) as Curriculum
+            logger.debug('Curriculum loaded for %s with %d stages', languageId, curriculum.stages.length)
             languageIdToCurriculumCache.set(languageId, curriculum)
             return curriculum
-        } catch {
+        } catch (error) {
+            logger.error('Error loading curriculum for %s: %O', languageId, error)
             languageIdToCurriculumCache.set(languageId, null)
             return null
         }
@@ -132,8 +139,15 @@ async function checkAudioExists(url: string): Promise<boolean> {
  * Find all existing audio files from a list of URLs.
  */
 async function findExistingAudioFiles(urls: string[]): Promise<string[]> {
+    log('Checking %d potential audio URLs', urls.length)
     const results = await Promise.all(urls.map(async (url) => ({ url, exists: await checkAudioExists(url) })))
-    return results.filter((r) => r.exists).map((r) => r.url)
+    const existing = results.filter((r) => r.exists).map((r) => r.url)
+    if (existing.length === 0) {
+        log('No audio files found among %d URLs', urls.length)
+    } else {
+        log('Found %d existing audio files', existing.length)
+    }
+    return existing
 }
 
 /**
@@ -165,8 +179,10 @@ function playAudio(url: string, onEnd?: () => void): Promise<HTMLAudioElement | 
 
     // In test mode, simulate playback without actual audio
     if (isTestMode) {
+        log('Test mode: simulating audio playback')
         return new Promise((resolve) => {
             setTimeout(() => {
+                log('Test audio simulation ended')
                 onEnd?.()
             }, mockAudioDurationMs)
             resolve(null) // No actual audio element in test mode
@@ -178,20 +194,26 @@ function playAudio(url: string, onEnd?: () => void): Promise<HTMLAudioElement | 
         const audio = new Audio(url)
 
         audio.onended = () => {
+            log('Audio playback ended: %s', url)
             onEnd?.()
         }
 
         audio.onerror = () => {
-            reject(new Error(`Failed to load audio: ${url}`))
+            const error = new Error(`Failed to load audio: ${url}`)
+            logger.warn('Audio error: %O', error)
+            reject(error)
         }
 
         audio
             .play()
             .then(() => {
+                logger.debug('Audio playback started: %s', url)
                 resolve(audio)
             })
             .catch((err: unknown) => {
-                reject(err instanceof Error ? err : new Error(String(err)))
+                const error = err instanceof Error ? err : new Error(String(err))
+                logger.warn('Audio play() failed: %O', error)
+                reject(error)
             })
     })
 }
@@ -231,6 +253,7 @@ export function useTTS({ languageId, onEnd }: UseTTSOptions) {
      */
     const speakWithWebSpeech = useCallback(
         (text: string) => {
+            log('Speaking with Web Speech API: %s', text)
             // Log the speech event
             logAudioPlay(`web-speech:${text}`, 'web-speech')
 
@@ -264,6 +287,7 @@ export function useTTS({ languageId, onEnd }: UseTTSOptions) {
      */
     const speak = useCallback(
         (text: string) => {
+            log('speak() called with text: %s', text)
             window.speechSynthesis.cancel()
             if (audioRef.current) {
                 audioRef.current.pause()
@@ -279,30 +303,43 @@ export function useTTS({ languageId, onEnd }: UseTTSOptions) {
      */
     const selectAudioUrl = useCallback(
         async (num: number): Promise<string | null> => {
+            log('selectAudioUrl() called for number %d', num)
             const cacheKey = getAudioCacheKey(languageId, num)
 
             // Check if we already have a chosen URL
             const cached = chosenAudioCache.get(cacheKey)
-            if (cached) return cached
+            if (cached) {
+                log('Audio URL cache hit for %d', num)
+                return cached
+            }
 
             // Check if selection is already in progress (prevent race condition)
             const pending = pendingAudioSelection.get(cacheKey)
-            if (pending) return pending
+            if (pending) {
+                log('Audio selection already in progress for %d', num)
+                return pending
+            }
 
             // Start new selection
             const selectionPromise = (async (): Promise<string | null> => {
+                log('Starting audio selection for number %d in language %s', num, languageId)
                 // Wait for the curriculum to load (this is fast if already cached)
                 const curriculum = await loadCurriculum(languageId)
-                if (!curriculum?.voices || curriculum.voices.length === 0) return null
+                if (!curriculum?.voices || curriculum.voices.length === 0) {
+                    logger.warn('No voices available in curriculum for %d', num)
+                    return null
+                }
 
                 const potentialUrls = buildAudioUrls(languageId, num, curriculum.voices)
                 const existingUrls = await findExistingAudioFiles(potentialUrls)
 
                 if (existingUrls.length > 0) {
                     const chosen = pickRandom(existingUrls)
+                    log('Selected audio URL for %d', num)
                     chosenAudioCache.set(cacheKey, chosen)
                     return chosen
                 }
+                log('No audio files found for %d, will use Web Speech fallback', num)
                 return null
             })()
 
@@ -322,6 +359,7 @@ export function useTTS({ languageId, onEnd }: UseTTSOptions) {
      */
     const speakNumberImpl = useCallback(
         async (num: number) => {
+            log('speakNumberImpl() called for %d', num)
             // Stop any ongoing speech/audio
             window.speechSynthesis.cancel()
             if (audioRef.current) {
@@ -335,15 +373,23 @@ export function useTTS({ languageId, onEnd }: UseTTSOptions) {
             // Try to play the chosen URL
             if (chosenUrl) {
                 try {
+                    log('Attempting to play audio file for %d', num)
                     audioRef.current = await playAudio(chosenUrl, onEndRef.current)
+                    logger.debug('Audio playback succeeded for %d', num)
                     return // Success!
-                } catch {
+                } catch (error) {
+                    logger.debug(
+                        `Audio playback failed for %d, falling back to Web Speech. The error was: %O`,
+                        num,
+                        error,
+                    )
                     // Audio failed, fall through to Web Speech
                 }
             }
 
             // Fallback to Web Speech API
             const words = language.numberToWords(num)
+            logger.debug('Using Web Speech fallback for %d', num)
             speakWithWebSpeech(words)
         },
         [selectAudioUrl, language, speakWithWebSpeech],
@@ -359,6 +405,7 @@ export function useTTS({ languageId, onEnd }: UseTTSOptions) {
      * STABLE IDENTITY - safe to use in useEffect dependencies.
      */
     const speakNumber = useCallback((num: number) => {
+        log('speakNumber() called for %d', num)
         void speakNumberImplRef.current(num)
     }, [])
 

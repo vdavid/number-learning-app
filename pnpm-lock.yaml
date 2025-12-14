@@ -7,9 +7,6 @@ settings:
 importers:
     .:
         dependencies:
-            debug:
-                specifier: ^4.4.3
-                version: 4.4.3
             lucide-react:
                 specifier: ^0.561.0
                 version: 0.561.0(react@19.2.3)
@@ -53,9 +50,6 @@ importers:
             '@testing-library/react':
                 specifier: ^16.3.0
                 version: 16.3.0(@testing-library/dom@10.4.1)(@types/react-dom@19.2.3(@types/react@19.2.7))(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-            '@types/debug':
-                specifier: ^4.1.12
-                version: 4.1.12
             '@types/node':
                 specifier: ^25.0.1
                 version: 25.0.1
@@ -2160,12 +2154,6 @@ packages:
                 integrity: sha512-Mw558oeA9fFbv65/y4mHtXDs9bPnFMZAL/jxdPFUpOHHIXX91mcgEHbS5Lahr+pwZFR8A7GQleRWeI6cGFC2UA==,
             }
 
-    '@types/debug@4.1.12':
-        resolution:
-            {
-                integrity: sha512-vIChWdVG3LG1SMxEvI/AK+FWJthlrqlTu7fbrlywTkkaONwk/UAGaULXRlf8vkzFBLVm0zkMdCquhL5aOjhXPQ==,
-            }
-
     '@types/deep-eql@4.0.2':
         resolution:
             {
@@ -2194,12 +2182,6 @@ packages:
         resolution:
             {
                 integrity: sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==,
-            }
-
-    '@types/ms@2.1.0':
-        resolution:
-            {
-                integrity: sha512-GsCCIZDE/p3i96vtEqx+7dBUGXrc7zeSK3wwPHIaRThS+9OhWIXRqzs4d6k1SVU8g91DrNRWxWUGhp5KXQb2VA==,
             }
 
     '@types/node@25.0.1':
@@ -7261,10 +7243,6 @@ snapshots:
             '@types/deep-eql': 4.0.2
             assertion-error: 2.0.1
 
-    '@types/debug@4.1.12':
-        dependencies:
-            '@types/ms': 2.1.0
-
     '@types/deep-eql@4.0.2': {}
 
     '@types/estree@0.0.39': {}
@@ -7274,8 +7252,6 @@ snapshots:
     '@types/json-schema@7.0.15': {}
 
     '@types/json5@0.0.29': {}
-
-    '@types/ms@2.1.0': {}
 
     '@types/node@25.0.1':
         dependencies:

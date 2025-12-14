@@ -27,11 +27,10 @@ import 'dotenv/config'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
+import { loadCurriculum } from '@features/languages/curriculum.js'
+import { getAllLanguageIds, getLanguage } from '@features/languages/index.js'
 import { audioFileExists, createClient, generateAudio } from '@scripts/audio-gen/elevenlabs.js'
-
-import { loadCurriculum } from '../../src/features/languages/curriculum.js'
-import { getAllLanguageIds, getLanguage } from '../../src/features/languages/index.js'
-import { VoiceConfig } from '../../src/shared/types/index.js'
+import { VoiceConfig } from '@shared/types/index.js'
 
 type GenerateOptions = {
     languageId: string
@@ -54,6 +53,12 @@ async function main() {
 
 function parseArgs(): GenerateOptions {
     const args = process.argv.slice(2)
+    const options = extractOptions(args)
+    validateOptions(options)
+    return options
+}
+
+function extractOptions(args: string[]): GenerateOptions {
     const options: GenerateOptions = {
         skipExisting: true,
         languageId: '',
@@ -62,25 +67,37 @@ function parseArgs(): GenerateOptions {
 
     for (let i = 0; i < args.length; i++) {
         const arg = args[i]
-        if (arg === '--language' && args[i + 1]) {
-            options.languageId = args[++i]
-        } else if (arg === '--voice' && args[i + 1]) {
-            options.voiceFilter = args[++i]
-        } else if (arg === '--stage' && args[i + 1]) {
-            options.stageFilter = parseInt(args[++i], 10)
-        } else if (arg === '--min' && args[i + 1]) {
-            options.minNumber = parseInt(args[++i], 10)
-        } else if (arg === '--max' && args[i + 1]) {
-            options.maxNumber = parseInt(args[++i], 10)
-        } else if (arg === '--overwrite') {
-            options.skipExisting = false
-        } else if (arg === '--format' && args[i + 1]) {
-            options.format = args[++i] as 'mp3' | 'opus'
-        } else {
-            throw new Error(`Unknown argument: ${arg}`)
+        switch (arg) {
+            case '--language':
+                if (args[i + 1]) options.languageId = args[++i]
+                break
+            case '--voice':
+                if (args[i + 1]) options.voiceFilter = args[++i]
+                break
+            case '--stage':
+                if (args[i + 1]) options.stageFilter = parseInt(args[++i], 10)
+                break
+            case '--min':
+                if (args[i + 1]) options.minNumber = parseInt(args[++i], 10)
+                break
+            case '--max':
+                if (args[i + 1]) options.maxNumber = parseInt(args[++i], 10)
+                break
+            case '--overwrite':
+                options.skipExisting = false
+                break
+            case '--format':
+                if (args[i + 1]) options.format = args[++i] as 'mp3' | 'opus'
+                break
+            default:
+                throw new Error(`Unknown argument: ${arg}`)
         }
     }
 
+    return options
+}
+
+function validateOptions(options: GenerateOptions): void {
     if (!options.languageId) {
         throw new Error(
             `Please use the --language argument. The possible languages are: ${getAllLanguageIds().join(',')}`,
@@ -94,8 +111,6 @@ function parseArgs(): GenerateOptions {
     if (!['mp3', 'opus'].includes(options.format ?? 'mp3')) {
         throw new Error(`Invalid format: ${options.format}. Must be either "mp3" or "opus".`)
     }
-
-    return options
 }
 
 function getOutputPath(languageId: string, num: number, voiceId: string, format: 'mp3' | 'opus'): string {
@@ -120,11 +135,11 @@ export async function generateAudioFiles(options: GenerateOptions) {
 
     // Collect all unique numbers to generate
     const numbersSet = new Set<number>()
-    curriculum.stages.forEach((stage, idx) => {
+    curriculum.stages.forEach((stage: (typeof curriculum.stages)[number], idx: number) => {
         if (options.stageFilter !== undefined && idx !== options.stageFilter) {
             return
         }
-        stage.numbers.forEach((entry) => {
+        stage.numbers.forEach((entry: (typeof stage.numbers)[number]) => {
             const num = entry.value
             if (options.minNumber !== undefined && num < options.minNumber) return
             if (options.maxNumber !== undefined && num > options.maxNumber) return

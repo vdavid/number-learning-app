@@ -4,7 +4,7 @@
  *
  * Generates a deterministic curriculum JSON with all numbers
  * pre-selected and romanized. The output is saved to:
- * public/sino-korean/curriculum.json
+ * src/features/languages/sino-korean/curriculum.json
  *
  * Usage:
  *   npx tsx scripts/curriculum-gen/sino-korean/generate.ts
@@ -14,7 +14,7 @@ import * as fs from 'node:fs'
 import * as path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-import type { Curriculum, NumberEntry, Stage } from '../../../src/shared/types/index.js'
+import type { Curriculum, NumberEntry, Stage } from '@shared/types/index.js'
 
 /** Main entry point */
 function main() {
@@ -26,7 +26,7 @@ function main() {
     // Write curriculum
     const __dirname = path.dirname(fileURLToPath(import.meta.url))
     const projectRoot = path.resolve(__dirname, '../../..')
-    const outputDirectory = path.join(projectRoot, 'public/sino-korean')
+    const outputDirectory = path.join(projectRoot, 'src/features/languages/sino-korean')
     const outputFilePath = path.join(outputDirectory, 'curriculum.json')
     fs.mkdirSync(outputDirectory, { recursive: true })
     fs.writeFileSync(outputFilePath, JSON.stringify(curriculum, null, 4))

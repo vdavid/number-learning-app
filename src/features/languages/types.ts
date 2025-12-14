@@ -1,4 +1,5 @@
-import type { Curriculum } from '@shared/types'
+// noinspection ES6PreferShortImport -- It doesn't work with a short import
+import type { Curriculum } from '../../shared/types/index.js'
 
 export interface Language {
     // A lowercase, kebab-case ID like 'sino-korean' or 'native-korean'

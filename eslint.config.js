@@ -137,4 +137,17 @@ export default [
             'no-console': 'off', // Scripts can use console
         },
     },
+    {
+        files: ['scripts/**/*.js'],
+        languageOptions: {
+            globals: {
+                ...globals.node,
+            },
+            ecmaVersion: 'latest',
+            sourceType: 'module',
+        },
+        rules: {
+            'no-console': 'off', // Scripts can use console
+        },
+    },
 ]

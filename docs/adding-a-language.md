@@ -26,7 +26,7 @@ For each new language, you'll need to:
 ### 2. Create the curriculum
 
 1. Create a generator at `scripts/curriculum-gen/{your-language}/generate.ts` that outputs a `Curriculum` typed JSON to
-   `public/{your-language}/curriculum.json`, also filling the `helpText` field where it makes sense.
+   `src/features/languages/{your-language}/curriculum.json`, also filling the `helpText` field where it makes sense.
     - Stages
         - The curriculum should normally be these 9 stages:
             1. **1–10** (Digits)

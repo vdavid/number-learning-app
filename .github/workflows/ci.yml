@@ -35,6 +35,9 @@ jobs:
             - name: Check Prettier formatting
               run: pnpm format:check
 
+            - name: TypeScript type check
+              run: pnpm tsc --noEmit
+
             - name: Check for unused files and exports (knip)
               run: pnpm knip
 

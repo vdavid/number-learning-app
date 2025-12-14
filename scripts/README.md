@@ -13,7 +13,7 @@ These generators are language-specific. They generate deterministic curriculum w
 
 Run `npx tsx scripts/curriculum-gen/{language-id}/generate.ts` to generate curriculum.
 
-Outputs will be at `public/{language-id}/curriculum.json`.
+Outputs will be at `src/features/languages/{language-id}/curriculum.json`.
 
 The scripts overwrite existing files.
 

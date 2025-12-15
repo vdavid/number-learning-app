@@ -1,10 +1,12 @@
 import { sinoKorean } from './sino-korean/index.js'
+import { swedish } from './swedish/index.js'
 import type { Language, LanguageRegistry } from './types.js'
 
 export type { Language, LanguageRegistry } from './types.js'
 
 const languageIdToLanguageMap: LanguageRegistry = {
     'sino-korean': sinoKorean,
+    swedish: swedish,
 }
 
 export const defaultLanguageID = 'sino-korean'

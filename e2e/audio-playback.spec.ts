@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test'
 
-import { clearAudioLog, getAudioLog, resetTestState, setShuffleSeed } from './test-utils'
+import { clearAudioLog, getAudioLog, resetTestState } from './test-utils'
 
 test.describe('Audio Playback', () => {
     test.beforeEach(async ({ page }) => {
@@ -11,9 +11,6 @@ test.describe('Audio Playback', () => {
     test('should play audio exactly once when card is shown in listen mode', async ({ page }) => {
         // Clear the audio log before starting
         await clearAudioLog(page)
-
-        // Set seed for deterministic order (listen mode first)
-        await setShuffleSeed(page, 0)
 
         // Start a session
         await page.getByRole('button', { name: /Start learning/i }).click()
@@ -36,7 +33,6 @@ test.describe('Audio Playback', () => {
 
     test('should play audio again after wrong answer', async ({ page }) => {
         await clearAudioLog(page)
-        await setShuffleSeed(page, 0)
 
         // Start a session
         await page.getByRole('button', { name: /Start learning/i }).click()
@@ -65,7 +61,6 @@ test.describe('Audio Playback', () => {
 
     test('should play audio when replay button is clicked', async ({ page }) => {
         await clearAudioLog(page)
-        await setShuffleSeed(page, 0)
 
         // Start a session
         await page.getByRole('button', { name: /Start learning/i }).click()
@@ -94,7 +89,6 @@ test.describe('Audio Playback', () => {
 
     test('should not play audio after correct answer until Next is clicked', async ({ page }) => {
         await clearAudioLog(page)
-        await setShuffleSeed(page, 0)
 
         // Start a session
         await page.getByRole('button', { name: /Start learning/i }).click()
@@ -154,7 +148,6 @@ test.describe('Audio Playback', () => {
 
     test('should log audio URL containing the language ID', async ({ page }) => {
         await clearAudioLog(page)
-        await setShuffleSeed(page, 0)
 
         // Start a session
         await page.getByRole('button', { name: /Start learning/i }).click()

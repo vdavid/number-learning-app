@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test'
 
-import { resetTestState, setShuffleSeed } from './test-utils'
+import { resetTestState } from './test-utils'
 
 test.describe('Wrong Answer Flow', () => {
     test.beforeEach(async ({ page }) => {
@@ -9,9 +9,6 @@ test.describe('Wrong Answer Flow', () => {
     })
 
     test('should show result after typing an answer', async ({ page }) => {
-        // Set seed right before starting session (seed 0 gives listen cards first)
-        await setShuffleSeed(page, 0)
-
         // Start a session
         await page.getByRole('button', { name: /Start learning/i }).click()
 
@@ -43,8 +40,6 @@ test.describe('Wrong Answer Flow', () => {
     })
 
     test('should allow advancing after answering', async ({ page }) => {
-        await setShuffleSeed(page, 0)
-
         await page.getByRole('button', { name: /Start learning/i }).click()
         await expect(page.getByText(/cards? remaining/i)).toBeVisible()
 
@@ -79,8 +74,6 @@ test.describe('Wrong Answer Flow', () => {
     })
 
     test('should replace keypad with Next button after evaluation', async ({ page }) => {
-        await setShuffleSeed(page, 0)
-
         await page.getByRole('button', { name: /Start learning/i }).click()
         await expect(page.getByText(/cards? remaining/i)).toBeVisible()
 
@@ -99,8 +92,6 @@ test.describe('Wrong Answer Flow', () => {
     })
 
     test('should complete multiple cards in sequence', async ({ page }) => {
-        await setShuffleSeed(page, 0)
-
         await page.getByRole('button', { name: /Start learning/i }).click()
         await expect(page.getByText(/cards? remaining/i)).toBeVisible()
 

@@ -1,12 +1,11 @@
 import { expect, test } from '@playwright/test'
 
-import { resetTestState, setShuffleSeed, waitForTestUtils } from './test-utils'
+import { resetTestState, waitForTestUtils } from './test-utils'
 
 test.describe('Quiet Mode', () => {
     test.beforeEach(async ({ page }) => {
         await page.goto('/')
         await resetTestState(page)
-        await setShuffleSeed(page, 0)
     })
 
     test('should toggle quiet mode on and off', async ({ page }) => {

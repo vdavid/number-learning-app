@@ -1,14 +1,11 @@
 import { expect, test } from '@playwright/test'
 
-import { injectTranscript, resetTestState, setShuffleSeed, waitForTestUtils } from './test-utils'
+import { injectTranscript, resetTestState, waitForTestUtils } from './test-utils'
 
 test.describe('Speak Mode - Happy Path', () => {
     test.beforeEach(async ({ page }) => {
         await page.goto('/')
         await resetTestState(page)
-        // Use seed that gives us speak cards first (experiment to find one)
-        // Seed 123 should give a different order than 42
-        await setShuffleSeed(page, 123)
     })
 
     test('should complete a speak exercise correctly with mocked STT', async ({ page }) => {
@@ -170,9 +167,6 @@ test.describe('Speak Mode - Deterministic Order', () => {
         await page.goto('/')
         await resetTestState(page)
 
-        // Set a specific seed
-        await setShuffleSeed(page, 0)
-
         // Start first session
         await page.getByRole('button', { name: /Start learning/i }).click()
         await expect(page.getByText(/cards? remaining/i)).toBeVisible()
@@ -195,7 +189,6 @@ test.describe('Speak Mode - Deterministic Order', () => {
 
         // Reset and use same seed
         await resetTestState(page)
-        await setShuffleSeed(page, 0)
 
         // Start second session
         await page.getByRole('button', { name: /Start learning/i }).click()

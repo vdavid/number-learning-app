@@ -6,20 +6,20 @@
  * Reads from the curriculum JSON and generates opus files for each number/voice combo.
  *
  * Usage:
- *   # Generate all audio for all voices for sino-korean
- *   npx tsx scripts/audio-gen/generate.ts --language sino-korean --voice all
+ *   # Generate all audio for all voices for Swedish
+ *   npx tsx scripts/audio-gen/generate.ts --language swedish --voice all
  *
  *   # Generate for specific voice only
- *   npx tsx scripts/audio-gen/generate.ts --language sino-korean --voice charlie
+ *   npx tsx scripts/audio-gen/generate.ts --language swedish --voice charlie
  *
  *   # Generate for specific stage only (0-indexed)
- *   npx tsx scripts/audio-gen/generate.ts --language sino-korean --voice charlie --stage 0
+ *   npx tsx scripts/audio-gen/generate.ts --language swedish --voice charlie --stage 0
  *
  *   # Generate for a specific number range
- *   npx tsx scripts/audio-gen/generate.ts --language sino-korean --voice charlie --min 1 --max 10
+ *   npx tsx scripts/audio-gen/generate.ts --language swedish --voice charlie --min 1 --max 10
  *
  *   # To overwrite existing files
- *   npx tsx scripts/audio-gen/generate.ts --language sino-korean --voice all --overwrite
+ *   npx tsx scripts/audio-gen/generate.ts --language swedish --voice all --overwrite
  */
 
 import 'dotenv/config'
@@ -121,7 +121,7 @@ function getOutputPath(languageId: string, num: number, voiceId: string, format:
 export async function generateAudioFiles(options: GenerateOptions) {
     const curriculum = loadCurriculum(options.languageId)
 
-    console.log('🎙️  Sino-Korean Audio Generator\n')
+    console.log('🎙️  Audio Generator\n')
 
     // Filter voices
     let voices: VoiceConfig[] = curriculum.voices
@@ -169,7 +169,7 @@ export async function generateAudioFiles(options: GenerateOptions) {
 
         for (const num of numbers) {
             const outputPath = getOutputPath(options.languageId, num, voice.id, options.format ?? 'mp3')
-            const word = getLanguage(options.languageId).numberToWords(num)
+            const nonLatin = getLanguage(options.languageId).numberToNonLatin(num)
 
             // Skip if exists and option is set
             if (options.skipExisting && audioFileExists(outputPath)) {
@@ -177,11 +177,11 @@ export async function generateAudioFiles(options: GenerateOptions) {
                 continue
             }
 
-            process.stdout.write(`  ${num} (${word})... `)
+            process.stdout.write(`  ${num} (${nonLatin})... `)
 
             try {
                 await generateAudio(client, {
-                    text: word,
+                    text: nonLatin,
                     voiceId: voice.elevenLabsVoiceId,
                     outputPath,
                     format: options.format,

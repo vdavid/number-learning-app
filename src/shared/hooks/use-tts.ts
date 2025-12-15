@@ -388,7 +388,7 @@ export function useTTS({ languageId, onEnd }: UseTTSOptions) {
             }
 
             // Fallback to Web Speech API
-            const words = language.numberToWords(num)
+            const words = language.numberToNonLatin(num)
             logger.debug('Using Web Speech fallback for %d', num)
             speakWithWebSpeech(words)
         },

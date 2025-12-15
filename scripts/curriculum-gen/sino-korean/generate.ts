@@ -29,7 +29,21 @@ function main() {
     const outputDirectory = path.join(projectRoot, 'src/features/languages/sino-korean')
     const outputFilePath = path.join(outputDirectory, 'curriculum.json')
     fs.mkdirSync(outputDirectory, { recursive: true })
-    fs.writeFileSync(outputFilePath, JSON.stringify(curriculum, null, 4))
+
+    let json = JSON.stringify(curriculum, null, 4)
+
+    // Collapse number entry objects to single lines for better manual review
+    // Handles: { "value": N } and { "value": N, "helpText": "..." }
+    json = json.replace(
+        /\{\n\s+"value": (\d+)\n\s+\}/g,
+        '{ "value": $1 }',
+    )
+    json = json.replace(
+        /\{\n\s+"value": (\d+),\n\s+"helpText": "([^"]+)"\n\s+\}/g,
+        '{ "value": $1, "helpText": "$2" }',
+    )
+
+    fs.writeFileSync(outputFilePath, json + '\n')
 
     // Summary
     const totalNumbers = curriculum.stages.reduce((sum, stage) => sum + stage.numbers.length, 0)

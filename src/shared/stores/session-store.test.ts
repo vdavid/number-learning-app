@@ -43,22 +43,13 @@ describe('session-store', () => {
             expect(state.result).toBeNull()
         })
 
-        it('should shuffle the queue', () => {
-            // Use many cards to make shuffling detectable
-            const cards = Array.from({ length: 20 }, (_, i) => createMockCard({ id: `card-${i}` }))
+        it('should preserve card order (curriculum is pre-shuffled)', () => {
+            const cards = Array.from({ length: 5 }, (_, i) => createMockCard({ id: `card-${i}` }))
 
-            // Run multiple times to check for shuffling
-            const queues: string[][] = []
-            for (let i = 0; i < 5; i++) {
-                useSessionStore.getState().startSession([...cards])
-                queues.push(useSessionStore.getState().queue.map((c) => c.id))
-                useSessionStore.getState().endSession()
-            }
+            useSessionStore.getState().startSession([...cards])
+            const queueIds = useSessionStore.getState().queue.map((c) => c.id)
 
-            // At least one should be different (shuffled)
-            const allSame = queues.every((q) => JSON.stringify(q) === JSON.stringify(queues[0]))
-            // Very unlikely to be all same with 20 cards shuffled 5 times
-            expect(allSame).toBe(false)
+            expect(queueIds).toEqual(['card-0', 'card-1', 'card-2', 'card-3', 'card-4'])
         })
     })
 
@@ -83,7 +74,6 @@ describe('session-store', () => {
             useSessionStore.getState().startSession([card])
 
             const current = useSessionStore.getState().getCurrentCard()
-            // Note: queue is shuffled, but with 1 card it will be the same
             expect(current?.id).toBe('test-card')
         })
 

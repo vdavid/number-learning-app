@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test'
 
-import { resetTestState, setShuffleSeed } from './test-utils'
+import { resetTestState } from './test-utils'
 
 test.describe('Persistence', () => {
     test.beforeEach(async ({ page }) => {
@@ -9,9 +9,6 @@ test.describe('Persistence', () => {
     })
 
     test('should persist progress after completing exercises', async ({ page }) => {
-        // Set seed right before starting (seed 0 gives listen cards first)
-        await setShuffleSeed(page, 0)
-
         // Start a session
         const learnButton = page.getByRole('button', { name: /Start learning/i })
         await learnButton.click()
@@ -50,9 +47,6 @@ test.describe('Persistence', () => {
     })
 
     test('should restore progress after page refresh', async ({ page }) => {
-        // Set seed right before starting
-        await setShuffleSeed(page, 0)
-
         // Start and complete some exercises
         await page.getByRole('button', { name: /Start learning/i }).click()
         await expect(page.getByText(/cards? remaining/i)).toBeVisible()
@@ -109,9 +103,6 @@ test.describe('Persistence', () => {
     })
 
     test('should show different button state after some progress', async ({ page }) => {
-        // Set seed right before starting
-        await setShuffleSeed(page, 0)
-
         // Verify we start with new cards available
         const learnButton = page.getByRole('button', { name: /Start learning/i })
         await expect(learnButton).toBeVisible()

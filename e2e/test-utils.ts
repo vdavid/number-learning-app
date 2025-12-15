@@ -8,16 +8,6 @@ interface AudioPlayLogEntry {
 }
 
 /**
- * Set the shuffle seed for deterministic card ordering.
- * Use seed=0 for consistent test order (listen cards first with this seed).
- */
-export async function setShuffleSeed(page: Page, seed: number | null): Promise<void> {
-    await page.evaluate((s) => {
-        window.__testUtils?.setShuffleSeed(s)
-    }, seed)
-}
-
-/**
  * Inject a transcript into the STT mock.
  * Use this to simulate speaking in speak mode tests.
  */

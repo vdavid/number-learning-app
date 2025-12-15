@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test'
 
-import { resetTestState, setShuffleSeed } from './test-utils'
+import { resetTestState } from './test-utils'
 
 test.describe('Listen Mode - Happy Path', () => {
     test.beforeEach(async ({ page }) => {
@@ -9,9 +9,6 @@ test.describe('Listen Mode - Happy Path', () => {
     })
 
     test('should complete a listen exercise correctly', async ({ page }) => {
-        // Set seed right before starting (seed 0 gives listen cards first)
-        await setShuffleSeed(page, 0)
-
         // Wait for the page to load and show the level selector
         await expect(page.getByText('Start learning')).toBeVisible()
 
@@ -54,9 +51,6 @@ test.describe('Listen Mode - Happy Path', () => {
     })
 
     test('should show keypad in listen mode', async ({ page }) => {
-        // Set seed right before starting
-        await setShuffleSeed(page, 0)
-
         // Start a session
         await page.getByRole('button', { name: /Start learning/i }).click()
 
@@ -77,9 +71,6 @@ test.describe('Listen Mode - Happy Path', () => {
     })
 
     test('should update digit display when typing', async ({ page }) => {
-        // Set seed right before starting
-        await setShuffleSeed(page, 0)
-
         // Start a session
         await page.getByRole('button', { name: /Start learning/i }).click()
 
@@ -105,9 +96,6 @@ test.describe('Listen Mode - Happy Path', () => {
     })
 
     test('should allow replaying audio', async ({ page }) => {
-        // Set seed right before starting
-        await setShuffleSeed(page, 0)
-
         // Start a session
         await page.getByRole('button', { name: /Start learning/i }).click()
 

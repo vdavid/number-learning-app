@@ -83,7 +83,7 @@ export function numberToSinoKoreanRomanized(num: number): string {
     let remaining = num
 
     const romanizedPlaceValues: RomanizedPlaceValue[] = [
-        { divisor: 100000000, suffix: 'eok', useRecursive: true },
+        { divisor: 100_000_000, suffix: 'eok', useRecursive: true },
         { divisor: 10000, suffix: 'man', useRecursive: true },
         { divisor: 1000, suffix: 'cheon', useRecursive: false },
         { divisor: 100, suffix: 'baek', useRecursive: false },

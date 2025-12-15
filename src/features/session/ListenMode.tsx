@@ -1,6 +1,8 @@
-import { DigitDisplay, Keypad } from '@shared/components'
+import { getLanguage } from '@features/languages'
+import { AnswerDisplay, DigitDisplay, Keypad } from '@shared/components'
 import { useTTS } from '@shared/hooks'
-import { useSessionStore, useSettingsStore, useProgressStore } from '@shared/stores'
+import { useProgressStore, useSessionStore, useSettingsStore } from '@shared/stores'
+import { logger } from '@shared/utils'
 import { ArrowRight, Volume2 } from 'lucide-react'
 import { motion } from 'motion/react'
 import { useCallback, useEffect, useRef } from 'react'
@@ -49,6 +51,7 @@ export function ListenMode() {
         if (input.length === target.length) {
             if (input === target) {
                 // Correct!
+                logger.debug('Correct answer:', input)
                 setResult('correct')
                 const rating = calculateRating(true)
                 reviewCard(card.id, rating)
@@ -56,6 +59,7 @@ export function ListenMode() {
             } else {
                 // Wrong - wait briefly for correction
                 wrongTimeoutRef.current = setTimeout(() => {
+                    logger.debug('Wrong answer:', input, '!=', target)
                     setResult('incorrect')
                     reviewCard(card.id, 'again')
 
@@ -99,6 +103,14 @@ export function ListenMode() {
     if (!card) return null
 
     const digitCount = String(card.number).length
+    const language = getLanguage(languageId)
+    const nonLatinScript = language.numberToNonLatin(card.number)
+    const romanized = language.numberToRomanized?.(card.number) ?? ''
+
+    // Get help text from curriculum
+    const stage = language.curriculum.stages[card.stageIndex]
+    const numberEntry = stage.numbers.find((n) => n.value === card.number)
+    const helpText = numberEntry?.helpText
 
     return (
         <div className='flex flex-col items-center justify-between h-full py-8'>
@@ -129,11 +141,15 @@ export function ListenMode() {
                 <DigitDisplay value={input} digitCount={digitCount} result={result} />
             </div>
 
-            {/* Show correct answer on error */}
-            {result === 'incorrect' && (
-                <div className='text-center mb-4'>
-                    <p className='text-[var(--text-muted)] text-sm mb-1'>Correct answer</p>
-                    <p className='font-mono text-3xl text-[var(--error)]'>{card.number}</p>
+            {!!result && (
+                <div className='mb-4'>
+                    <AnswerDisplay
+                        number={card.number}
+                        nonLatinScript={nonLatinScript}
+                        romanizedForm={romanized}
+                        helpText={helpText}
+                        userAnsweredCorrectly={result === 'correct'}
+                    />
                 </div>
             )}
 

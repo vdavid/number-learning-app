@@ -21,7 +21,7 @@ export interface Language {
     curriculum: Curriculum
 
     // Used for TTS and display hints. 54 → "오십사"
-    numberToWords: (num: number) => string
+    numberToNonLatin: (num: number) => string
 
     // Parses spoken/transcribed text back to a number. For example, "오십사", "54", "5십4" => 54. Null if parsing fails.
     // Used for validation in speaking mode.

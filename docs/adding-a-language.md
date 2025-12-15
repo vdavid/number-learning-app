@@ -45,7 +45,8 @@ For each new language, you'll need to:
     - `helpText`
         - `helpText` is an important feature where we can aid the language student with clues for remembering the
           number, or about understanding the logic in the language.
-        - We'd probably leave them empty for numbers above 1,000 and the such, but for numbers especially in the
+        - Length should be max. 170 chars (soft limit), but be concise, only use longer helpTexts if meaningful.
+        - Leave the vast majority of them empty for numbers above 1,000 and the such, but for numbers especially in the
           beginning, it'd be important to not just quiz them but also help English speakers understand the logic.
         - I'd like to add stuff like, {25, helpText: 'In Danish, we base things on 100, so 25 is like
           "quarter-of-a-hundred"'} and for Swedish, {11, helpText: "It's irregular, like in English."}, or also "{20,
@@ -61,14 +62,24 @@ For each new language, you'll need to:
             - French has special cases for 70-79 (soixante-dix to soixante-dix-neuf), and for 80-99 (quatre-vingts
               system)
             - In German, units come before the tens: 54 = "vierundfünfzig" (four-and-fifty)
+        - Don't write prefixes like `1 —`. The game already displays numbers, incl. non-latin script where applicable.
+        - Don't rely on the sequence. Don't write "Almost at twenty!" for 19. The numbers are randomized per stage, and
+          20 might come earlier than 19.
+        - To know what numbers you can add help texts for, you'll need to know which random numbers actually end up,
+          generate the curriculum first without the helpText to see which numbers actually get in the generation. Use
+          the command
+          `jq -r '[.stages[].numbers[].value] | join(", ")' src/features/languages/sino-korean/curriculum.json` to list
+          the numbers. Don't generate
+        - Make them timeless. These are flashcards in an SRS system. Even when the student is studying 3-digit numbers,
+          single digits will sometimes come up. Consider this when writing the help texts.
         - See `scripts/curriculum-gen/sino-korean/generate.ts` for reference.
 
     - Randomization
-        - The stages should be in order. 
+        - The stages should be in order.
         - In the stages with sparse random selection, the generated numbers should be randomized, but in a deterministic
           fashion (seeded random gen) so that the curriculum always contains the same numbers even if regenerated.
-        - The numbers within each stage should be randomized (so, first stage is not 1, 2, 3, ... but 8, 3, 5, etc.
-          so it's a bit more interesting. But make this deterministic too.
+        - The numbers within each stage should be randomized (so, first stage is not 1, 2, 3, ... but 8, 3, 5, etc. so
+          it's a bit more interesting. But make this deterministic too.
 
 2. Generate the curriculum JSON: `npx tsx scripts/curriculum-gen/{your-language}/generate.ts`.
 

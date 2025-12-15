@@ -2,13 +2,14 @@ import { motion } from 'motion/react'
 
 interface VUMeterProps {
     level: number
+    isListening?: boolean
 }
 
 /**
  * Visual VU Meter component.
  * Displays a pulsating circle based on the volume level.
  */
-export function VUMeter({ level }: VUMeterProps) {
+export function VUMeter({ level, isListening = true }: VUMeterProps) {
     // Amplify low levels for better visualization
     const amplifiedLevel = Math.min(1, level * 2)
 
@@ -31,7 +32,7 @@ export function VUMeter({ level }: VUMeterProps) {
 
             {/* Inner pulsating circle */}
             <motion.div
-                className='w-12 h-12 rounded-full bg-[var(--accent-primary)]'
+                className={`w-12 h-12 rounded-full ${isListening ? 'bg-[var(--accent-primary)]' : 'bg-[var(--bg-surface)]'}`}
                 animate={{
                     scale: 0.8 + amplifiedLevel * 0.4,
                 }}

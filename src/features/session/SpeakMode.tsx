@@ -2,9 +2,9 @@ import { getLanguage } from '@features/languages'
 import { VUMeter } from '@shared/components'
 import { useAudioAnalyzer, useSTT, useTTS } from '@shared/hooks'
 import { useProgressStore, useSessionStore, useSettingsStore } from '@shared/stores'
-import { ArrowRight, Volume2 } from 'lucide-react'
+import { ArrowRight, SkipForward, Volume2 } from 'lucide-react'
 import { motion } from 'motion/react'
-import { useCallback, useEffect, useRef } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 const silenceTimeoutMs = 1500 // ms of silence before checking answer
 const ttsDelayMs = 1500 // ms to wait for TTS to finish before restarting recognition
@@ -31,6 +31,7 @@ export function SpeakMode() {
     const language = getLanguage(languageId)
     const silenceTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
     const sttRef = useRef<{ start: () => void; stop: () => void } | null>(null)
+    const [transcriptKey, setTranscriptKey] = useState(0)
 
     const { speakNumber } = useTTS({ languageId })
 
@@ -50,6 +51,7 @@ export function SpeakMode() {
         (text: string, isFinal: boolean) => {
             // Always update transcript so user can see what they're saying
             setTranscript(text)
+            setTranscriptKey((k) => k + 1)
 
             // If already resolved, don't re-evaluate (but still show transcript)
             if (result) return
@@ -171,12 +173,21 @@ export function SpeakMode() {
                 </button>
                 <p className='text-[var(--text-muted)] text-sm'>Say this number</p>
                 {!result ? (
-                    <button
-                        onClick={handleListen}
-                        className='text-sm font-medium text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors'
-                    >
-                        Hint
-                    </button>
+                    <div className='flex items-center gap-2'>
+                        <button
+                            onClick={handleListen}
+                            className='text-sm font-medium text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors'
+                        >
+                            Hint
+                        </button>
+                        <button
+                            onClick={handleNext}
+                            className='p-2 rounded-full text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-overlay)] transition-colors'
+                            aria-label='Skip'
+                        >
+                            <SkipForward size={20} />
+                        </button>
+                    </div>
                 ) : (
                     <div className='w-10' />
                 )}
@@ -225,13 +236,24 @@ export function SpeakMode() {
                 )}
 
                 {transcript && (
-                    <motion.p
+                    <motion.div
+                        key='transcript-bubble'
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className='mt-6 text-lg text-[var(--text-secondary)]'
+                        className='mt-6 relative rounded-2xl px-4 py-2 shadow-sm overflow-hidden'
                     >
-                        "{transcript}"
-                    </motion.p>
+                        {/* Background flash on update */}
+                        <motion.div
+                            key={transcriptKey}
+                            initial={{ backgroundColor: 'var(--accent-primary)', opacity: 0.3 }}
+                            animate={{ backgroundColor: 'var(--bg-surface)', opacity: 1 }}
+                            transition={{ duration: 0.3 }}
+                            className='absolute inset-0 rounded-2xl'
+                        />
+                        <p className='relative text-lg text-[var(--text-secondary)]'>{transcript}</p>
+                        {/* Speech bubble tail */}
+                        <div className='absolute -bottom-2 left-1/2 -translate-x-1/2 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[var(--bg-surface)]' />
+                    </motion.div>
                 )}
             </div>
 
@@ -248,7 +270,7 @@ export function SpeakMode() {
                 )}
 
                 <div onClick={handleMicClick} className='cursor-pointer'>
-                    <VUMeter level={isListening ? volume : 0} />
+                    <VUMeter level={volume} isListening={isListening} />
                 </div>
 
                 {result && (

@@ -4,7 +4,6 @@
  */
 
 import { clearAudioPlayLog } from '@shared/hooks'
-import { setShuffleSeed } from '@shared/stores'
 
 interface AudioPlayLogEntry {
     url: string
@@ -13,8 +12,6 @@ interface AudioPlayLogEntry {
 }
 
 interface TestUtils {
-    /** Set the shuffle seed for deterministic card ordering */
-    setShuffleSeed: (seed: number | null) => void
     /** Inject a transcript into the STT mock */
     injectTranscript: (text: string, isFinal: boolean) => void
     /** Clear the audio play log */
@@ -35,9 +32,6 @@ export function initTestUtils(): void {
     if (typeof window === 'undefined') return
 
     window.__testUtils = {
-        setShuffleSeed: (seed: number | null) => {
-            setShuffleSeed(seed)
-        },
         injectTranscript: (text: string, isFinal: boolean) => {
             window.__mockSTT?.injectTranscript(text, isFinal)
         },

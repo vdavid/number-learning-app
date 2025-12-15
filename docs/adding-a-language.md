@@ -63,6 +63,13 @@ For each new language, you'll need to:
             - In German, units come before the tens: 54 = "vierundfünfzig" (four-and-fifty)
         - See `scripts/curriculum-gen/sino-korean/generate.ts` for reference.
 
+    - Randomization
+        - The stages should be in order. 
+        - In the stages with sparse random selection, the generated numbers should be randomized, but in a deterministic
+          fashion (seeded random gen) so that the curriculum always contains the same numbers even if regenerated.
+        - The numbers within each stage should be randomized (so, first stage is not 1, 2, 3, ... but 8, 3, 5, etc.
+          so it's a bit more interesting. But make this deterministic too.
+
 2. Generate the curriculum JSON: `npx tsx scripts/curriculum-gen/{your-language}/generate.ts`.
 
 ### 3. Implement converter/parser scripts

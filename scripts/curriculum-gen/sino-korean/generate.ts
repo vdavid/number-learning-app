@@ -34,14 +34,8 @@ function main() {
 
     // Collapse number entry objects to single lines for better manual review
     // Handles: { "value": N } and { "value": N, "helpText": "..." }
-    json = json.replace(
-        /\{\n\s+"value": (\d+)\n\s+\}/g,
-        '{ "value": $1 }',
-    )
-    json = json.replace(
-        /\{\n\s+"value": (\d+),\n\s+"helpText": "([^"]+)"\n\s+\}/g,
-        '{ "value": $1, "helpText": "$2" }',
-    )
+    json = json.replace(/\{\n\s+"value": (\d+)\n\s+\}/g, '{ "value": $1 }')
+    json = json.replace(/\{\n\s+"value": (\d+),\n\s+"helpText": "([^"]+)"\n\s+\}/g, '{ "value": $1, "helpText": "$2" }')
 
     fs.writeFileSync(outputFilePath, json + '\n')
 
@@ -93,6 +87,16 @@ function sparseRange(min: number, max: number, count: number, random: () => numb
 /** Generate a full range of numbers */
 function range(start: number, end: number): number[] {
     return Array.from({ length: end - start + 1 }, (_, i) => start + i)
+}
+
+/** Shuffle an array using Fisher-Yates algorithm with seeded random */
+function shuffleArray<T>(array: T[], random: () => number): T[] {
+    const result = [...array]
+    for (let i = result.length - 1; i > 0; i--) {
+        const j = Math.floor(random() * (i + 1))
+        ;[result[i], result[j]] = [result[j], result[i]]
+    }
+    return result
 }
 
 /** Convert a number array to NumberEntry array with romanization */
@@ -163,6 +167,11 @@ function generateCurriculum(): Curriculum {
             ]),
         },
     ]
+
+    // Shuffle numbers within each stage for variety (deterministic due to seeded random)
+    for (const stage of stages) {
+        stage.numbers = shuffleArray(stage.numbers, random)
+    }
 
     return {
         voices: [

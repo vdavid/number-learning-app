@@ -80,7 +80,10 @@ function sparseRange(min: number, max: number, count: number, random: () => numb
 
     for (let i = 0; i < count; i++) {
         const base = min + i * step
-        const variation = Math.floor(random() * Math.min(step, 10))
+        // For small steps (≤100), vary by 0-9 for nice "last digit" variety
+        // For large steps (>100), vary by up to 50% of step for natural spread
+        const maxVariation = step <= 100 ? Math.min(step, 10) : Math.floor(step * 0.5)
+        const variation = Math.floor(random() * maxVariation)
         numbers.push(Math.min(base + variation, max))
     }
 
@@ -98,7 +101,7 @@ function shuffleArray<T>(array: T[], random: () => number): T[] {
     const result = [...array]
     for (let i = result.length - 1; i > 0; i--) {
         const j = Math.floor(random() * (i + 1))
-        ;[result[i], result[j]] = [result[j], result[i]]
+            ;[result[i], result[j]] = [result[j], result[i]]
     }
     return result
 }
@@ -320,7 +323,9 @@ function generateCurriculum(): Curriculum {
                 50000,
                 100_000,
                 ...sparseRange(10001, 99999, 100, random),
-                ...sparseRange(100_001, 999999, 50, random),
+                ...sparseRange(100_001, 999_999, 50, random),
+                ...sparseRange(1_000_001, 999_999_999, 20, random),
+                ...sparseRange(1_000_000_001, 999_999_999_999, 10, random),
                 1_000_000,
                 10_000_000,
                 100_000_000,

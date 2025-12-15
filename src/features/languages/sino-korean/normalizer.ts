@@ -8,6 +8,27 @@
 
 const digitToHangulMap: string[] = ['영', '일', '이', '삼', '사', '오', '육', '칠', '팔', '구']
 
+interface PlaceValue {
+    divisor: number
+    suffix: string
+    useRecursive: boolean
+}
+
+const placeValues: PlaceValue[] = [
+    { divisor: 1_000_000_000_000, suffix: '조', useRecursive: true },
+    { divisor: 100_000_000, suffix: '억', useRecursive: true },
+    { divisor: 10_000, suffix: '만', useRecursive: true },
+    { divisor: 1_000, suffix: '천', useRecursive: false },
+    { divisor: 100, suffix: '백', useRecursive: false },
+    { divisor: 10, suffix: '십', useRecursive: false },
+]
+
+function formatPlaceValue(value: number, pv: PlaceValue): string {
+    if (value === 1) return pv.suffix
+    const prefix = pv.useRecursive ? numberToSinoKorean(value) : digitToHangulMap[value]
+    return prefix + pv.suffix
+}
+
 // 54 → "오십사"
 // 123 → "백이십삼"
 export function numberToSinoKorean(num: number): string {
@@ -17,39 +38,12 @@ export function numberToSinoKorean(num: number): string {
     let result = ''
     let remaining = num
 
-    // Handle 억 (hundred million)
-    if (remaining >= 100000000) {
-        const eok = Math.floor(remaining / 100000000)
-        result += (eok === 1 ? '' : numberToSinoKorean(eok)) + '억'
-        remaining %= 100000000
-    }
-
-    // Handle 만 (ten thousand)
-    if (remaining >= 10000) {
-        const man = Math.floor(remaining / 10000)
-        result += (man === 1 ? '' : numberToSinoKorean(man)) + '만'
-        remaining %= 10000
-    }
-
-    // Handle 천 (thousand)
-    if (remaining >= 1000) {
-        const cheon = Math.floor(remaining / 1000)
-        result += (cheon === 1 ? '' : digitToHangulMap[cheon]) + '천'
-        remaining %= 1000
-    }
-
-    // Handle 백 (hundred)
-    if (remaining >= 100) {
-        const baek = Math.floor(remaining / 100)
-        result += (baek === 1 ? '' : digitToHangulMap[baek]) + '백'
-        remaining %= 100
-    }
-
-    // Handle 십 (ten)
-    if (remaining >= 10) {
-        const sip = Math.floor(remaining / 10)
-        result += (sip === 1 ? '' : digitToHangulMap[sip]) + '십'
-        remaining %= 10
+    for (const pv of placeValues) {
+        if (remaining >= pv.divisor) {
+            const value = Math.floor(remaining / pv.divisor)
+            result += formatPlaceValue(value, pv)
+            remaining %= pv.divisor
+        }
     }
 
     // Handle units
@@ -83,6 +77,7 @@ export function numberToSinoKoreanRomanized(num: number): string {
     let remaining = num
 
     const romanizedPlaceValues: RomanizedPlaceValue[] = [
+        { divisor: 1_000_000_000_000, suffix: 'jo', useRecursive: true },
         { divisor: 100_000_000, suffix: 'eok', useRecursive: true },
         { divisor: 10000, suffix: 'man', useRecursive: true },
         { divisor: 1000, suffix: 'cheon', useRecursive: false },
@@ -173,8 +168,11 @@ function parseHangulNumber(hangulNumberString: string): number | null {
         백: 100,
         천: 1000,
         만: 10000,
-        억: 100000000,
+        억: 100_000_000,
+        조: 1_000_000_000_000,
     }
+
+    let joBuffer = 0 // Buffer for values before 조
 
     while (i < hangulNumberString.length) {
         const char = hangulNumberString[i]
@@ -196,10 +194,16 @@ function parseHangulNumber(hangulNumberString: string): number | null {
                 manBuffer = (manBuffer + (current || 1)) * 10000
                 current = 0
                 total = 0
-            } else if (multiplier === 100000000) {
+            } else if (multiplier === 100_000_000) {
                 // 억 - hundred million
-                total = (manBuffer + total + (current || 1)) * 100000000
+                total = (manBuffer + total + (current || 1)) * 100_000_000
                 manBuffer = 0
+                current = 0
+            } else if (multiplier === 1_000_000_000_000) {
+                // 조 - trillion
+                joBuffer = (joBuffer + manBuffer + total + (current || 1)) * 1_000_000_000_000
+                manBuffer = 0
+                total = 0
                 current = 0
             } else {
                 // 십, 백, 천
@@ -217,8 +221,9 @@ function parseHangulNumber(hangulNumberString: string): number | null {
     // Add any remaining current value
     total += current
 
-    // Add the man buffer
+    // Add the man buffer and jo buffer
     total += manBuffer
+    total += joBuffer
 
     return total || null
 }

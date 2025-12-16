@@ -140,6 +140,42 @@ function localizeStages(stages: Stage[]): Stage[] {
 export const swedishConfig: LanguageConfig = {
     id: 'swedish',
     helpTexts,
-    voices: [],
+    voices: [
+        {
+            id: 'charlie',
+            name: 'Charlie',
+            provider: 'elevenlabs',
+            voiceId: 'IKne3meq5aSn9XLyUdCD',
+            gender: 'male',
+        },
+        {
+            id: 'achernar',
+            name: 'Achernar',
+            provider: 'google',
+            voiceId: 'sv-SE-Chirp3-HD-Achernar',
+            gender: 'female',
+        },
+        {
+            id: 'laomedeia',
+            name: 'Laomedeia',
+            provider: 'google',
+            voiceId: 'sv-SE-Chirp3-HD-Laomedeia',
+            gender: 'female',
+        },
+        {
+            id: 'puck',
+            name: 'Puck',
+            provider: 'google',
+            voiceId: 'sv-SE-Chirp3-HD-Puck',
+            gender: 'male',
+        },
+        {
+            id: 'iapetus',
+            name: 'Iapetus',
+            provider: 'google',
+            voiceId: 'sv-SE-Chirp3-HD-Iapetus',
+            gender: 'male',
+        },
+    ],
     localizeStages,
 }

@@ -7,14 +7,14 @@ import * as path from 'node:path'
 
 import { ElevenLabsClient } from '@elevenlabs/elevenlabs-js'
 
-export type AudioGenerationOptions = {
+export type ElevenlabsAudioGenerationOptions = {
     /** Text to convert to speech */
     text: string
     /** ElevenLabs voice ID, looks like "IKne3meq5aSn9XLyUdCD". */
     voiceId: string
     outputPath: string
-    /** E.g., "ko" for language enforcement */
-    languageCode?: string
+    /** Language code for TTS. Only two letters like "ko" and "sv". */
+    languageCode: string
     /** Model ID (defaults to eleven_multilingual_v2) */
     modelId?: string
     // Defaults to mp3
@@ -45,7 +45,7 @@ export function createClient(): ElevenLabsClient {
  */
 export async function generateAudio(
     client: ElevenLabsClient,
-    options: AudioGenerationOptions,
+    options: ElevenlabsAudioGenerationOptions,
     maxRetries = 5,
 ): Promise<void> {
     const { text, voiceId, outputPath, modelId = 'eleven_multilingual_v2', format = 'mp3' } = options
@@ -68,7 +68,7 @@ export async function generateAudio(
                 text,
                 modelId,
                 outputFormat: format === 'opus' ? 'opus_48000_128' : 'mp3_44100_128',
-                languageCode: 'ko',
+                languageCode: options.languageCode,
             })
 
             // Collect chunks from the readable stream

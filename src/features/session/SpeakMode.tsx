@@ -222,7 +222,7 @@ export function SpeakMode() {
                     animate={{ opacity: 1, scale: 1 }}
                     className='mt-4 text-4xl font-medium text-[var(--accent-primary)]'
                 >
-                    {language.numberToNonLatin(card.number)}
+                    {language.numberToWords(card.number)}
                 </motion.div>
 
                 {result && language.numberToRomanized && (

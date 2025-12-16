@@ -113,8 +113,4 @@ Debug logs are enabled in dev mode.
 
 ## Adding a language
 
-See `docs/adding-a-language.md`. Summary:
-
-1. Create `src/features/languages/{lang}/` with curriculum, normalizer, index
-2. Register in `src/features/languages/index.ts`
-3. Add audio files to `public/{lang}/audio/`
+See `docs/adding-a-language.md`.

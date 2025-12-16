@@ -10,6 +10,6 @@ export const swedish: Language = {
     sttLanguageCode: 'sv-SE',
     flag: '🇸🇪',
     curriculum: loadCurriculum('swedish'),
-    numberToNonLatin: numberToSwedish,
+    numberToWords: numberToSwedish,
     parseSpokenNumber: parseSwedish,
 }

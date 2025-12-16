@@ -169,7 +169,7 @@ export async function generateAudioFiles(options: GenerateOptions) {
 
         for (const num of numbers) {
             const outputPath = getOutputPath(options.languageId, num, voice.id, options.format ?? 'mp3')
-            const nonLatin = getLanguage(options.languageId).numberToNonLatin(num)
+            const words = getLanguage(options.languageId).numberToWords(num)
 
             // Skip if exists and option is set
             if (options.skipExisting && audioFileExists(outputPath)) {
@@ -177,11 +177,11 @@ export async function generateAudioFiles(options: GenerateOptions) {
                 continue
             }
 
-            process.stdout.write(`  ${num} (${nonLatin})... `)
+            process.stdout.write(`  ${num} (${words})... `)
 
             try {
                 await generateAudio(client, {
-                    text: nonLatin,
+                    text: words,
                     voiceId: voice.elevenLabsVoiceId,
                     outputPath,
                     format: options.format,

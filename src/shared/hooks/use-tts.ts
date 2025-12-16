@@ -1,4 +1,3 @@
-import { loadCurriculum } from '@/curriculum/curriculum.ts'
 import { useCallback, useEffect, useRef } from 'react'
 
 import { createDebugLogger, logger } from '../utils'
@@ -52,6 +51,9 @@ const chosenAudioCache = new Map<string, string>()
 
 /** Track in-flight audio selection to prevent race conditions */
 const pendingAudioSelection = new Map<string, Promise<string | null>>()
+
+/** Track in-flight speakNumber calls to prevent duplicate plays (e.g. from React Strict Mode) */
+let speakNumberInProgress = false
 
 /**
  * Build potential audio URLs for a number.
@@ -134,8 +136,8 @@ function playAudio(url: string, onEnd?: () => void): Promise<HTMLAudioElement | 
             setTimeout(() => {
                 log('Test audio simulation ended')
                 onEnd?.()
+                resolve(null) // Resolve after simulated playback ends
             }, mockAudioDurationMs)
-            resolve(null) // No actual audio element in test mode
         })
     }
 
@@ -310,37 +312,49 @@ export function useTTS({ languageId, onEnd }: UseTTSOptions) {
     const speakNumberImpl = useCallback(
         async (num: number) => {
             log('speakNumberImpl() called for %d', num)
-            // Stop any ongoing speech/audio
-            window.speechSynthesis.cancel()
-            if (audioRef.current) {
-                audioRef.current.pause()
-                audioRef.current = null
+
+            // Prevent concurrent calls (e.g. from React Strict Mode double-firing)
+            if (speakNumberInProgress) {
+                log('Skipping speakNumberImpl - already in progress')
+                return
             }
+            speakNumberInProgress = true
 
-            // Select (or retrieve cached) audio URL
-            const chosenUrl = await selectAudioUrl(num)
-
-            // Try to play the chosen URL
-            if (chosenUrl) {
-                try {
-                    log('Attempting to play audio file for %d', num)
-                    audioRef.current = await playAudio(chosenUrl, onEndRef.current)
-                    logger.debug('Audio playback succeeded for %d', num)
-                    return // Success!
-                } catch (error) {
-                    logger.debug(
-                        `Audio playback failed for %d, falling back to Web Speech. The error was: %O`,
-                        num,
-                        error,
-                    )
-                    // Audio failed, fall through to Web Speech
+            try {
+                // Stop any ongoing speech/audio
+                window.speechSynthesis.cancel()
+                if (audioRef.current) {
+                    audioRef.current.pause()
+                    audioRef.current = null
                 }
-            }
 
-            // Fallback to Web Speech API
-            const words = language.numberToWords(num)
-            logger.debug('Using Web Speech fallback for %d', num)
-            speakWithWebSpeech(words)
+                // Select (or retrieve cached) audio URL
+                const chosenUrl = await selectAudioUrl(num)
+
+                // Try to play the chosen URL
+                if (chosenUrl) {
+                    try {
+                        log('Attempting to play audio file for %d', num)
+                        audioRef.current = await playAudio(chosenUrl, onEndRef.current)
+                        logger.debug('Audio playback succeeded for %d', num)
+                        return // Success!
+                    } catch (error) {
+                        logger.debug(
+                            `Audio playback failed for %d, falling back to Web Speech. The error was: %O`,
+                            num,
+                            error,
+                        )
+                        // Audio failed, fall through to Web Speech
+                    }
+                }
+
+                // Fallback to Web Speech API
+                const words = language.numberToWords(num)
+                logger.debug('Using Web Speech fallback for %d', num)
+                speakWithWebSpeech(words)
+            } finally {
+                speakNumberInProgress = false
+            }
         },
         [selectAudioUrl, language, speakWithWebSpeech],
     )

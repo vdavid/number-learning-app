@@ -24,7 +24,8 @@ See also [AGENTS.md](AGENTS.md) for processes and guidelines written for the rob
 
 ## Scripts
 
-- `pnpm format && pnpm tsc --noEmit && pnpm knip && pnpm lint:fix && pnpm test && pnpm test:e2e` - Run all checks
+- `pnpm format && pnpm tsc --noEmit && pnpm knip && pnpm lint:fix && pnpm cur-gen --check && pnpm test && pnpm test:e2e` -
+  Run all checks
 - `pnpm dev` - Start dev server
 - `pnpm format:check && pnpm lint` - Run Prettier and ESLint without fixing
 - `pnpm knip` - Check for unused files and exports
@@ -36,10 +37,10 @@ setting `localStorage.debug = '1'` in the browser console.
 
 ### Logging
 
-The app uses a centralized logger in `src/shared/utils/logger.ts`:
+The app uses a centralized logger in `srcutils/logger.ts`:
 
 ```ts
-import { logger } from '@/shared/utils/logger'
+import { logger } from '@utils/logger'
 
 logger.debug('Only in debug mode')
 logger.info('Always logs')

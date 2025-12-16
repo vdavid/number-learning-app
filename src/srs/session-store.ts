@@ -1,6 +1,5 @@
+import type { CardState, ResponseRating } from '@srs/types.ts'
 import { create } from 'zustand'
-
-import type { CardState, ResponseRating } from '@/srs/types.ts'
 
 /** Result after answering - null means still attempting */
 export type AttemptResult = 'correct' | 'incorrect' | null

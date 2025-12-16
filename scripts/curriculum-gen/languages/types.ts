@@ -1,5 +1,5 @@
-import type { Stage, VoiceConfig } from '@/curriculum/curriculum.ts'
-import type { LanguageId } from '@/languages/index.ts'
+import type { Stage, VoiceConfig } from '@curriculum/curriculum.ts'
+import type { LanguageId } from '@languages/index.ts'
 
 export interface LanguageConfig {
     id: LanguageId

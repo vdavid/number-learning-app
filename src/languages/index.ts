@@ -1,6 +1,6 @@
-import type { Curriculum } from '@/curriculum/curriculum.ts'
-import { sinoKorean } from '@/languages/sino-korean/index.ts'
-import { swedish } from '@/languages/swedish/index.ts'
+import type { Curriculum } from '@curriculum/curriculum.ts'
+import { sinoKorean } from '@languages/sino-korean/index.ts'
+import { swedish } from '@languages/swedish/index.ts'
 
 export interface Language {
     // A lowercase, kebab-case ID like 'sino-korean' or 'native-korean'

@@ -1,3 +1,8 @@
+import { useSettingsStore } from '@game/settings/settings-store.ts'
+import { getLanguage } from '@languages/index.ts'
+import { useProgressStore } from '@srs/progress-store.ts'
+import { useSessionStore } from '@srs/session-store.ts'
+import { logger } from '@utils/logger.ts'
 import { ArrowRight, Volume2 } from 'lucide-react'
 import { motion } from 'motion/react'
 import { useCallback, useEffect, useRef } from 'react'
@@ -7,12 +12,6 @@ import { useTTS } from '../use-tts.ts'
 import { AnswerDisplay } from './AnswerDisplay.tsx'
 import { DigitDisplay } from './DigitDisplay.tsx'
 import { Keypad } from './Keypad.tsx'
-
-import { useSettingsStore } from '@/game/settings/settings-store.ts'
-import { getLanguage } from '@/languages'
-import { useProgressStore } from '@/srs/progress-store.ts'
-import { useSessionStore } from '@/srs/session-store.ts'
-import { logger } from '@/utils/logger.ts'
 
 /**
  * Listen mode: Audio plays, user types the number.

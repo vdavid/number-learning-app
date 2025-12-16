@@ -2,6 +2,9 @@
 
 import * as fs from 'node:fs'
 
+import type { Curriculum, Stage } from '@curriculum/curriculum.ts'
+import type { LanguageId } from '@languages/index.ts'
+
 import { getDefaultStages } from './default-stages.ts'
 import { configs } from './languages/index.ts'
 import type { LanguageConfig } from './languages/types.ts'
@@ -12,9 +15,6 @@ import {
     shuffleArray,
     writeCurriculumFile,
 } from './utils.ts'
-
-import type { Curriculum, Stage } from '@/curriculum/curriculum.ts'
-import type { LanguageId } from '@/languages/index.ts'
 
 interface CliArgs {
     lang?: LanguageId

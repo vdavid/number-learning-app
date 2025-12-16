@@ -31,6 +31,7 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 // noinspection ES6PreferShortImport -- It doesn't work with a short import
+import { loadCurriculum, type Curriculum, type TTSProvider, type VoiceConfig } from '@curriculum/curriculum.ts'
 import { ElevenLabsClient } from '@elevenlabs/elevenlabs-js'
 
 // noinspection ES6PreferShortImport -- It doesn't work with a short import
@@ -43,8 +44,6 @@ import {
     generateAudio as generateAudioElevenLabs,
 } from './elevenlabs.ts'
 import { audioFileExists as audioFileExistsGoogle, generateAudioGoogle } from './google-api.ts'
-
-import { loadCurriculum, type Curriculum, type TTSProvider, type VoiceConfig } from '@/curriculum/curriculum.ts'
 
 type GenerateOptions = {
     languageId: LanguageId | null

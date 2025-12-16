@@ -1,6 +1,5 @@
+import type { DecayState } from '@srs/types.ts'
 import { motion } from 'motion/react'
-
-import type { DecayState } from '@/srs/types.ts'
 
 interface LevelNodeProps {
     mode: 'listen' | 'speak'

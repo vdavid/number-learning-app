@@ -1,6 +1,5 @@
+import { getLanguage, type LanguageId } from '@languages/index.ts'
 import { useCallback, useEffect, useRef, useState } from 'react'
-
-import { getLanguage, type LanguageId } from '@/languages/index.ts'
 
 // Test mode detection
 const isTestMode = import.meta.env.MODE === 'test'

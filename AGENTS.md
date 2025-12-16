@@ -60,7 +60,7 @@ non-trivial changes to the repo.
 ### Commands
 
 ```bash
-pnpm format && pnpm tsc --noEmit && pnpm knip && pnpm lint:fix && pnpm test --run && pnpm test:e2e # All-around helpful
+pnpm format && pnpm tsc --noEmit && pnpm knip && pnpm lint:fix && pnpm cur-gen --check && pnpm test --run && pnpm test:e2e # All-around helpful
 pnpm dev          # Start dev server
 pnpm build        # Production build
 pnpm playwright test -g "test name" --repeat-each=10 --workers=1 # Run a single test 10 times
@@ -79,7 +79,7 @@ Three Zustand stores:
 Use `logger` instead of `console.*`:
 
 ```ts
-import { createDebugLogger, logger } from '@/utils/logger'
+import { createDebugLogger, logger } from '@utils/logger'
 
 logger.info('User started session') // Always logs with [INFO] prefix
 logger.debug('Card state:', card) // Only logs when debug mode is enabled

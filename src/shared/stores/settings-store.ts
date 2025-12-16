@@ -1,16 +1,17 @@
-import { defaultLanguageID } from '@features/languages'
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
+import { defaultLanguageID, type LanguageId } from '@/languages'
+
 interface SettingsState {
     /** Currently selected language ID */
-    languageId: string
+    languageId: LanguageId
 
     /** Quiet mode - skip speak exercises when you can't talk */
     quietMode: boolean
 
     /** Set the current language */
-    setLanguage: (languageId: string) => void
+    setLanguage: (languageId: LanguageId) => void
 
     /** Toggle quiet mode */
     toggleQuietMode: () => void
@@ -25,7 +26,7 @@ export const useSettingsStore = create<SettingsState>()(
             languageId: defaultLanguageID,
             quietMode: false,
 
-            setLanguage: (languageId: string) => set({ languageId }),
+            setLanguage: (languageId: LanguageId) => set({ languageId }),
 
             toggleQuietMode: () => set((state) => ({ quietMode: !state.quietMode })),
 

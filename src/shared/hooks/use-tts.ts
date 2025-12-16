@@ -1,8 +1,9 @@
-import { getLanguage } from '@features/languages'
 import { loadCurriculum } from '@features/languages/curriculum.ts'
 import { useCallback, useEffect, useRef } from 'react'
 
 import { createDebugLogger, logger } from '../utils'
+
+import { getLanguage } from '@/languages'
 
 const log = createDebugLogger('app:tts')
 

@@ -1,4 +1,3 @@
-import { getAllLanguages, getLanguage } from '@features/languages'
 import { Button } from '@shared/components'
 import { useProgressStore, useSettingsStore, useSessionStore } from '@shared/stores'
 import { motion } from 'motion/react'
@@ -6,6 +5,8 @@ import { useCallback, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { LevelNodePair } from './LevelNode'
+
+import { getAllLanguages, getLanguage } from '@/languages'
 
 export function LevelSelectorScreen() {
     const maxNewCardsPerSession = 10

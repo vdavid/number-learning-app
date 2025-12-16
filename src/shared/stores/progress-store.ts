@@ -1,9 +1,10 @@
-import { getLanguage } from '@features/languages'
 import { createEmptyCard, fsrs, generatorParameters, type Card as FSRSCard, Rating, State } from 'ts-fsrs'
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
 import type { CardMode, CardState, DecayState, ResponseRating } from '../types'
+
+import { getLanguage } from '@/languages'
 
 /** Disable fuzz in test mode for deterministic scheduling */
 const isTestMode = import.meta.env.MODE === 'test'

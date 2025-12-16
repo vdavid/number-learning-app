@@ -1,5 +1,6 @@
-import { getLanguage } from '@features/languages'
 import { useCallback, useEffect, useRef, useState } from 'react'
+
+import { getLanguage } from '@/languages'
 
 // Test mode detection
 const isTestMode = import.meta.env.MODE === 'test'

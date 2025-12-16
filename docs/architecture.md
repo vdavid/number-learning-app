@@ -1,16 +1,47 @@
 # Architecture overview
 
-This document describes the high-level architecture of the number trainer app.
+This document describes the high-level architecture of the number learning app.
+
+## Tech stack
+
+- **React 19** with TypeScript
+- **Vite 7** for builds and dev server
+- **Tailwind CSS 4** for styling
+- **Zustand** for state management
+- **ts-fsrs** for spaced repetition scheduling
+- **Motion** (Framer Motion) for animations
+- **PWA** ready with offline support
+
+## Project structure
+
+The codebase is organized into modules under `src/`:
+
+```
+src/
+├── game/               # Game screens
+│   ├── level-selector/ # Home screen with learning path
+│   ├── session/        # Game loop (Listen/Speak modes)
+│   └── settings/       # Settings screen
+├── languages/          # Language definitions (Sino-Korean, Swedish, etc.)
+├── curriculum/         # Curriculum data and types
+├── srs/                # Spaced repetition stores (progress, session)
+├── ui/                 # Reusable UI components
+├── utils/              # Utility functions
+└── App.tsx             # Main app with routing
+```
+
+Each module contains related components, hooks, logic, and co-located tests.
 
 ## Key concepts
 
-### Features
+### Modules
 
-Features are vertical slices of functionality. Each feature:
-
-- Has its own directory under `src/`
-- Contains all related components, hooks, and logic
-- Has tests co-located with source files
+- `game/` — Game screens (level-selector, session, settings)
+- `languages/` — Pluggable language definitions
+- `curriculum/` — Curriculum data and types
+- `srs/` — Spaced repetition stores
+- `ui/` — Reusable UI components
+- `utils/` — Utility functions
 
 ### Languages
 

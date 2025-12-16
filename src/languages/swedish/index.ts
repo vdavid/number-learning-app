@@ -1,7 +1,6 @@
-import { loadCurriculum } from '@/curriculum/curriculum.ts'
-
 import { numberToSwedish, parseSwedish } from './normalizer.ts'
 
+import { loadCurriculum } from '@/curriculum/curriculum.ts'
 import type { Language } from '@/languages'
 
 export const swedish: Language = {

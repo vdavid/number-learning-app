@@ -2,7 +2,8 @@ import { useCallback, useEffect, useRef } from 'react'
 
 import { createDebugLogger, logger } from '../utils'
 
-import { getLanguage } from '@/languages'
+import { loadCurriculum } from '@/curriculum/curriculum.ts'
+import { getLanguage, type LanguageId } from '@/languages'
 
 const log = createDebugLogger('app:tts')
 
@@ -42,7 +43,7 @@ export function clearAudioPlayLog(): void {
 }
 
 type UseTTSOptions = {
-    languageId: string
+    languageId: LanguageId
     onEnd?: () => void
 }
 

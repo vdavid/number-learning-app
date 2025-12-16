@@ -4,9 +4,9 @@
     "version": "0.1.0",
     "type": "module",
     "scripts": {
-        "dev": "node scripts/setup-curriculum.js && vite --mode dev",
-        "dev:test": "node scripts/setup-curriculum.js && vite --mode test",
-        "build": "node scripts/setup-curriculum.js && tsc -b && vite build",
+        "dev": "vite --mode dev",
+        "dev:test": "vite --mode test",
+        "build": "tsc -b && vite build",
         "lint": "eslint .",
         "lint:fix": "eslint . --fix",
         "format": "prettier --write .",

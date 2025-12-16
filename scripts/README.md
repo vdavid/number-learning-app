@@ -11,7 +11,7 @@ This folder contains build-time scripts for generating curriculum and audio file
 
 These generators are language-specific. They generate deterministic curriculum with all numbers and help texts.
 
-Run `npx tsx scripts/curriculum-gen/{language-id}/generate.ts` to generate curriculum.
+Run `pnpm cur-gen --lang {language-id}` to generate curriculum (or just `pnpm cur-gen` to gen all, it's fast!).
 
 Outputs will be at `src/features/languages/{language-id}/curriculum.json`.
 

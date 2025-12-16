@@ -1,5 +1,5 @@
 import { getLanguage } from '@features/languages'
-import type { Curriculum } from '@shared/types'
+import { loadCurriculum } from '@features/languages/curriculum.ts'
 import { useCallback, useEffect, useRef } from 'react'
 
 import { createDebugLogger, logger } from '../utils'
@@ -46,66 +46,11 @@ type UseTTSOptions = {
     onEnd?: () => void
 }
 
-const languageIdToCurriculumCache = new Map<string, Curriculum | null>()
-
-/** Track in-flight curriculum loads to allow awaiting */
-const pendingCurriculumLoads = new Map<string, Promise<Curriculum | null>>()
-
 /** Cache for chosen audio URLs per (languageId, number) - persists across renders */
 const chosenAudioCache = new Map<string, string>()
 
 /** Track in-flight audio selection to prevent race conditions */
 const pendingAudioSelection = new Map<string, Promise<string | null>>()
-
-/**
- * Load the curriculum for a language.
- * Returns null if the curriculum doesn't exist or fails to load.
- * Multiple calls for the same language will share the same promise.
- */
-async function loadCurriculum(languageId: string): Promise<Curriculum | null> {
-    // Return the cached result if available
-    if (languageIdToCurriculumCache.has(languageId)) {
-        const cached = languageIdToCurriculumCache.get(languageId)
-        log('Curriculum cache hit for %s', languageId)
-        return cached ?? null
-    }
-
-    // Return the pending load if in progress
-    const pending = pendingCurriculumLoads.get(languageId)
-    if (pending) {
-        log('Curriculum load already in progress for %s', languageId)
-        return pending
-    }
-
-    // Start new load
-    log('Loading curriculum for %s', languageId)
-    const loadPromise = (async (): Promise<Curriculum | null> => {
-        try {
-            const response = await fetch(`/${languageId}/curriculum.json`)
-            if (!response.ok) {
-                logger.warn('[WARN] Failed to load curriculum for %s: %d', languageId, response.status)
-                languageIdToCurriculumCache.set(languageId, null)
-                return null
-            }
-            const curriculum = (await response.json()) as Curriculum
-            logger.debug('Curriculum loaded for %s with %d stages', languageId, curriculum.stages.length)
-            languageIdToCurriculumCache.set(languageId, curriculum)
-            return curriculum
-        } catch (error) {
-            logger.error('Error loading curriculum for %s: %O', languageId, error)
-            languageIdToCurriculumCache.set(languageId, null)
-            return null
-        }
-    })()
-
-    pendingCurriculumLoads.set(languageId, loadPromise)
-
-    try {
-        return await loadPromise
-    } finally {
-        pendingCurriculumLoads.delete(languageId)
-    }
-}
 
 /**
  * Build potential audio URLs for a number.
@@ -324,7 +269,7 @@ export function useTTS({ languageId, onEnd }: UseTTSOptions) {
             const selectionPromise = (async (): Promise<string | null> => {
                 log('Starting audio selection for number %d in language %s', num, languageId)
                 // Wait for the curriculum to load (this is fast if already cached)
-                const curriculum = await loadCurriculum(languageId)
+                const curriculum = loadCurriculum(languageId)
                 if (!curriculum?.voices || curriculum.voices.length === 0) {
                     logger.warn('No voices available in curriculum for %d', num)
                     return null

@@ -19,7 +19,9 @@ Writing and code styles.
       "allowlist/denylist" over "whitelist/blacklist".
     - **Be mindful of user expertise**: Avoid jargon. Link to definitions and explain concepts when necessary.
     - **Avoid latinisms**: For example, use "for example" instead of "e.g.".
-    - **Avoid abbreviations**: Very common acronyms like "URL" are okay. Also, use "docs" rather than "documentation".
+    - **Avoid abbreviations**: Very common acronyms like "URL" are okay.
+    - **Some casual terms are okay**: Use "docs", not "documentation". Use "dev" for developer and "gen" for generation
+      where appropriate and understandable.
 - Punctuation, capitalization, numbers
     - **Use sentence case in titles**: Regardless whether visible on the UI or dev only.
     - **Use sentence case in labels**: Applies to buttons, labels, and similar. But omit periods on short microcopy.
@@ -36,11 +38,30 @@ Writing and code styles.
 
 ## Code
 
-- Add meaningful comments for public go functions, methods, and types to help the next dev.
-- Don't use classes in TypeScript, use only modules.
-- Keep editor settings in sync with `.editorconfig`, gofmt, and Prettier config so they all format code consistently.
+### Comments
 
-## Commit messages
+Only add JSDoc that actually adds info.
+
+- ✅ Add meaningful comments for public functions, methods, and types to help the next dev.
+- ❌ BUT DO NOT use JSDoc for stuff like `Gets the name` for a function called `getName` :D
+- ❌ DO NOT repeat TypeScript types in `@param`/`@returns`.
+- ✅ USE JSDoc to mark caveats, tricky/unusual solutions, formats (`YYYY-MM-DD`), and constraints (`must end with /`)
+- ⚠️ Before adding JSDoc, try using a more descriptive name for the function/param/variable.
+
+### TypeScript
+
+- Only use functional components and modules. No classes anywhere.
+- Prefer functional programming (map, reduce, some, forEach) and pure functions wherever it makes sense.
+- Use `const` for everything, unless it makes the code unnecessarily verbose.
+- Start function names with a verb, unless unidiomatic in the specific case.
+- Use `camelCase` for variable and constant names, including module-level constants.
+- Put constants closest to where they are used. If a constant is only used in one function, put it in that function.
+- For maps, try to name them like `somethingToSomeethingElseMap`. That avoids unnecessary comments.
+- Keep interfaces minimal: only export what you must export.
+
+## Git
+
+### Commit messages
 
 The first line is max 50 characters. Examples: "Add new feature X", "Frontend: Fix Save button size on the Settings
 page"
@@ -48,23 +69,9 @@ page"
 Then a blank line. Then a more detailed description if needed, as a form of a concise bulleted list, or free text with
 meaningful extra details on what the commit does.
 
-## Comments
+### PRs
 
-Only add JSDoc that actually adds info.
-
-- DO NOT use JSDoc for stuff like `Gets the name` for a function called `getName` :D
-- DO NOT use JSDoc for redundant param and return val descriptions, or anything that TypeScript already defines.
-- USE JSDoc to mark caveats, tricky/unusual solutions, or formatting like "YYYY-MM-DD" for a date string or "must end
-  with a slash" for a path argument.
-- Before adding JSDoc, consider using a more descriptive name for the function/param/variable.
-
-## TypeScript
-
-- Only use functional components and modules. No classes anywhere.
-- Use pure functions wherever possible and makes sense.
-- Use `const` for everything, unless it makes the code unnecessarily verbose.
-- Start function names with a verb, unless unidiomatic in the specific case.
-- Use `camelCase` for variable and constant names, including module-level constants.
-- Put constants closest to where they are used. If a constant is only used in one function, put it in that function.
-- For maps, try to name them like `somethingToSomeethingElseMap`. That avoids unnecessary comments.
-- Keep interfaces minimal: only export what you must export.
+- Use the PR title to summarize the changes in a casual/informal tone. Be information dense and concise.
+- In the desc., write a thorough, organized, but concise, often bulleted list of the changes. Use no headings.
+- At the bottom of the PR description, use a single "## Test plan" heading, in which, explain how the changes were
+  tested. Assume that the changes were also tested manually if it makes sense for the type of changes.

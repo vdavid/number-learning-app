@@ -4,14 +4,60 @@ Quick reference for AI agents working on this codebase.
 
 ## Project overview
 
-Number trainer: a reflex trainer web app for mastering numbers in foreign languages. Uses FSRS spaced repetition.
-Currently supports Sino-Korean numbers.
+Number learning app: an SRS web app for learning numbers in a foreign language. Uses FSRS spaced repetition. Currently
+teaches Sino-Korean and Swedish numbers. Deployed as several PWAs, one for each language. In dev mode, all languages are
+served from a single PWA, and a language selector is at the top-left.
 
-## Tech stack
+### Tech stack
 
-React 19, TypeScript 5.9, Zustand, Tailwind CSS 4, Vitest, pnpm
+React 19, TypeScript 5.9, Zustand, Tailwind CSS 4, Vitest, pnpm.
 
-## Commands
+## More docs
+
+- `docs/adding-a-language.md` — How to add a new language module
+- `docs/architecture.md` — Dir structure, state management, data flow
+- `docs/style-guide.md` — Writing style, code conventions, commit messages
+
+### Directory structure
+
+```
+docs/                   # Architecture, style guide, how-tos
+e2e/                    # End-to-end tests
+public/                 # Static assets: favicon and audio files
+scripts/                # Audio and curriculum generation scripts
+src/
+├── game/               # Game screens
+│   ├── level-selector/ # Home screen with learning path
+│   ├── session/        # Game loop (Listen/Speak modes)
+│   └── settings/       # Settings screen
+├── languages/          # Language definitions (Sino-Korean, Swedish, etc.)
+├── curriculum/         # Curriculum data and types
+├── srs/                # Spaced repetition stores (progress, session)
+├── ui/                 # Reusable UI components
+├── utils/              # Utility functions (logger, etc.)
+├── App.tsx             # Root component
+└── index.css           # Global styles + Tailwind tokens
+```
+
+## Processes and tooling
+
+### Code style
+
+- **Prettier**: Single quotes, no semi, 4-space indent, trailing commas everywhere, 120 char line width.
+- **ESLint (strict TypeScript)**: No `any`, no unused vars, prefer `const` over `let`, no floating promises (always
+  `await`, `void`, or `.catch()`), no unsafe operations, no untyped assignments, import order enforced: builtin →
+  external → internal → relative, alphabetized, no console\*\* (remove before committing, or use `logger`), complexity
+  max. 15 (enforced!)
+- **knip**: No unused files and exports.
+- **More rules:** Use modules no classes, use pure functions. `const` over `let`. Func names start with verbs. camelCase
+  for all vars AND ALL constants! Tests like `foo.test.ts` placed next to `foo.ts`.
+- **Writing style**: IMPORTANT: Sentence case for all titles and labels! In all comms, incl. docs and messages! Active
+  voice, friendly tone, no jargon. Use contractions ("I'm", "don't"). Oxford comma.
+
+Load the [style guide](docs/style-guide.md) into your context and strictly keep it in mind if you're doing any
+non-trivial changes to the repo.
+
+### Commands
 
 ```bash
 pnpm format && pnpm tsc --noEmit && pnpm knip && pnpm lint:fix && pnpm test --run && pnpm test:e2e # All-around helpful
@@ -20,87 +66,20 @@ pnpm build        # Production build
 pnpm playwright test -g "test name" --repeat-each=10 --workers=1 # Run a single test 10 times
 ```
 
-## Directory structure
-
-```
-src/
-├── features/           # Vertical slices (languages, level-selector, session)
-├── shared/             # Reusable code (components, hooks, stores, types)
-├── App.tsx             # Root component
-└── index.css           # Global styles + Tailwind tokens
-scripts/                # Audio/curriculum generation scripts
-docs/                   # Architecture, style guide, how-tos
-```
-
-## Documentation index
-
-- `docs/architecture.md` — Directory structure, state management, data flow
-- `docs/style-guide.md` — Writing style, code conventions, commit messages
-- `docs/adding-a-language.md` — How to add a new language module
-
-## Code style (enforced by Prettier + ESLint + knip)
-
-**Prettier**:
-
-- Single quotes, no semicolons
-- 4-space indent
-- Trailing commas everywhere
-- 120 char line width
-
-**ESLint (strict TypeScript)**:
-
-- **No `any`** — use `unknown` or proper types
-- **No unused variables** — remove or prefix with `_`
-- **No floating promises** — always `await` or `.catch()`
-- **No unsafe operations** — no `as any`, no untyped assignments
-- **Import order enforced** — builtin → external → internal → relative, alphabetized
-- **No console** (warning) — remove before committing or use a logger
-- **Complexity max 15** — split large functions
-
-**knip**:
-
-- **No unused files and exports** — all exported items must be imported somewhere
-
-## Code conventions
-
-- **Functional only** — no classes anywhere, use modules and pure functions
-- **`const` everything** — unless it makes code unnecessarily verbose
-- **Function names start with verbs** — `getUser`, `handleClick`, `parseNumber`
-- **camelCase** for all variables/constants, including module-level
-- **Minimal exports** — only export what other modules need
-- **Co-located tests** — `foo.test.ts` next to `foo.ts`
-
-## JSDoc philosophy
-
-Only add JSDoc that provides value:
-
-- ❌ Don't document `getName` with "Gets the name"
-- ❌ Don't repeat TypeScript types in `@param`/`@returns`
-- ✅ Document caveats, formats (`YYYY-MM-DD`), constraints (`must end with /`)
-- ✅ Consider renaming before adding a comment
-
-## Writing style
-
-- IMPORTANT: Sentence case for all titles and labels!
-- Active voice, friendly tone, no jargon
-- Use contractions (I'm, don't) to make it friendly
-- Oxford comma
-- See `docs/style-guide.md` for the full guide!
-
 ## State management
 
-Three Zustand stores in `src/shared/stores/`:
+Three Zustand stores:
 
-1. **progress-store** — FSRS card data, stage unlocking (persisted)
-2. **session-store** — current game state, queue (in-memory)
-3. **settings-store** — user preferences (persisted)
+1. **progress-store** (`src/srs/`) — FSRS card data, stage unlocking (persisted)
+2. **session-store** (`src/srs/`) — current game state, queue (in-memory)
+3. **settings-store** (`src/game/settings/`) — user preferences (persisted)
 
 ## Logging
 
 Use `logger` instead of `console.*`:
 
 ```ts
-import { createDebugLogger, logger } from '@/shared/utils/logger'
+import { createDebugLogger, logger } from '@/utils/logger'
 
 logger.info('User started session') // Always logs with [INFO] prefix
 logger.debug('Card state:', card) // Only logs when debug mode is enabled
@@ -115,3 +94,9 @@ Debug logs are enabled in dev mode.
 ## Adding a language
 
 See `docs/adding-a-language.md`.
+
+## Writing a PR description
+
+When asked to write a PR description, compare the git changes with `git log main..HEAD --pretty=format:"%h %s%n%b"`,
+check a `git diff main..HEAD --stat` and do a deeper git diff to understand the key changes. Then write a title and desc
+based on the [style guide](docs/style-guide.md). Return it in a Markdown block for easy copying.

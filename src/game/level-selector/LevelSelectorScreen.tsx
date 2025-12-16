@@ -1,12 +1,14 @@
-import { Button } from '@shared/components'
-import { useProgressStore, useSettingsStore, useSessionStore } from '@shared/stores'
 import { motion } from 'motion/react'
 import { useCallback, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { LevelNodePair } from './LevelNode'
 
+import { useSettingsStore } from '@/game/settings/settings-store.ts'
 import { getAllLanguages, getLanguage, type LanguageId } from '@/languages'
+import { useProgressStore } from '@/srs/progress-store.ts'
+import { useSessionStore } from '@/srs/session-store.ts'
+import { Button } from '@/ui/Button.tsx'
 
 export function LevelSelectorScreen() {
     const maxNewCardsPerSession = 10

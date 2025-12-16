@@ -1,8 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-import type { CardState } from '../types'
+import { useSessionStore } from './session-store.ts'
 
-import { useSessionStore } from './session-store'
+import type { CardState } from '@/srs/types.ts'
 
 const createMockCard = (overrides: Partial<CardState> = {}): CardState => ({
     id: 'sino-korean-1-listen',

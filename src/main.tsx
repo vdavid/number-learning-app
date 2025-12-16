@@ -3,8 +3,9 @@ import { createRoot } from 'react-dom/client'
 
 import { App } from './App'
 import './index.css'
-import { initTestUtils } from './shared/test-utils'
-import { logger } from './shared/utils'
+import { initTestUtils } from './utils/test-utils.ts'
+
+import { logger } from '@/utils/logger'
 
 // Initialize test utilities in test mode (for E2E tests)
 if (import.meta.env.MODE === 'test') {

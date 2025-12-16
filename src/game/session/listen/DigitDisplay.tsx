@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from 'motion/react'
 
-import type { AttemptResult } from '../stores'
+import type { AttemptResult } from '@/srs/session-store.ts'
 
 interface DigitDisplayProps {
     /** Current input value */

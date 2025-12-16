@@ -1,6 +1,6 @@
-import type { Stage } from '@shared/types/index.js'
+import { range, sparseRange, toNumberEntries } from './utils.ts'
 
-import { range, sparseRange, toNumberEntries } from './utils.js'
+import type { Stage } from '@/curriculum/curriculum.ts'
 
 /**
  * Returns the default curriculum template with English descriptions as a template.

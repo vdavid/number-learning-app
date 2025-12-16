@@ -2,20 +2,19 @@
 
 import * as fs from 'node:fs'
 
-import type { Curriculum, Stage } from '@shared/types/index.js'
-
-import { LanguageId } from '../../src/languages/index.js'
-
-import { getDefaultStages } from './default-stages.js'
-import { configs } from './languages/index.js'
-import type { LanguageConfig } from './languages/types.js'
+import { getDefaultStages } from './default-stages.ts'
+import { configs } from './languages/index.ts'
+import type { LanguageConfig } from './languages/types.ts'
 import {
     createSeededRandom,
     formatCurriculumJson,
     getCurriculumPath,
     shuffleArray,
     writeCurriculumFile,
-} from './utils.js'
+} from './utils.ts'
+
+import type { Curriculum, Stage } from '@/curriculum/curriculum.ts'
+import type { LanguageId } from '@/languages/index.ts'
 
 interface CliArgs {
     lang?: LanguageId

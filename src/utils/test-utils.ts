@@ -3,7 +3,7 @@
  * Only initialized when import.meta.env.MODE === 'test'.
  */
 
-import { clearAudioPlayLog } from '@shared/hooks'
+import { clearAudioPlayLog } from '../game/session/use-tts.ts'
 
 interface AudioPlayLogEntry {
     url: string

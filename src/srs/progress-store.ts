@@ -2,9 +2,8 @@ import { createEmptyCard, fsrs, generatorParameters, type Card as FSRSCard, Rati
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
-import type { CardMode, CardState, DecayState, ResponseRating } from '../types'
-
-import { getLanguage, type LanguageId } from '@/languages'
+import { getLanguage, type LanguageId } from '@/languages/index.ts'
+import type { CardMode, CardState, DecayState, ResponseRating } from '@/srs/types.ts'
 
 /** Disable fuzz in test mode for deterministic scheduling */
 const isTestMode = import.meta.env.MODE === 'test'
@@ -339,7 +338,7 @@ export const useProgressStore = create<ProgressState>()(
                 return calculateStageWorstDecay(
                     state.allCardsByID,
                     languageId,
-                    stage.numbers.map((num) => num.value),
+                    stage.numbers.map((num: { value: number }) => num.value),
                     mode,
                     isFrontierStage,
                 )

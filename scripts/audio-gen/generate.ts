@@ -33,18 +33,18 @@ import { fileURLToPath } from 'node:url'
 // noinspection ES6PreferShortImport -- It doesn't work with a short import
 import { ElevenLabsClient } from '@elevenlabs/elevenlabs-js'
 
-import { loadCurriculum } from '../../src/curriculum/curriculum.js'
 // noinspection ES6PreferShortImport -- It doesn't work with a short import
-import { getAllLanguageIds, getLanguage, type Language, LanguageId } from '../../src/languages/index.js'
+import { getAllLanguageIds, getLanguage, type Language, type LanguageId } from '../../src/languages/index.ts'
 // noinspection ES6PreferShortImport -- It doesn't work with a short import
-import type { Curriculum, TTSProvider, VoiceConfig } from '../../src/shared/types/index.js'
 
 import {
     audioFileExists as audioFileExistsElevenLabs,
     createClient,
     generateAudio as generateAudioElevenLabs,
-} from './elevenlabs.js'
-import { audioFileExists as audioFileExistsGoogle, generateAudioGoogle } from './google-api.js'
+} from './elevenlabs.ts'
+import { audioFileExists as audioFileExistsGoogle, generateAudioGoogle } from './google-api.ts'
+
+import { loadCurriculum, type Curriculum, type TTSProvider, type VoiceConfig } from '@/curriculum/curriculum.ts'
 
 type GenerateOptions = {
     languageId: LanguageId | null
@@ -239,7 +239,7 @@ export async function generateAudioFiles(options: GenerateOptions) {
     if (!options.languageId) {
         throw new Error('Please specify a language ID using --language')
     }
-    const curriculum = loadCurriculum(options.languageId) as Curriculum
+    const curriculum = loadCurriculum(options.languageId)
 
     console.log('🎙️  Audio Generator\n')
 

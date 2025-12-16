@@ -18,7 +18,9 @@
         "test:e2e": "playwright test",
         "test:e2e:ui": "playwright test --ui",
         "test:e2e:headed": "playwright test --headed",
-        "knip": "knip"
+        "knip": "knip",
+        "cur-gen": "tsx scripts/curriculum-gen/generate.ts",
+        "cur-gen:check": "tsx scripts/curriculum-gen/generate.ts --check"
     },
     "dependencies": {
         "lucide-react": "^0.561.0",

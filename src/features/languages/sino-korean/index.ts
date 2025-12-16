@@ -10,7 +10,7 @@ export const sinoKorean: Language = {
     sttLanguageCode: 'ko-KR',
     flag: '🇰🇷',
     curriculum: loadCurriculum('sino-korean'),
-    numberToNonLatin: numberToSinoKorean,
+    numberToWords: numberToSinoKorean,
     numberToRomanized: numberToSinoKoreanRomanized,
     parseSpokenNumber: parseSinoKorean,
 }

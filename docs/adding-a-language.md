@@ -6,16 +6,19 @@ This guide explains how to add support for a new language to the number trainer.
 
 For each new language, you'll need to:
 
-1. A Language definition (id, name, language code, flag)
-2. A curriculum defining the learning stages
-3. Implement number-to-words conversion (for TTS), spoken-words-to-number parsing (for STT validation), and optionally a
-   romanization script, only if the language uses a non-Latin script.
+1. Create a language definition (id, name, language code, flag)
+2. A curriculum defining the default learning stages
+3. Implement two or three functions:
+    1. `numberToWords` – 3 => "three". Used for text-to-speech (TTS) generation.
+    2. `parseSpokenNumber` – {"three", "3", "٣"} => 3. Used for speech-to-text (STT) validation.
+    3. `numberToRomanized` – optional, needed only if `numberToWords` returns non-Latin script, like "삼" in
+       Sino-Korean. This should return a string like "o-sip-sa" ("fifty-four" in Korean).
 4. Generate audio files
 5. Wire it up in the app
 
 ## Step-by-step guide
 
-### 1. Decide about the language basics
+### 1. Create the language definition
 
 1. Decide on the language ID (examples: german, spanish, sino-korean), name ("German", "Spanish", "Sino-Korean"), code
    ([IETF language tag](https://en.wikipedia.org/wiki/IETF_language_tag) and
@@ -25,63 +28,84 @@ For each new language, you'll need to:
 
 ### 2. Create the curriculum
 
-1. Create a generator at `scripts/curriculum-gen/{your-language}/generate.ts` that outputs a `Curriculum` typed JSON to
-   `src/features/languages/{your-language}/curriculum.json`, also filling the `helpText` field where it makes sense.
-    - Stages
-        - The curriculum should normally be these 9 stages:
-            1. **1–10** (Digits)
-            2. **11–20** (Teens)
-            3. **21–30** (Twenties)
-            4. **Decades** (0, 10, 20... 90, 100)
-            5. **31–99** (Sparse random selection, ~50 cards)
-            6. **Hundreds** (200, 300... 1000)
-            7. **101–1000** (Sparse random selection, ~100 cards)
-            8. **1000–10000** (Sparse random selection, ~100 cards)
-            9. **10000+** (~200 cards)
+1.  Create a language generator config at `scripts/curriculum-gen/languages/{your-language}.ts` that exports a
+    `LanguageConfig`:
 
-        - But consider language-specific quirks, for example, 70–99 in French might deserve its separate stage.
-        - Overall, just think about the stage structure before setting it up.
+        ```ts
+        import type { LanguageConfig } from './types.js'
 
+        const helpTexts: Record<number, string> = {
+            // Number-specific tips for English speakers
+            1: 'Explain pronunciation or pattern here...',
+            // ...
+        }
+
+        export const yourLanguageConfig: LanguageConfig = {
+            id: 'your-language',
+            helpTexts,
+            voices: [], // We'll fill this in a later step
+            localizeStages: (stages) => {
+                // Customize stage names/descriptions here!
+                return stages
+            },
+        }
+        ```
+
+2.  Register your config in `scripts/curriculum-gen/languages/index.ts`:
+
+    ```ts
+    import { yourLanguageConfig } from './your-language.js'
+
+    export const configs: Record<string, LanguageConfig> = {
+        // ...existing languages
+        'your-language': yourLanguageConfig,
+    }
+    ```
+
+3.  The curriculum uses a default 9-stage structure (defined in `default-stages.ts`):
+    1. **1–10** (Digits)
+    2. **11–20** (Teens)
+    3. **21–30** (Twenties)
+    4. **Decades** (0, 40, 50... 100)
+    5. **31–99** (Sparse random selection)
+    6. **Hundreds** (100, 200... 1000)
+    7. **101–999** (Sparse random selection)
+    8. **1000–9999** (Sparse random selection)
+    9. **10000+** (Sparse random selection)
+
+    Use `localizeStages()` to customize stage names/descriptions for your language, or override numbers if needed (e.g.,
+    French might want a separate stage for 70–99).
     - `helpText`
-        - `helpText` is an important feature where we can aid the language student with clues for remembering the
-          number, or about understanding the logic in the language.
-        - Length should be max. 170 chars (soft limit), but be concise, only use longer helpTexts if meaningful.
-        - Leave the vast majority of them empty for numbers above 1,000 and the such, but for numbers especially in the
+        - `helpText` aids the student with clues for remembering the number, and about understanding language logic.
+        - Should be max. 170 chars (soft limit). Be concise, only use longer `helpText`s if meaningful.
+        - Leave the vast majority of them empty for numbers above 1,000 and such, but for numbers especially in the
           beginning, it'd be important to not just quiz them but also help English speakers understand the logic.
-        - I'd like to add stuff like, {25, helpText: 'In Danish, we base things on 100, so 25 is like
-          "quarter-of-a-hundred"'} and for Swedish, {11, helpText: "It's irregular, like in English."}, or also "{20,
-          helpText: 'It's sometimes pronounced "ːʃügo" / "shuego", sometimes "ːʃügi" / "shuegi", at times even "ːʃü" /
-          "shü"} or similar. Just one sentence here and there to help with cultural variations, background. Anything
-          that makes it stick for students.
         - Think about how your language reads numbers and be especially mindful of the weird stuff. Those are the parts
           that students need to be particularly mindful of.
         - Some more examples:
             - Sino-Korean uses multipliers: 십 (10), 백 (100), 천 (1000), 만 (10000). Implicit "one" before multipliers:
               백 =100 (not 일백)
             - Japanese is similar to Sino-Korean with multipliers. It uses different readings for some numbers.
-            - French has special cases for 70-79 (soixante-dix to soixante-dix-neuf), and for 80-99 (quatre-vingts
+            - French has special cases for 70–79 (soixante-dix to soixante-dix-neuf), and for 80–99 (quatre-vingts
               system)
             - In German, units come before the tens: 54 = "vierundfünfzig" (four-and-fifty)
-        - Don't write prefixes like `1 —`. The game already displays numbers, incl. non-latin script where applicable.
-        - Don't rely on the sequence. Don't write "Almost at twenty!" for 19. The numbers are randomized per stage, and
+        - DO NOT write prefixes like `1 —`. The game already displays numbers, incl. non-latin script where applicable.
+        - DO NOT rely on the sequence. Don't write "Almost at twenty!" for 19. The numbers are randomized per stage, and
           20 might come earlier than 19.
-        - To know what numbers you can add help texts for, you'll need to know which random numbers actually end up,
-          generate the curriculum first without the helpText to see which numbers actually get in the generation. Use
-          the command
-          `jq -r '[.stages[].numbers[].value] | join(", ")' src/features/languages/sino-korean/curriculum.json` to list
-          the numbers. Don't generate
         - Make them timeless. These are flashcards in an SRS system. Even when the student is studying 3-digit numbers,
           single digits will sometimes come up. Consider this when writing the help texts.
-        - See `scripts/curriculum-gen/sino-korean/generate.ts` for reference.
+        - To know what numbers you can add help texts for, you'll need to know which random numbers actually end up in
+          the JSON. So it's best to generate the curriculum first without the `helpText` (using
+          `pnpm cur-gen --lang your-language`) to see which numbers get into the generation. Use the command
+          `jq -r '[.stages[].numbers[].value] | join(", ")' src/features/languages/sino-korean/curriculum.json` to list
+          the numbers.
+        - See the files in `scripts/curriculum-gen/languages/` for reference, like `swedish.ts`, and `sino-korean.ts`.
 
-    - Randomization
-        - The stages should be in order.
-        - In the stages with sparse random selection, the generated numbers should be randomized, but in a deterministic
-          fashion (seeded random gen) so that the curriculum always contains the same numbers even if regenerated.
-        - The numbers within each stage should be randomized (so, first stage is not 1, 2, 3, ... but 8, 3, 5, etc. so
-          it's a bit more interesting. But make this deterministic too.
+4.  Generate the curriculum:
 
-2. Generate the curriculum JSON: `npx tsx scripts/curriculum-gen/{your-language}/generate.ts`.
+- `pnpm cur-gen --lang your-language` to generate a single language.
+- `pnpm cur-gen` to generate all.
+- `pnpm cur-gen:check` to verify all curriculum JSONs are fresh. (useful in CI)
 
 ### 3. Implement converter/parser scripts
 

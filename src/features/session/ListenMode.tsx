@@ -104,7 +104,7 @@ export function ListenMode() {
 
     const digitCount = String(card.number).length
     const language = getLanguage(languageId)
-    const nonLatinScript = language.numberToNonLatin(card.number)
+    const numberAsWords = language.numberToWords(card.number)
     const romanized = language.numberToRomanized?.(card.number) ?? ''
 
     // Get help text from curriculum
@@ -145,7 +145,7 @@ export function ListenMode() {
                 <div className='mb-4'>
                     <AnswerDisplay
                         number={card.number}
-                        nonLatinScript={nonLatinScript}
+                        nonLatinScript={numberAsWords}
                         romanizedForm={romanized}
                         helpText={helpText}
                         userAnsweredCorrectly={result === 'correct'}

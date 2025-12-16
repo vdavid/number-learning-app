@@ -44,5 +44,8 @@ jobs:
             - name: Run ESLint
               run: pnpm lint --max-warnings 0
 
+            - name: Check curriculum freshness
+              run: pnpm cur-gen:check
+
             - name: Run tests
               run: pnpm test -- --run

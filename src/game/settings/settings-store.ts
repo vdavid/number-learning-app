@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
-import { defaultLanguageID, type LanguageId } from '@/languages'
+import { defaultLanguageID, type LanguageId } from '@/languages/index.ts'
 
 interface SettingsState {
     /** Currently selected language ID */

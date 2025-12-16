@@ -1,9 +1,8 @@
 import { useCallback, useEffect, useRef } from 'react'
 
-import { createDebugLogger, logger } from '../utils'
-
 import { loadCurriculum } from '@/curriculum/curriculum.ts'
-import { getLanguage, type LanguageId } from '@/languages'
+import { getLanguage, type LanguageId } from '@/languages/index.ts'
+import { createDebugLogger, logger } from '@/utils/logger.ts'
 
 const log = createDebugLogger('app:tts')
 

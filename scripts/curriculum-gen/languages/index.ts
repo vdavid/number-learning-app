@@ -1,12 +1,12 @@
-import { LanguageId } from '../../../src/languages/index.js'
+import { sinoKoreanConfig } from './sino-korean.ts'
+import { swedishConfig } from './swedish.ts'
+import type { LanguageConfig } from './types.ts'
 
-import { sinoKoreanConfig } from './sino-korean.js'
-import { swedishConfig } from './swedish.js'
-import type { LanguageConfig } from './types.js'
+import type { LanguageId } from '@/languages/index.ts'
 
 export const configs: Record<LanguageId, LanguageConfig> = {
     'sino-korean': sinoKoreanConfig,
     swedish: swedishConfig,
 }
 
-export type { LanguageConfig } from './types.js'
+export type { LanguageConfig } from './types.ts'

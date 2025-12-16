@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 
-import { Keypad } from './Keypad'
+import { Keypad } from './Keypad.tsx'
 
 describe('Keypad', () => {
     it('should render all number keys 0-9', () => {

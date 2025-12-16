@@ -1,6 +1,5 @@
-import type { Stage, VoiceConfig } from '@shared/types/index.js'
-
-import { LanguageId } from '../../../src/languages/index.js'
+import type { Stage, VoiceConfig } from '@/curriculum/curriculum.ts'
+import type { LanguageId } from '@/languages/index.ts'
 
 export interface LanguageConfig {
     id: LanguageId

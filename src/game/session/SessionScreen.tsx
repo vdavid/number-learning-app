@@ -1,10 +1,11 @@
-import { ProgressBar } from '@shared/components'
-import { useSessionStore } from '@shared/stores'
 import { useCallback, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import { ListenMode } from './ListenMode'
-import { SpeakMode } from './SpeakMode'
+import { ListenMode } from './listen/ListenMode.tsx'
+import { ProgressBar } from './ProgressBar.tsx'
+import { SpeakMode } from './speak/SpeakMode.tsx'
+
+import { useSessionStore } from '@/srs/session-store.ts'
 
 /**
  * Main session screen - the game loop.

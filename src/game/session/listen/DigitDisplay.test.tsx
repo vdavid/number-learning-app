@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 
-import { DigitDisplay } from './DigitDisplay'
+import { DigitDisplay } from './DigitDisplay.tsx'
 
 describe('DigitDisplay', () => {
     it('should render the correct number of digit slots', () => {

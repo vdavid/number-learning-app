@@ -1,8 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-import type { CardState } from '../types'
+import { calculateDecayState, useProgressStore } from './progress-store.ts'
 
-import { calculateDecayState, useProgressStore } from './progress-store'
+import type { CardState } from '@/srs/types.ts'
 
 // Reset store between tests
 beforeEach(() => {

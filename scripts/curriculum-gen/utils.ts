@@ -2,9 +2,8 @@ import * as fs from 'node:fs'
 import * as path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-import type { Curriculum, NumberEntry } from '@shared/types/index.js'
-
-import { LanguageId } from '../../src/languages/index.js'
+import type { Curriculum, NumberEntry } from '@/curriculum/curriculum.ts'
+import type { LanguageId } from '@/languages/index.ts'
 
 /** For deterministic sparse ranges. Uses a simple mulberry32 PRNG. */
 export function createSeededRandom(seed: number): () => number {

@@ -1,11 +1,17 @@
-import { VUMeter } from '@shared/components'
-import { useAudioAnalyzer, useSTT, useTTS } from '@shared/hooks'
-import { useProgressStore, useSessionStore, useSettingsStore } from '@shared/stores'
 import { ArrowRight, SkipForward, Volume2 } from 'lucide-react'
 import { motion } from 'motion/react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 
+import { useAudioAnalyzer } from '../speak/use-audio-analyzer.ts'
+import { useSTT } from '../speak/use-stt.ts'
+import { useTTS } from '../use-tts.ts'
+
+import { VUMeter } from './VUMeter.tsx'
+
+import { useSettingsStore } from '@/game/settings/settings-store.ts'
 import { getLanguage } from '@/languages'
+import { useProgressStore } from '@/srs/progress-store.ts'
+import { useSessionStore } from '@/srs/session-store.ts'
 
 const silenceTimeoutMs = 1500 // ms of silence before checking answer
 const ttsDelayMs = 1500 // ms to wait for TTS to finish before restarting recognition

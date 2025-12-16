@@ -97,8 +97,7 @@ For each new language, you'll need to:
         - To know what numbers you can add help texts for, you'll need to know which random numbers actually end up in
           the JSON. So it's best to generate the curriculum first without the `helpText` (using
           `pnpm cur-gen --lang your-language`) to see which numbers get into the generation. Use the command
-          `jq -r '[.stages[].numbers[].value] | join(", ")' src/features/languages/sino-korean/curriculum.json` to list
-          the numbers.
+          `jq -r '[.stages[].numbers[].value] | join(", ")' src/curriculum/swedish.json` to list the numbers.
         - See the files in `scripts/curriculum-gen/languages/` for reference, like `swedish.ts`, and `sino-korean.ts`.
 
 4.  Generate the curriculum:

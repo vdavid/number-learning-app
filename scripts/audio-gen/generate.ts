@@ -31,7 +31,7 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 // noinspection ES6PreferShortImport -- It doesn't work with a short import
-import { loadCurriculum } from '../../src/features/languages/curriculum.js'
+import { loadCurriculum } from '../../src/curriculum/curriculum.js'
 // noinspection ES6PreferShortImport -- It doesn't work with a short import
 import { getAllLanguageIds, getLanguage } from '../../src/languages/index.js'
 // noinspection ES6PreferShortImport -- It doesn't work with a short import

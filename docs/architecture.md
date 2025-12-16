@@ -2,44 +2,14 @@
 
 This document describes the high-level architecture of the number trainer app.
 
-## Directory structure
-
-```
-src/
-├── features/           # Feature modules (vertical slices)
-│   ├── languages/      # Language definitions
-│   │   ├── sino-korean/
-│   │   │   ├── curriculum.ts    # Learning stages
-│   │   │   ├── normalizer.ts    # Number ↔ word conversion
-│   │   │   └── index.ts         # Language definition
-│   │   ├── types.ts             # Language interface
-│   │   └── index.ts             # Language registry
-│   ├── level-selector/ # Home screen feature
-│   │   ├── LevelNode.tsx
-│   │   └── LevelSelectorScreen.tsx
-│   └── session/        # Game loop feature
-│       ├── ListenMode.tsx
-│       ├── SpeakMode.tsx
-│       └── SessionScreen.tsx
-├── shared/             # Shared code (used across features)
-│   ├── components/     # Reusable UI components
-│   ├── hooks/          # Custom React hooks (TTS, STT)
-│   ├── stores/         # Zustand state stores
-│   └── types/          # TypeScript type definitions
-├── App.tsx             # Root component with routing
-├── main.tsx            # Entry point
-└── index.css           # Global styles and design tokens
-```
-
 ## Key concepts
 
 ### Features
 
 Features are vertical slices of functionality. Each feature:
 
-- Has its own directory under `src/features/`
+- Has its own directory under `src/`
 - Contains all related components, hooks, and logic
-- Exports a clean public API via `index.ts`
 - Has tests co-located with source files
 
 ### Languages
@@ -81,13 +51,11 @@ We use [ts-fsrs](https://github.com/open-spaced-repetition/ts-fsrs) for spaced r
 
 The "rotting" visual system shows card freshness:
 
-| State    | Meaning                           | Visual             |
-| -------- | --------------------------------- | ------------------ |
-| `locked` | Stage not unlocked                | Grey, locked icon  |
-| `new`    | Not yet practiced                 | Pulsing white      |
-| `gold`   | Recently reviewed, high stability | Gold glow          |
-| `faded`  | Due soon (within 7 days)          | Muted              |
-| `rusty`  | Overdue (> 7 days)                | Brown, warning dot |
+- **locked**: Stage not unlocked – Gray, locked icon
+- **new**: Not yet practiced – Pulsing white
+- **gold**: Recently reviewed, high stability – Gold glow
+- **faded**: Due within 7 days – Muted
+- **rusty**: Overdue (> 7 days) – Brown, warning dot
 
 ## Data flow
 

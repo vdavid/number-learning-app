@@ -1,8 +1,8 @@
 // noinspection ES6PreferShortImport -- It doesn't work with a short import
-import type { Curriculum } from '../../shared/types/index.js'
+import type { Curriculum } from '@shared/types'
 
-import sinoKoreanCurriculum from './sino-korean/curriculum.json'
-import swedishCurriculum from './swedish/curriculum.json'
+import sinoKoreanCurriculum from '@/curriculum/sino-korean.json'
+import swedishCurriculum from '@/curriculum/swedish.json'
 
 const curriculumMap: Record<string, Curriculum> = {
     'sino-korean': sinoKoreanCurriculum as Curriculum,

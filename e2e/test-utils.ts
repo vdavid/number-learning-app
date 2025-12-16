@@ -60,7 +60,6 @@ export async function getAudioLog(page: Page): Promise<AudioPlayLogEntry[]> {
 declare global {
     interface Window {
         __testUtils?: {
-            setShuffleSeed: (seed: number | null) => void
             injectTranscript: (text: string, isFinal: boolean) => void
             clearAudioLog: () => void
             getAudioLog: () => AudioPlayLogEntry[]

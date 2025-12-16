@@ -83,16 +83,16 @@ function isUnchanged(curriculum: Curriculum, languageId: string) {
     try {
         existingContent = fs.readFileSync(outputPath, 'utf-8')
     } catch {
-        console.error(`❌ ${languageId}: curriculum.json not found at ${outputPath}`)
+        console.error(`❌ ${languageId}: curriculum/${languageId}.json not found at ${outputPath}`)
         return false
     }
 
     if (newContent !== existingContent) {
-        console.error(`❌ ${languageId}: curriculum.json is stale. Run 'pnpm cur-gen' to regenerate.`)
+        console.error(`❌ ${languageId}: curriculum/${languageId}.json is stale. Run 'pnpm cur-gen' to regenerate.`)
         return false
     }
 
-    console.log(`✅ ${languageId}: curriculum.json is fresh`)
+    console.log(`✅ ${languageId}: curriculum/${languageId}.json is fresh`)
     return true
 }
 

@@ -1,2 +1,2 @@
 # Generated curriculum files - formatted by the generator script
-src/features/languages/*/curriculum.json
+src/curriculum/*.json

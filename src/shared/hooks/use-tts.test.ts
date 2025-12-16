@@ -1,12 +1,14 @@
 import { describe, expect, it } from 'vitest'
 
+import type { LanguageId } from '@/languages'
+
 // These are pure functions extracted from use-tts.ts for testing
 // Since they're module-private, we test the logic by re-implementing them here
 
 /**
  * Build potential audio URLs for a number.
  */
-function buildAudioUrls(languageId: string, num: number, voices: { id: string }[]): string[] {
+function buildAudioUrls(languageId: LanguageId | 'wrong-language', num: number, voices: { id: string }[]): string[] {
     const audioFormats = ['mp3', 'opus'] as const
 
     const urls: string[] = []
@@ -21,7 +23,7 @@ function buildAudioUrls(languageId: string, num: number, voices: { id: string }[
 /**
  * Get a cache key for storing the chosen audio URL.
  */
-function getAudioCacheKey(languageId: string, num: number): string {
+function getAudioCacheKey(languageId: LanguageId | 'wrong-language', num: number): string {
     return `${languageId}:${num}`
 }
 
@@ -58,9 +60,9 @@ describe('TTS pure functions', () => {
         })
 
         it('should include correct language in path', () => {
-            const urls = buildAudioUrls('native-korean', 1, [{ id: 'voice1' }])
+            const urls = buildAudioUrls('wrong-language', 1, [{ id: 'voice1' }])
 
-            expect(urls[0]).toContain('/native-korean/audio/')
+            expect(urls[0]).toContain('/wrong-language/audio/')
         })
 
         it('should handle multi-digit numbers', () => {
@@ -74,7 +76,7 @@ describe('TTS pure functions', () => {
         it('should create a unique key from languageId and number', () => {
             expect(getAudioCacheKey('sino-korean', 5)).toBe('sino-korean:5')
             expect(getAudioCacheKey('sino-korean', 10)).toBe('sino-korean:10')
-            expect(getAudioCacheKey('native-korean', 5)).toBe('native-korean:5')
+            expect(getAudioCacheKey('wrong-language', 5)).toBe('wrong-language:5')
         })
 
         it('should create different keys for different numbers', () => {
@@ -86,7 +88,7 @@ describe('TTS pure functions', () => {
 
         it('should create different keys for different languages', () => {
             const key1 = getAudioCacheKey('sino-korean', 5)
-            const key2 = getAudioCacheKey('native-korean', 5)
+            const key2 = getAudioCacheKey('wrong-language', 5)
 
             expect(key1).not.toBe(key2)
         })

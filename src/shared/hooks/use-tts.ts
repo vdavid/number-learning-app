@@ -59,7 +59,7 @@ let speakNumberInProgress = false
 /**
  * Build potential audio URLs for a number.
  */
-function buildAudioUrls(languageId: string, num: number, voices: { id: string }[]): string[] {
+function buildAudioUrls(languageId: LanguageId, num: number, voices: { id: string }[]): string[] {
     /** Try multiple audio formats in order of preference. */
     const audioFormats = ['mp3', 'opus'] as const
 
@@ -106,7 +106,7 @@ async function findExistingAudioFiles(urls: string[]): Promise<string[]> {
 /**
  * Get a cache key for storing the chosen audio URL.
  */
-function getAudioCacheKey(languageId: string, num: number): string {
+function getAudioCacheKey(languageId: LanguageId, num: number): string {
     return `${languageId}:${num}`
 }
 

@@ -1,3 +1,5 @@
+import type { LanguageId } from '@/languages'
+
 /** Card mode - determines how the user practices */
 export type CardMode = 'listen' | 'speak'
 
@@ -10,7 +12,7 @@ export interface CardState {
     /** Practice mode */
     mode: CardMode
     /** Language this card belongs to */
-    languageId: string
+    languageId: LanguageId
     /** Stage/level this card belongs to */
     stageIndex: number
     /** FSRS scheduling data */

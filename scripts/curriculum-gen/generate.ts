@@ -4,6 +4,8 @@ import * as fs from 'node:fs'
 
 import type { Curriculum, Stage } from '@shared/types/index.js'
 
+import { LanguageId } from '../../src/languages/index.js'
+
 import { getDefaultStages } from './default-stages.js'
 import { configs } from './languages/index.js'
 import type { LanguageConfig } from './languages/types.js'
@@ -16,7 +18,7 @@ import {
 } from './utils.js'
 
 interface CliArgs {
-    lang?: string
+    lang?: LanguageId
     check: boolean
 }
 
@@ -26,7 +28,7 @@ function parseArgs(): CliArgs {
 
     for (let i = 0; i < args.length; i++) {
         if (args[i] === '--lang' && args[i + 1]) {
-            result.lang = args[i + 1]
+            result.lang = args[i + 1] as LanguageId
             i++
         } else if (args[i] === '--check') {
             result.check = true
@@ -73,7 +75,7 @@ function processLanguage(config: LanguageConfig): boolean {
     return true
 }
 
-function isUnchanged(curriculum: Curriculum, languageId: string) {
+function isUnchanged(curriculum: Curriculum, languageId: LanguageId) {
     const outputPath = getCurriculumPath(languageId)
 
     // Compare with the existing file
@@ -97,10 +99,10 @@ function isUnchanged(curriculum: Curriculum, languageId: string) {
 }
 
 function main() {
-    const args = parseArgs()
+    const args = parseArgs() as Required<CliArgs>
 
     // Determine which languages to process
-    let languageIds: string[]
+    let languageIds: LanguageId[]
     if (args.lang) {
         if (!configs[args.lang]) {
             console.error(`❌ Unknown language: ${args.lang}`)
@@ -109,7 +111,7 @@ function main() {
         }
         languageIds = [args.lang]
     } else {
-        languageIds = Object.keys(configs)
+        languageIds = Object.keys(configs) as LanguageId[]
     }
 
     if (args.check) {

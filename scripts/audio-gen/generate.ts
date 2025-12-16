@@ -31,11 +31,13 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 // noinspection ES6PreferShortImport -- It doesn't work with a short import
+import { ElevenLabsClient } from '@elevenlabs/elevenlabs-js'
+
 import { loadCurriculum } from '../../src/curriculum/curriculum.js'
 // noinspection ES6PreferShortImport -- It doesn't work with a short import
-import { getAllLanguageIds, getLanguage } from '../../src/languages/index.js'
+import { getAllLanguageIds, getLanguage, type Language, LanguageId } from '../../src/languages/index.js'
 // noinspection ES6PreferShortImport -- It doesn't work with a short import
-import type { TTSProvider, VoiceConfig } from '../../src/shared/types/index.js'
+import type { Curriculum, TTSProvider, VoiceConfig } from '../../src/shared/types/index.js'
 
 import {
     audioFileExists as audioFileExistsElevenLabs,
@@ -45,7 +47,7 @@ import {
 import { audioFileExists as audioFileExistsGoogle, generateAudioGoogle } from './google-api.js'
 
 type GenerateOptions = {
-    languageId: string
+    languageId: LanguageId | null
     voiceFilter: string // A voice name, e.g., "charlie" or "matilda", OR "all" to generate for all voices.
     providerFilter?: TTSProvider // Optional: only generate for this provider
     stageFilter?: number
@@ -72,7 +74,7 @@ function parseArgs(): GenerateOptions {
 }
 
 const ARG_HANDLERS: Record<string, (options: GenerateOptions, value: string) => void> = {
-    '--language': (opts, val) => (opts.languageId = val),
+    '--language': (opts, val) => (opts.languageId = val as LanguageId),
     '--voice': (opts, val) => (opts.voiceFilter = val),
     '--provider': (opts, val) => (opts.providerFilter = val as TTSProvider),
     '--stage': (opts, val) => (opts.stageFilter = parseInt(val, 10)),
@@ -84,7 +86,7 @@ const ARG_HANDLERS: Record<string, (options: GenerateOptions, value: string) => 
 function extractOptions(args: string[]): GenerateOptions {
     const options: GenerateOptions = {
         skipExisting: true,
-        languageId: '',
+        languageId: null,
         voiceFilter: 'all',
     }
 
@@ -122,7 +124,7 @@ function validateOptions(options: GenerateOptions): void {
     }
 }
 
-function getOutputPath(languageId: string, num: number, voiceId: string, format: 'mp3' | 'opus'): string {
+function getOutputPath(languageId: LanguageId, num: number, voiceId: string, format: 'mp3' | 'opus'): string {
     const outputDirectory = path.join(projectRoot, `public/${languageId}/audio`)
     return path.join(outputDirectory, `${num}-${voiceId}.${format}`)
 }
@@ -152,10 +154,10 @@ function filterVoices(voices: VoiceConfig[], options: GenerateOptions): VoiceCon
     return filtered
 }
 
-function collectNumbers(curriculum: ReturnType<typeof loadCurriculum>, options: GenerateOptions): number[] {
+function collectNumbers(curriculum: Curriculum, options: GenerateOptions): number[] {
     const numbersSet = new Set<number>()
-    curriculum.stages.forEach((stage, idx) => {
-        if (options.stageFilter !== undefined && idx !== options.stageFilter) return
+    curriculum.stages.forEach((stage, index) => {
+        if (options.stageFilter !== undefined && index !== options.stageFilter) return
         stage.numbers.forEach((entry) => {
             const num = entry.value
             if (options.minNumber !== undefined && num < options.minNumber) return
@@ -166,27 +168,25 @@ function collectNumbers(curriculum: ReturnType<typeof loadCurriculum>, options: 
     return [...numbersSet].sort((a, b) => a - b)
 }
 
-type GenerationContext = {
-    options: GenerateOptions
-    language: ReturnType<typeof getLanguage>
-    elevenLabsClient: ReturnType<typeof createClient> | null
-}
-
 async function generateForVoice(
     voice: VoiceConfig,
     numbers: number[],
-    ctx: GenerationContext,
+    options: GenerateOptions,
+    languageId: LanguageId,
+    elevenLabsClientOrNull: ElevenLabsClient | null,
 ): Promise<{ generated: number; skipped: number; failed: number }> {
+    const language = getLanguage(languageId)
+
     let generated = 0,
         skipped = 0,
         failed = 0
 
     for (const num of numbers) {
-        const format = ctx.options.format ?? 'mp3'
-        const outputPath = getOutputPath(ctx.options.languageId, num, voice.id, format)
-        const words = ctx.language.numberToWords(num)
+        const format = options.format ?? 'mp3'
+        const outputPath = getOutputPath(languageId, num, voice.id, format)
+        const words = language.numberToWords(num)
 
-        if (ctx.options.skipExisting && audioFileExists(outputPath)) {
+        if (options.skipExisting && audioFileExists(outputPath)) {
             skipped++
             continue
         }
@@ -194,7 +194,7 @@ async function generateForVoice(
         process.stdout.write(`  ${num} (${words})... `)
 
         try {
-            await generateSingleAudio(voice, words, outputPath, format, ctx)
+            await generateSingleAudio(voice, words, outputPath, format, language, elevenLabsClientOrNull)
             console.log('✅')
             generated++
         } catch (error) {
@@ -211,14 +211,15 @@ async function generateSingleAudio(
     words: string,
     outputPath: string,
     format: 'mp3' | 'opus',
-    ctx: GenerationContext,
+    language: Language,
+    elevenLabsClientOrNull: ElevenLabsClient | null,
 ): Promise<void> {
     if (voice.provider === 'elevenlabs') {
-        if (!ctx.elevenLabsClient) throw new Error('ElevenLabs client not initialized')
-        await generateAudioElevenLabs(ctx.elevenLabsClient, {
+        if (!elevenLabsClientOrNull) throw new Error('ElevenLabs client not initialized')
+        await generateAudioElevenLabs(elevenLabsClientOrNull, {
             text: words,
             voiceId: voice.voiceId,
-            languageCode: ctx.language.ttsLanguageCode.substring(0, 2),
+            languageCode: language.ttsLanguageCode.substring(0, 2),
             outputPath,
             format,
         })
@@ -226,7 +227,7 @@ async function generateSingleAudio(
         await generateAudioGoogle({
             text: words,
             voiceName: voice.voiceId,
-            languageCode: ctx.language.ttsLanguageCode,
+            languageCode: language.ttsLanguageCode,
             gender: voice.gender === 'male' ? 'MALE' : 'FEMALE',
             outputPath,
             format,
@@ -235,8 +236,10 @@ async function generateSingleAudio(
 }
 
 export async function generateAudioFiles(options: GenerateOptions) {
-    const curriculum = loadCurriculum(options.languageId)
-    const language = getLanguage(options.languageId)
+    if (!options.languageId) {
+        throw new Error('Please specify a language ID using --language')
+    }
+    const curriculum = loadCurriculum(options.languageId) as Curriculum
 
     console.log('🎙️  Audio Generator\n')
 
@@ -253,11 +256,7 @@ export async function generateAudioFiles(options: GenerateOptions) {
     }
 
     const hasElevenLabsVoices = voices.some((v) => v.provider === 'elevenlabs')
-    const ctx: GenerationContext = {
-        options,
-        language,
-        elevenLabsClient: hasElevenLabsVoices ? createClient() : null,
-    }
+    const elevenLabsClientOrNull = hasElevenLabsVoices ? createClient() : null
 
     let totalGenerated = 0,
         totalSkipped = 0,
@@ -265,7 +264,13 @@ export async function generateAudioFiles(options: GenerateOptions) {
 
     for (const voice of voices) {
         console.log(`\n🎤 Generating audio for voice: ${voice.name} (${voice.provider})`)
-        const { generated, skipped, failed } = await generateForVoice(voice, numbers, ctx)
+        const { generated, skipped, failed } = await generateForVoice(
+            voice,
+            numbers,
+            options,
+            options.languageId,
+            elevenLabsClientOrNull,
+        )
         totalGenerated += generated
         totalSkipped += skipped
         totalFailed += failed

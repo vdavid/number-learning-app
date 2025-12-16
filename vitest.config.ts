@@ -21,9 +21,12 @@ export default defineConfig({
     },
     resolve: {
         alias: {
-            '@': resolve(__dirname, './src'),
-            '@features': resolve(__dirname, './src/features'),
-            '@shared': resolve(__dirname, './src/shared'),
+            '@curriculum': resolve(__dirname, './src/curriculum'),
+            '@game': resolve(__dirname, './src/game'),
+            '@languages': resolve(__dirname, './src/languages'),
+            '@srs': resolve(__dirname, './src/srs'),
+            '@ui': resolve(__dirname, './src/ui'),
+            '@utils': resolve(__dirname, './src/utils'),
         },
     },
 })

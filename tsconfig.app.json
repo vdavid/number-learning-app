@@ -27,9 +27,12 @@
         /* Paths */
         "baseUrl": ".",
         "paths": {
-            "@/*": ["src/*"],
-            "@features/*": ["src/features/*"],
-            "@shared/*": ["src/shared/*"]
+            "@curriculum/*": ["src/curriculum/*"],
+            "@game/*": ["src/game/*"],
+            "@languages/*": ["src/languages/*"],
+            "@srs/*": ["src/srs/*"],
+            "@ui/*": ["src/ui/*"],
+            "@utils/*": ["src/utils/*"]
         }
     },
     "include": ["src"]

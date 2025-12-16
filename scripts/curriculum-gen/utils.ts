@@ -2,8 +2,8 @@ import * as fs from 'node:fs'
 import * as path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-import type { Curriculum, NumberEntry } from '@/curriculum/curriculum.ts'
-import type { LanguageId } from '@/languages/index.ts'
+import type { Curriculum, NumberEntry } from '@curriculum/curriculum.ts'
+import type { LanguageId } from '@languages/index.ts'
 
 /** For deterministic sparse ranges. Uses a simple mulberry32 PRNG. */
 export function createSeededRandom(seed: number): () => number {
@@ -83,7 +83,7 @@ function getProjectRoot(): string {
 }
 
 export function getCurriculumPath(languageId: LanguageId): string {
-    return path.join(getProjectRoot(), 'src/features/languages', languageId, 'sino-korean.json')
+    return path.join(getProjectRoot(), `src/curriculum/${languageId}.json`)
 }
 
 /** Write curriculum to the appropriate file */

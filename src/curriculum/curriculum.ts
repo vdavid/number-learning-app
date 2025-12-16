@@ -1,6 +1,6 @@
-import sinoKoreanCurriculum from '@/curriculum/sino-korean.json' with { type: 'json' }
-import swedishCurriculum from '@/curriculum/swedish.json' with { type: 'json' }
-import type { LanguageId } from '@/languages/index.ts'
+import sinoKoreanCurriculum from '@curriculum/sino-korean.json' with { type: 'json' }
+import swedishCurriculum from '@curriculum/swedish.json' with { type: 'json' }
+import type { LanguageId } from '@languages/index.ts'
 
 export interface Curriculum {
     /** All stages in learning order */

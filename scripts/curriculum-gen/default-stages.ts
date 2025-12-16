@@ -1,6 +1,6 @@
-import { range, sparseRange, toNumberEntries } from './utils.ts'
+import type { Stage } from '@curriculum/curriculum.ts'
 
-import type { Stage } from '@/curriculum/curriculum.ts'
+import { range, sparseRange, toNumberEntries } from './utils.ts'
 
 /**
  * Returns the default curriculum template with English descriptions as a template.

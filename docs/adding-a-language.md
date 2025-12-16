@@ -24,7 +24,7 @@ For each new language, you'll need to:
    ([IETF language tag](https://en.wikipedia.org/wiki/IETF_language_tag) and
    [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) codes, e.g."ge-DE", "sp-ES", "ko-KR"), and
    flag emoji ("🇩🇪", "🇪🇸", "🇰🇷").
-2. Implement the Language interface in `src/features/languages/{your-language}/index.ts`.
+2. Implement the Language interface in `src/languages/{your-language}/index.ts`.
 
 ### 2. Create the curriculum
 
@@ -133,4 +133,4 @@ For MUCH better audio quality, we pre-generate audio files using ElevenLabs inst
 
 ### 5. Wire up the new language in the app
 
-Add it to the language registry in `src/features/languages/index.ts`. That's it!
+Add it to the language registry in `src/languages/index.ts`. That's it!

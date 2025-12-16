@@ -1,6 +1,5 @@
+import type { LanguageId } from '@languages/index.ts'
 import { describe, expect, it } from 'vitest'
-
-import type { LanguageId } from '@/languages/index.ts'
 
 // These are pure functions extracted from use-tts.ts for testing
 // Since they're module-private, we test the logic by re-implementing them here

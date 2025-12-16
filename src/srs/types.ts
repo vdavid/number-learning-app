@@ -1,4 +1,4 @@
-import type { LanguageId } from '@/languages/index.ts'
+import type { LanguageId } from '@languages/index.ts'
 
 /** Card state for FSRS spaced repetition */
 export interface CardState {

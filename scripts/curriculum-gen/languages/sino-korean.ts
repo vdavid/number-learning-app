@@ -1,6 +1,6 @@
-import type { LanguageConfig } from './types.ts'
+import type { Stage } from '@curriculum/curriculum.ts'
 
-import type { Stage } from '@/curriculum/curriculum.ts'
+import type { LanguageConfig } from './types.ts'
 
 const helpTexts: Record<number, string> = {
     // === Stage 1: Digits (1–10) ===

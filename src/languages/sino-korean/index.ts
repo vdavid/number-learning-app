@@ -1,7 +1,7 @@
-import { numberToSinoKorean, numberToSinoKoreanRomanized, parseSinoKorean } from './normalizer.ts'
+import { loadCurriculum } from '@curriculum/curriculum.ts'
+import type { Language } from '@languages/index.ts'
 
-import { loadCurriculum } from '@/curriculum/curriculum.ts'
-import type { Language } from '@/languages/index.ts'
+import { numberToSinoKorean, numberToSinoKoreanRomanized, parseSinoKorean } from './normalizer.ts'
 
 export const sinoKorean: Language = {
     id: 'sino-korean',

@@ -14,9 +14,12 @@
         "baseUrl": ".",
         "paths": {
             "@scripts/*": ["./*"],
-            "@features/*": ["../src/features/*"],
-            "@shared/*": ["../src/shared/*"],
-            "@/*": ["../src/*"]
+            "@curriculum/*": ["../src/curriculum/*"],
+            "@game/*": ["../src/game/*"],
+            "@languages/*": ["../src/languages/*"],
+            "@srs/*": ["../src/srs/*"],
+            "@ui/*": ["../src/ui/*"],
+            "@utils/*": ["../src/utils/*"]
         }
     },
     "include": ["./**/*.ts"],

@@ -1,3 +1,7 @@
+import { useSettingsStore } from '@game/settings/settings-store.ts'
+import { getLanguage } from '@languages/index.ts'
+import { useProgressStore } from '@srs/progress-store.ts'
+import { useSessionStore } from '@srs/session-store.ts'
 import { ArrowRight, SkipForward, Volume2 } from 'lucide-react'
 import { motion } from 'motion/react'
 import { useCallback, useEffect, useRef, useState } from 'react'
@@ -7,11 +11,6 @@ import { useSTT } from '../speak/use-stt.ts'
 import { useTTS } from '../use-tts.ts'
 
 import { VUMeter } from './VUMeter.tsx'
-
-import { useSettingsStore } from '@/game/settings/settings-store.ts'
-import { getLanguage } from '@/languages'
-import { useProgressStore } from '@/srs/progress-store.ts'
-import { useSessionStore } from '@/srs/session-store.ts'
 
 const silenceTimeoutMs = 1500 // ms of silence before checking answer
 const ttsDelayMs = 1500 // ms to wait for TTS to finish before restarting recognition

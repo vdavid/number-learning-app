@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 
-import { getLanguage } from '@/languages'
+import { getLanguage, type LanguageId } from '@/languages'
 
 // Test mode detection
 const isTestMode = import.meta.env.MODE === 'test'
@@ -96,7 +96,7 @@ function isSpeechRecognitionSupported(): boolean {
 }
 
 interface UseSTTOptions {
-    languageId: string
+    languageId: LanguageId
     onResult?: (transcript: string, isFinal: boolean) => void
     onError?: (error: string) => void
     onEnd?: () => void

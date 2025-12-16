@@ -13,9 +13,10 @@
         "paths": {
             "@scripts/*": ["./*"],
             "@features/*": ["../src/features/*"],
-            "@shared/*": ["../src/shared/*"]
+            "@shared/*": ["../src/shared/*"],
+            "@/*": ["../src/*"]
         }
     },
-    "include": ["./**/*.ts"],
+    "include": ["./**/*.ts", "../src/**/*.ts"],
     "exclude": ["dist"]
 }

@@ -4,6 +4,8 @@ import { fileURLToPath } from 'node:url'
 
 import type { Curriculum, NumberEntry } from '@shared/types/index.js'
 
+import { LanguageId } from '../../src/languages/index.js'
+
 /** For deterministic sparse ranges. Uses a simple mulberry32 PRNG. */
 export function createSeededRandom(seed: number): () => number {
     let state = seed
@@ -81,12 +83,12 @@ function getProjectRoot(): string {
     return path.resolve(__dirname, '../..')
 }
 
-export function getCurriculumPath(languageId: string): string {
+export function getCurriculumPath(languageId: LanguageId): string {
     return path.join(getProjectRoot(), 'src/features/languages', languageId, 'sino-korean.json')
 }
 
 /** Write curriculum to the appropriate file */
-export function writeCurriculumFile(languageId: string, curriculum: Curriculum): string {
+export function writeCurriculumFile(languageId: LanguageId, curriculum: Curriculum): string {
     const outputPath = getCurriculumPath(languageId)
     const outputDirectory = path.dirname(outputPath)
     fs.mkdirSync(outputDirectory, { recursive: true })

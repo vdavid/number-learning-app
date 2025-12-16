@@ -4,7 +4,7 @@ import { persist } from 'zustand/middleware'
 
 import type { CardMode, CardState, DecayState, ResponseRating } from '../types'
 
-import { getLanguage } from '@/languages'
+import { getLanguage, type LanguageId } from '@/languages'
 
 /** Disable fuzz in test mode for deterministic scheduling */
 const isTestMode = import.meta.env.MODE === 'test'
@@ -14,7 +14,7 @@ const fsrsParams = generatorParameters({ enable_fuzz: !isTestMode })
 const scheduler = fsrs(fsrsParams)
 
 /** Generate a unique card ID */
-function makeCardId(languageId: string, number: number, mode: CardMode): string {
+function makeCardId(languageId: LanguageId, number: number, mode: CardMode): string {
     return `${languageId}-${number}-${mode}`
 }
 
@@ -73,7 +73,7 @@ export function calculateDecayState(card: CardState, now: Date = new Date()): De
 /** Calculate the worst decay state for a stage's cards */
 function calculateStageWorstDecay(
     cards: Record<string, CardState>,
-    languageId: string,
+    languageId: LanguageId,
     numbers: readonly number[],
     mode: CardMode,
     isFrontierStage: boolean,
@@ -114,25 +114,25 @@ interface ProgressState {
     unlockedStages: Record<string, number>
 
     /** Initialize cards for a language if not already done */
-    initializeLanguage: (languageId: string) => void
+    initializeLanguage: (languageId: LanguageId) => void
 
-    getOrCreateCard: (languageId: string, number: number, mode: CardMode, stageIndex: number) => CardState
+    getOrCreateCard: (languageId: LanguageId, number: number, mode: CardMode, stageIndex: number) => CardState
 
     /** Review a card and update its FSRS data */
     reviewCard: (cardId: string, rating: ResponseRating) => void
 
-    getAllDueCards: (languageId: string, quietMode: boolean) => CardState[]
+    getAllDueCards: (languageId: LanguageId, quietMode: boolean) => CardState[]
 
     /** Get new cards from the frontier stage */
-    getNewCards: (languageId: string, quietMode: boolean, limit: number) => CardState[]
+    getNewCards: (languageId: LanguageId, quietMode: boolean, limit: number) => CardState[]
 
-    isStageUnlocked: (languageId: string, stageIndex: number) => boolean
+    isStageUnlocked: (languageId: LanguageId, stageIndex: number) => boolean
 
     /** Unlock the next stage if conditions are met */
-    checkAndUnlockNextStage: (languageId: string) => void
+    checkAndUnlockNextStage: (languageId: LanguageId) => void
 
     /** Get decay state for a stage's nodes */
-    getStageDecayState: (languageId: string, stageIndex: number, mode: CardMode) => DecayState
+    getStageDecayState: (languageId: LanguageId, stageIndex: number, mode: CardMode) => DecayState
 
     /** Reset all progress (for testing/debug) */
     resetProgress: () => void
@@ -144,7 +144,7 @@ export const useProgressStore = create<ProgressState>()(
             allCardsByID: {},
             unlockedStages: {},
 
-            initializeLanguage: (languageId: string) => {
+            initializeLanguage: (languageId: LanguageId) => {
                 const state = get()
                 if (state.unlockedStages[languageId] !== undefined) {
                     return // Already initialized
@@ -158,7 +158,7 @@ export const useProgressStore = create<ProgressState>()(
                 })
             },
 
-            getOrCreateCard: (languageId: string, number: number, mode: CardMode, stageIndex: number) => {
+            getOrCreateCard: (languageId: LanguageId, number: number, mode: CardMode, stageIndex: number) => {
                 const cardId = makeCardId(languageId, number, mode)
                 const existing = get().allCardsByID[cardId]
 
@@ -241,7 +241,7 @@ export const useProgressStore = create<ProgressState>()(
                 get().checkAndUnlockNextStage(card.languageId)
             },
 
-            getAllDueCards: (languageId: string, quietMode: boolean) => {
+            getAllDueCards: (languageId: LanguageId, quietMode: boolean) => {
                 const state = get()
                 const now = new Date()
                 const unlockedStage = state.unlockedStages[languageId] ?? 0
@@ -259,7 +259,7 @@ export const useProgressStore = create<ProgressState>()(
                     .sort((a, b) => new Date(a.fsrs.due).getTime() - new Date(b.fsrs.due).getTime())
             },
 
-            getNewCards: (languageId: string, quietMode: boolean, limit: number) => {
+            getNewCards: (languageId: LanguageId, quietMode: boolean, limit: number) => {
                 const state = get()
                 const unlockedStage = state.unlockedStages[languageId] ?? 0
                 const language = getLanguage(languageId)
@@ -285,12 +285,12 @@ export const useProgressStore = create<ProgressState>()(
                 return newCards
             },
 
-            isStageUnlocked: (languageId: string, stageIndex: number) => {
+            isStageUnlocked: (languageId: LanguageId, stageIndex: number) => {
                 const unlockedStage = get().unlockedStages[languageId] ?? 0
                 return stageIndex <= unlockedStage
             },
 
-            checkAndUnlockNextStage: (languageId: string) => {
+            checkAndUnlockNextStage: (languageId: LanguageId) => {
                 const state = get()
                 const currentUnlocked = state.unlockedStages[languageId] ?? 0
                 const language = getLanguage(languageId)
@@ -323,7 +323,7 @@ export const useProgressStore = create<ProgressState>()(
                 }
             },
 
-            getStageDecayState: (languageId: string, stageIndex: number, mode: CardMode) => {
+            getStageDecayState: (languageId: LanguageId, stageIndex: number, mode: CardMode) => {
                 const state = get()
                 const unlockedStage = state.unlockedStages[languageId] ?? 0
 

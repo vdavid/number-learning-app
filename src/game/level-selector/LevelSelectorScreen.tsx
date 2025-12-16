@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom'
 
 import { LevelNodePair } from './LevelNode'
 
-import { getAllLanguages, getLanguage } from '@/languages'
+import { getAllLanguages, getLanguage, type LanguageId } from '@/languages'
 
 export function LevelSelectorScreen() {
     const maxNewCardsPerSession = 10
@@ -59,7 +59,7 @@ export function LevelSelectorScreen() {
                                 <select
                                     value={languageId}
                                     onChange={(e) => {
-                                        setLanguage(e.target.value)
+                                        setLanguage(e.target.value as LanguageId)
                                     }}
                                     className='text-lg font-semibold text-[var(--text-primary)] bg-transparent border-none cursor-pointer focus:outline-none'
                                 >

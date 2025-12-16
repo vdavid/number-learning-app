@@ -1,7 +1,6 @@
-import { loadCurriculum } from '@/curriculum/curriculum.ts'
-
 import { numberToSinoKorean, numberToSinoKoreanRomanized, parseSinoKorean } from './normalizer.ts'
 
+import { loadCurriculum } from '@/curriculum/curriculum.ts'
 import type { Language } from '@/languages'
 
 export const sinoKorean: Language = {

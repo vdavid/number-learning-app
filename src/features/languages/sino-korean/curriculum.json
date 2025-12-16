@@ -2,13 +2,17 @@
     "voices": [
         {
             "id": "charlie",
-            "elevenLabsVoiceId": "IKne3meq5aSn9XLyUdCD",
-            "name": "Charlie"
+            "name": "Charlie",
+            "provider": "elevenlabs",
+            "voiceId": "IKne3meq5aSn9XLyUdCD",
+            "gender": "male"
         },
         {
             "id": "matilda",
-            "elevenLabsVoiceId": "XrExE9yKIg1WjnnlVkGX",
-            "name": "Matilda"
+            "name": "Matilda",
+            "provider": "elevenlabs",
+            "voiceId": "XrExE9yKIg1WjnnlVkGX",
+            "gender": "female"
         }
     ],
     "stages": [

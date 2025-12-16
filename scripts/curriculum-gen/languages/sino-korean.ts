@@ -148,13 +148,17 @@ export const sinoKoreanConfig: LanguageConfig = {
     voices: [
         {
             id: 'charlie',
-            elevenLabsVoiceId: 'IKne3meq5aSn9XLyUdCD',
             name: 'Charlie',
+            provider: 'elevenlabs',
+            voiceId: 'IKne3meq5aSn9XLyUdCD',
+            gender: 'male',
         },
         {
             id: 'matilda',
-            elevenLabsVoiceId: 'XrExE9yKIg1WjnnlVkGX',
             name: 'Matilda',
+            provider: 'elevenlabs',
+            voiceId: 'XrExE9yKIg1WjnnlVkGX',
+            gender: 'female',
         },
     ],
     localizeStages,

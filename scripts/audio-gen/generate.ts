@@ -123,7 +123,7 @@ function validateOptions(options: GenerateOptions): void {
 }
 
 function getOutputPath(languageId: string, num: number, voiceId: string, format: 'mp3' | 'opus'): string {
-    const outputDirectory = path.join(projectRoot, `public/${languageId}`)
+    const outputDirectory = path.join(projectRoot, `public/${languageId}/audio`)
     return path.join(outputDirectory, `${num}-${voiceId}.${format}`)
 }
 

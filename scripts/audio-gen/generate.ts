@@ -33,7 +33,7 @@ import { fileURLToPath } from 'node:url'
 // noinspection ES6PreferShortImport -- It doesn't work with a short import
 import { loadCurriculum } from '../../src/features/languages/curriculum.js'
 // noinspection ES6PreferShortImport -- It doesn't work with a short import
-import { getAllLanguageIds, getLanguage } from '../../src/features/languages/index.js'
+import { getAllLanguageIds, getLanguage } from '../../src/languages/index.js'
 // noinspection ES6PreferShortImport -- It doesn't work with a short import
 import type { TTSProvider, VoiceConfig } from '../../src/shared/types/index.js'
 

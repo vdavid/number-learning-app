@@ -1,7 +1,8 @@
 import { loadCurriculum } from '../curriculum.js'
-import type { Language } from '../types.js'
 
 import { numberToSwedish, parseSwedish } from './normalizer.js'
+
+import type { Language } from '@/languages'
 
 export const swedish: Language = {
     id: 'swedish',

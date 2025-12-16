@@ -1,10 +1,11 @@
-import { getLanguage } from '@features/languages'
 import { VUMeter } from '@shared/components'
 import { useAudioAnalyzer, useSTT, useTTS } from '@shared/hooks'
 import { useProgressStore, useSessionStore, useSettingsStore } from '@shared/stores'
 import { ArrowRight, SkipForward, Volume2 } from 'lucide-react'
 import { motion } from 'motion/react'
 import { useCallback, useEffect, useRef, useState } from 'react'
+
+import { getLanguage } from '@/languages'
 
 const silenceTimeoutMs = 1500 // ms of silence before checking answer
 const ttsDelayMs = 1500 // ms to wait for TTS to finish before restarting recognition

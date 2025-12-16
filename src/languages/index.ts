@@ -1,5 +1,6 @@
-// noinspection ES6PreferShortImport -- It doesn't work with a short import
-import type { Curriculum } from '../../shared/types/index.js'
+import { sinoKorean } from '@features/languages/sino-korean'
+import { swedish } from '@features/languages/swedish'
+import type { Curriculum } from '@shared/types'
 
 export interface Language {
     // A lowercase, kebab-case ID like 'sino-korean' or 'native-korean'
@@ -31,4 +32,27 @@ export interface Language {
     numberToRomanized?: (num: number) => string
 }
 
-export type LanguageRegistry = Record<string, Language>
+const languageIdToLanguageMap = {
+    'sino-korean': sinoKorean,
+    swedish: swedish,
+} as const satisfies Record<string, Language>
+
+export type LanguageId = keyof typeof languageIdToLanguageMap
+
+export const defaultLanguageID = 'sino-korean'
+
+export function getLanguage(id: LanguageId): Language {
+    const language = languageIdToLanguageMap[id]
+    if (!language) {
+        throw new Error(`Language not found: ${id}`)
+    }
+    return language
+}
+
+export function getAllLanguages(): Array<{ id: LanguageId; language: Language }> {
+    return Object.entries(languageIdToLanguageMap).map(([id, language]) => ({ id: id as LanguageId, language }))
+}
+
+export function getAllLanguageIds(): LanguageId[] {
+    return Object.keys(languageIdToLanguageMap) as LanguageId[]
+}

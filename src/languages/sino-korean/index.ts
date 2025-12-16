@@ -1,6 +1,6 @@
-import { loadCurriculum } from '../curriculum.js'
+import { loadCurriculum } from '@/curriculum/curriculum.ts'
 
-import { numberToSinoKorean, numberToSinoKoreanRomanized, parseSinoKorean } from './normalizer.js'
+import { numberToSinoKorean, numberToSinoKoreanRomanized, parseSinoKorean } from './normalizer.ts'
 
 import type { Language } from '@/languages'
 

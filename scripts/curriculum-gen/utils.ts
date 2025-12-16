@@ -82,7 +82,7 @@ function getProjectRoot(): string {
 }
 
 export function getCurriculumPath(languageId: string): string {
-    return path.join(getProjectRoot(), 'src/features/languages', languageId, 'curriculum.json')
+    return path.join(getProjectRoot(), 'src/features/languages', languageId, 'sino-korean.json')
 }
 
 /** Write curriculum to the appropriate file */

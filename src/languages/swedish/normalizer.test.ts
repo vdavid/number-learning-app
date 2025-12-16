@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import { numberToSwedish, parseSwedish } from './normalizer'
+import { numberToSwedish, parseSwedish } from './normalizer.ts'
 
 describe('Swedish normalizer', () => {
     describe('numberToSwedish', () => {

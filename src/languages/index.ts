@@ -1,6 +1,7 @@
-import { sinoKorean } from '@features/languages/sino-korean'
-import { swedish } from '@features/languages/swedish'
 import type { Curriculum } from '@shared/types'
+
+import { sinoKorean } from '@/languages/sino-korean'
+import { swedish } from '@/languages/swedish'
 
 export interface Language {
     // A lowercase, kebab-case ID like 'sino-korean' or 'native-korean'

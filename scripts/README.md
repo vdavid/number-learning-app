@@ -13,7 +13,7 @@ These generators are language-specific. They generate deterministic curriculum w
 
 Run `pnpm cur-gen --lang {language-id}` to generate curriculum (or just `pnpm cur-gen` to gen all, it's fast!).
 
-Outputs will be at `src/features/languages/{language-id}/curriculum.json`.
+Outputs will be at `src/curriculum/{language-id}.json`.
 
 The scripts overwrite existing files.
 
@@ -21,7 +21,8 @@ The scripts overwrite existing files.
 
 Generates audio files for a given language, for each number. Uses ElevenLabs TTS.
 
-Run the curriculum generator first to create `curriculum.json`. This script uses the generated voice IDs from the JSON.
+Run the curriculum generator first to create `{language-id}.json`. This script uses the generated voice IDs from the
+JSON.
 
 It's at `scripts/audio-gen/generate.ts`. See the example usages at the top of the file.
 

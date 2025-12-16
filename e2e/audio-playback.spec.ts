@@ -84,6 +84,10 @@ test.describe('Audio Playback', () => {
         const afterReplayLog = await getAudioLog(page)
 
         // Should have one more audio play
+        if (afterReplayLog.length !== initialCount + 1) {
+            // eslint-disable-next-line no-console -- This is just temp for tracking down a flaky test
+            console.log('Audio log after replay:', afterReplayLog)
+        }
         expect(afterReplayLog.length).toBe(initialCount + 1)
     })
 

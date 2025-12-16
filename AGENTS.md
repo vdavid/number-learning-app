@@ -17,6 +17,7 @@ React 19, TypeScript 5.9, Zustand, Tailwind CSS 4, Vitest, pnpm
 pnpm format && pnpm tsc --noEmit && pnpm knip && pnpm lint:fix && pnpm test --run && pnpm test:e2e # All-around helpful
 pnpm dev          # Start dev server
 pnpm build        # Production build
+pnpm playwright test -g "test name" --repeat-each=10 --workers=1 # Run a single test 10 times
 ```
 
 ## Directory structure

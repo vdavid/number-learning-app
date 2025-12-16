@@ -1,6 +1,6 @@
-import { loadCurriculum } from '../curriculum.js'
+import { loadCurriculum } from '@/curriculum/curriculum.ts'
 
-import { numberToSwedish, parseSwedish } from './normalizer.js'
+import { numberToSwedish, parseSwedish } from './normalizer.ts'
 
 import type { Language } from '@/languages'
 

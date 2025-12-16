@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 
-import { numberToSinoKorean, parseSinoKorean } from './normalizer'
+import { numberToSinoKorean, parseSinoKorean } from './normalizer.ts'
 
 describe('Sino-Korean normalizer', () => {
     describe('numberToSinoKorean', () => {

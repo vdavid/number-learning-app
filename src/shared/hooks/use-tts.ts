@@ -1,4 +1,4 @@
-import { loadCurriculum } from '@features/languages/curriculum.ts'
+import { loadCurriculum } from '@/curriculum/curriculum.ts'
 import { useCallback, useEffect, useRef } from 'react'
 
 import { createDebugLogger, logger } from '../utils'

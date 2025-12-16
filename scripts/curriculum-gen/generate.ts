@@ -37,7 +37,7 @@ function parseArgs(): CliArgs {
 }
 
 function generateCurriculum(config: LanguageConfig): Curriculum {
-    const random = createSeededRandom(42)
+    const random = createSeededRandom(64) // Fixed seed for deterministic output!
 
     // Get default stages with this language's help texts
     let stages: Stage[] = getDefaultStages(random, config.helpTexts)

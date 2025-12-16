@@ -74,7 +74,11 @@ function buildAudioUrls(languageId: string, num: number, voices: { id: string }[
 async function checkAudioExists(url: string): Promise<boolean> {
     try {
         const response = await fetch(url, { method: 'HEAD' })
-        return response.ok
+        if (!response.ok) return false
+        // Vite dev server returns 200 for missing files (serves index.html)
+        // So we must check Content-Type to confirm it's actually audio
+        const contentType = response.headers.get('Content-Type') || ''
+        return contentType.startsWith('audio/')
     } catch {
         return false
     }

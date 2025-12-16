@@ -37,7 +37,9 @@ export function AnswerDisplay({
                     {nonLatinScript && (
                         <div className='flex items-center justify-center gap-4'>
                             <p className='text-2xl font-medium'>{nonLatinScript}</p>
-                            <p className='text-lg text-[var(--text-secondary)]'>({romanizedForm})</p>
+                            {!!romanizedForm && (
+                                <p className='text-lg text-[var(--text-secondary)]'>({romanizedForm})</p>
+                            )}
                         </div>
                     )}
 

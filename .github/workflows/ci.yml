@@ -36,7 +36,7 @@ jobs:
               run: pnpm format:check
 
             - name: TypeScript type check
-              run: pnpm tsc --noEmit
+              run: pnpm tsc -b --noEmit
 
             - name: Check for unused files and exports (knip)
               run: pnpm knip
@@ -47,8 +47,11 @@ jobs:
             - name: Check curriculum freshness
               run: pnpm cur-gen:check
 
-            - name: Run tests
+            - name: Run unit tests
               run: pnpm test -- --run
 
-            - name: Run tests
-              run: pnpm test:e2e -- --run
+            - name: Install Playwright browsers
+              run: npx playwright install chromium --with-deps
+
+            - name: Run E2E tests
+              run: pnpm test:e2e

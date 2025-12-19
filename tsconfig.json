@@ -1,8 +1,25 @@
 {
+    "compilerOptions": {
+        "baseUrl": ".",
+        "paths": {
+            "@curriculum/*": ["src/curriculum/*"],
+            "@game/*": ["src/game/*"],
+            "@languages/*": ["src/languages/*"],
+            "@srs/*": ["src/srs/*"],
+            "@ui/*": ["src/ui/*"],
+            "@utils/*": ["src/utils/*"]
+        }
+    },
     "files": [],
     "references": [
-        { "path": "./tsconfig.app.json" },
-        { "path": "./tsconfig.node.json" },
-        { "path": "./scripts/tsconfig.json" }
+        {
+            "path": "./tsconfig.app.json"
+        },
+        {
+            "path": "./tsconfig.node.json"
+        },
+        {
+            "path": "./scripts/tsconfig.json"
+        }
     ]
 }

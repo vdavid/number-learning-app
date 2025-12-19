@@ -6,6 +6,7 @@ import * as fs from 'node:fs'
 import * as path from 'node:path'
 
 import { ElevenLabsClient } from '@elevenlabs/elevenlabs-js'
+import { TextToSpeechConvertRequestOutputFormat } from '@elevenlabs/elevenlabs-js/api/resources/textToSpeech/types/TextToSpeechConvertRequestOutputFormat'
 
 export type ElevenlabsAudioGenerationOptions = {
     /** Text to convert to speech */
@@ -17,8 +18,8 @@ export type ElevenlabsAudioGenerationOptions = {
     languageCode: string
     /** Model ID (defaults to eleven_multilingual_v2) */
     modelId?: string
-    // Defaults to mp3
-    format?: 'mp3' | 'opus'
+    // Defaults to "mp3_44100_128"
+    format: TextToSpeechConvertRequestOutputFormat
 }
 
 /**
@@ -48,7 +49,7 @@ export async function generateAudio(
     options: ElevenlabsAudioGenerationOptions,
     maxRetries = 5,
 ): Promise<void> {
-    const { text, voiceId, outputPath, modelId = 'eleven_multilingual_v2', format = 'mp3' } = options
+    const { text, voiceId, outputPath, modelId = 'eleven_multilingual_v2', format } = options
 
     // Ensure output directory exists
     const dir = path.dirname(outputPath)
@@ -67,7 +68,7 @@ export async function generateAudio(
             const audioStream = await client.textToSpeech.convert(voiceId, {
                 text,
                 modelId,
-                outputFormat: format === 'opus' ? 'opus_48000_128' : 'mp3_44100_128',
+                outputFormat: format,
                 languageCode: options.languageCode,
             })
 
@@ -82,7 +83,17 @@ export async function generateAudio(
             }
 
             // Write to file
-            const buffer = Buffer.concat(chunks)
+            let buffer: Buffer = Buffer.concat(chunks)
+
+            // If the format is PCM, wrap it in a WAV header
+            if (format.startsWith('pcm_')) {
+                const sampleRate = parseInt(format.split('_')[1], 10)
+                if (!isNaN(sampleRate)) {
+                    const { wrapPcmInWav } = await import('./wav-utils.ts')
+                    buffer = wrapPcmInWav(buffer, sampleRate)
+                }
+            }
+
             fs.writeFileSync(outputPath, buffer)
 
             return // Success

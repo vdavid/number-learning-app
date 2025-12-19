@@ -30,13 +30,10 @@ import 'dotenv/config'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-// noinspection ES6PreferShortImport -- It doesn't work with a short import
 import { loadCurriculum, type Curriculum, type TTSProvider, type VoiceConfig } from '@curriculum/curriculum.ts'
 import { ElevenLabsClient } from '@elevenlabs/elevenlabs-js'
-
-// noinspection ES6PreferShortImport -- It doesn't work with a short import
-import { getAllLanguageIds, getLanguage, type Language, type LanguageId } from '../../src/languages/index.ts'
-// noinspection ES6PreferShortImport -- It doesn't work with a short import
+import { TextToSpeechConvertRequestOutputFormat } from '@elevenlabs/elevenlabs-js/api/resources/textToSpeech/types/TextToSpeechConvertRequestOutputFormat'
+import { getAllLanguageIds, getLanguage, type Language, type LanguageId } from '@languages/index.ts'
 
 import {
     audioFileExists as audioFileExistsElevenLabs,
@@ -53,7 +50,7 @@ type GenerateOptions = {
     minNumber?: number
     maxNumber?: number
     skipExisting: boolean
-    format?: 'mp3' | 'opus'
+    format?: 'mp3' | 'opus' | 'wav' // Defaults to mp3
 }
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
@@ -79,7 +76,7 @@ const ARG_HANDLERS: Record<string, (options: GenerateOptions, value: string) => 
     '--stage': (opts, val) => (opts.stageFilter = parseInt(val, 10)),
     '--min': (opts, val) => (opts.minNumber = parseInt(val, 10)),
     '--max': (opts, val) => (opts.maxNumber = parseInt(val, 10)),
-    '--format': (opts, val) => (opts.format = val as 'mp3' | 'opus'),
+    '--format': (opts, val) => (opts.format = val as 'mp3' | 'opus' | 'wav'),
 }
 
 function extractOptions(args: string[]): GenerateOptions {
@@ -118,12 +115,12 @@ function validateOptions(options: GenerateOptions): void {
         throw new Error(`Invalid provider: ${options.providerFilter}. Must be either "elevenlabs" or "google".`)
     }
 
-    if (!['mp3', 'opus'].includes(options.format ?? 'mp3')) {
-        throw new Error(`Invalid format: ${options.format}. Must be either "mp3" or "opus".`)
+    if (!['mp3', 'opus', 'wav'].includes(options.format ?? 'mp3')) {
+        throw new Error(`Invalid format: ${options.format}. Must be either "mp3", "opus" or "wav".`)
     }
 }
 
-function getOutputPath(languageId: LanguageId, num: number, voiceId: string, format: 'mp3' | 'opus'): string {
+function getOutputPath(languageId: LanguageId, num: number, voiceId: string, format: 'mp3' | 'opus' | 'wav'): string {
     const outputDirectory = path.join(projectRoot, `public/${languageId}/audio`)
     return path.join(outputDirectory, `${num}-${voiceId}.${format}`)
 }
@@ -209,27 +206,37 @@ async function generateSingleAudio(
     voice: VoiceConfig,
     words: string,
     outputPath: string,
-    format: 'mp3' | 'opus',
+    format: 'mp3' | 'opus' | 'wav',
     language: Language,
     elevenLabsClientOrNull: ElevenLabsClient | null,
 ): Promise<void> {
     if (voice.provider === 'elevenlabs') {
         if (!elevenLabsClientOrNull) throw new Error('ElevenLabs client not initialized')
+        const formatToElevenLabsMap: Record<string, TextToSpeechConvertRequestOutputFormat> = {
+            wav: TextToSpeechConvertRequestOutputFormat.Pcm32000, // pcm_44100 is paid
+            mp3: TextToSpeechConvertRequestOutputFormat.Mp344100128,
+            opus: TextToSpeechConvertRequestOutputFormat.Opus48000128,
+        }
         await generateAudioElevenLabs(elevenLabsClientOrNull, {
             text: words,
             voiceId: voice.voiceId,
             languageCode: language.ttsLanguageCode.substring(0, 2),
             outputPath,
-            format,
+            format: formatToElevenLabsMap[format] || TextToSpeechConvertRequestOutputFormat.Mp344100128,
         })
     } else {
+        const formatToGoogleMap: Record<string, 'ALAW' | 'MULAW' | 'MP3' | 'OGG_OPUS' | 'LINEAR16'> = {
+            wav: 'LINEAR16',
+            mp3: 'MP3',
+            opus: 'OGG_OPUS',
+        }
         await generateAudioGoogle({
             text: words,
             voiceName: voice.voiceId,
             languageCode: language.ttsLanguageCode,
             gender: voice.gender === 'male' ? 'MALE' : 'FEMALE',
             outputPath,
-            format,
+            format: formatToGoogleMap[format] || 'MP3',
         })
     }
 }

@@ -22,8 +22,10 @@ export type GoogleAudioGenerationOptions = {
     /** Gender for the voice */
     gender: 'MALE' | 'FEMALE'
     outputPath: string
-    /** Audio format (defaults to opus) */
-    format?: 'mp3' | 'opus'
+    /** Audio format */
+    format: 'ALAW' | 'MULAW' | 'MP3' | 'OGG_OPUS' | 'LINEAR16'
+    /** Sample rate in Hertz (e.g., 24000) */
+    sampleRateHertz?: number
 }
 
 /**
@@ -64,7 +66,7 @@ function getProjectNumber(): string {
  * Includes exponential backoff retry logic.
  */
 export async function generateAudioGoogle(options: GoogleAudioGenerationOptions, maxRetries = 5): Promise<void> {
-    const { text, voiceName, languageCode, gender, outputPath, format = 'opus' } = options
+    const { text, voiceName, languageCode, gender, outputPath, format = 'mp3' } = options
 
     // Ensure output directory exists
     const dir = path.dirname(outputPath)
@@ -82,7 +84,7 @@ export async function generateAudioGoogle(options: GoogleAudioGenerationOptions,
             ssmlGender: gender,
         },
         audioConfig: {
-            audioEncoding: format === 'opus' ? 'OGG_OPUS' : 'MP3',
+            audioEncoding: format,
         },
     }
 
@@ -111,10 +113,20 @@ export async function generateAudioGoogle(options: GoogleAudioGenerationOptions,
                 throw new Error(`Google TTS API error (${response.status}): ${errorText}`)
             }
 
-            const data = (await response.json()) as { audioContent: string }
+            const data = (await response.json()) as {
+                audioContent: string
+                audioConfig?: { sampleRateHertz: number }
+            }
 
             // Decode base64 audio content and write to file
-            const audioBuffer = Buffer.from(data.audioContent, 'base64')
+            let audioBuffer: Buffer = Buffer.from(data.audioContent, 'base64')
+
+            if (format === 'LINEAR16') {
+                const sampleRate = options.sampleRateHertz || data.audioConfig?.sampleRateHertz || 24000
+                const { wrapPcmInWav } = await import('./wav-utils.ts')
+                audioBuffer = wrapPcmInWav(audioBuffer, sampleRate)
+            }
+
             fs.writeFileSync(outputPath, audioBuffer)
 
             return // Success

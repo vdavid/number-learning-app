@@ -119,3 +119,17 @@ Then convert them to a list of constants in this format (these are for English):
     - `UNIT_TRILLION` – The word "trillion" (Pattern logic is reused from previous levels).
 
 Add this to `docs/your-language.md` as well.
+
+
+## Learning System
+
+The user gets into the app, and based on the space repetition engine, they get a card to practice.
+
+### Skill Check
+There are two types of cards: Pronunciation and Recognition.
+- **Pronunciation cards** show a number and ask the user to say it out loud (phoneme matcher for accuracy).
+- **Recognition cards** show a number in words and ask the user to write it numerically
+
+Each card has the key PATTERNs that it practices - adding to the values for the repetition engine's scheduling algorithm.
+
+FIXME We could generate cards dynamically based on the user's progress and the patterns they need to practice.

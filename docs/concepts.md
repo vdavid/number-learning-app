@@ -8,14 +8,15 @@
     - getting a list of NUMBERs for a certain PATTERN
     - getting the list of PATTERNS for a certain NUMBER
 
-
 ## Repeat, recognize patterns
 
-Learning certain things by hearth like how to pronounce letters or phonemes are the starting spot. 
+Learning certain things by hearth like how to pronounce letters or phonemes are the starting spot.
 
-But language isn't just brute force memorization. There are PATTERNS and rules that get "hardware accelerated" as we use them: our brains form neural pathways through repetition and practice, strengthening the connections.
+But language isn't just brute force memorization. There are PATTERNS and rules that get "hardware accelerated" as we use
+them: our brains form neural pathways through repetition and practice, strengthening the connections.
 
-These patterns help us relax cognitive load, in the end, most languages are logical and follow systematic rules. Most are similar, but some are quite different by language.
+These patterns help us relax cognitive load, in the end, most languages are logical and follow systematic rules. Most
+are similar, but some are quite different by language.
 
 Instead of giving just a random number generator and checker we tried the following approach:
 
@@ -23,25 +24,26 @@ Generate a PATTERN set that covers the essential rules and patterns of the spoke
 
 ## Patterns
 
-What are patterns? For *English*, there are 59 patterns in total for a human to understand how to form any natural number
-until 1 trillion:
+What are patterns? For _English_, there are 59 patterns in total for a human to understand how to form any natural
+number until 1 trillion:
+
 - **13 patterns to memorize 0–12**: 13, each number is new
 - **9 patterns to memorize/understand forming 13–19**: 1 ("teen")+1 (order: N&"teen")+7 (numbers)
 - **8 patterns to memorize/understand forming decades (20, 30, ... 90)**: 8 (each decade)
-- **4 patterns to understand how to form 21–29**: 2 (21 and 22 are not like 11 and 12)+1 (order: "20"&N)+1 (the rest are the same)
-- **1 patterns to understand 31–39**: only 1 (it's the same as twenty-*)
+- **4 patterns to understand how to form 21–29**: 2 (21 and 22 are not like 11 and 12)+1 (order: "20"&N)+1 (the rest are
+  the same)
+- **1 patterns to understand 31–39**: only 1 (it's the same as twenty-\*)
 - **1 patterns to understand the remaining between 40 and 99**: only 1 (it's the same)
 - **2 patterns to learn hundreds**: 1 (hundred)+1 (pattern: N&"hundred")
 - **1 patterns to learn 101–999**: only 1! (the order/pattern to form them)
-- **4 patterns to learn plain thousands**: 1 (thousand)+1 (pattern: N&"thousand")+1 (pattern: NN&"thousand)+1 (pattern: NNN&"thousand)
-- **2 patterns to learn the rest between 1001–999,999**: 1 (first part is NNN&"thousand")+1 (second part is just NNN, no magic)
+- **4 patterns to learn plain thousands**: 1 (thousand)+1 (pattern: N&"thousand")+1 (pattern: NN&"thousand)+1 (pattern:
+  NNN&"thousand)
+- **2 patterns to learn the rest between 1001–999,999**: 1 (first part is NNN&"thousand")+1 (second part is just NNN, no
+  magic)
 - **4 patterns to learn millions**: like plain thousands
 - **2 patterns to learn 1M–999M**: like 1k–1M
 - **4 patterns to learn billions**: like plain thousands
 - **3 patterns to learn 1B–1T**: like 1k–1M +1 (trillion)
-
-
-
 
 So, first, figure out the patterns for your language, and write them down in `docs/your-language.md` to document how
 patterns work in your language.
@@ -120,16 +122,18 @@ Then convert them to a list of constants in this format (these are for English):
 
 Add this to `docs/your-language.md` as well.
 
-
 ## Learning System
 
 The user gets into the app, and based on the space repetition engine, they get a card to practice.
 
 ### Skill Check
+
 There are two types of cards: Pronunciation and Recognition.
+
 - **Pronunciation cards** show a number and ask the user to say it out loud (phoneme matcher for accuracy).
 - **Recognition cards** show a number in words and ask the user to write it numerically
 
-Each card has the key PATTERNs that it practices - adding to the values for the repetition engine's scheduling algorithm.
+Each card has the key PATTERNs that it practices - adding to the values for the repetition engine's scheduling
+algorithm.
 
 FIXME We could generate cards dynamically based on the user's progress and the patterns they need to practice.

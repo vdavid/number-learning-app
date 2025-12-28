@@ -50,10 +50,17 @@ export function shuffleArray<T>(array: T[], random: () => number): T[] {
     return result
 }
 
-/** Converts a number array to NumberEntry array with optional helpText */
-export function toNumberEntries(numbers: number[], helpTexts: Record<number, string>): NumberEntry[] {
+/** Converts a number array to NumberEntry array with optional helpText and patterns */
+export function toNumberEntries(
+    numbers: number[],
+    helpTexts: Record<number, string>,
+    numberPatterns: Record<number, string[]>,
+): NumberEntry[] {
     return numbers.map((value) => {
-        const entry: NumberEntry = { value }
+        const entry: NumberEntry = {
+            value,
+            patterns: numberPatterns[value] ?? [],
+        }
         if (helpTexts[value]) {
             entry.helpText = helpTexts[value]
         }
@@ -66,12 +73,19 @@ export function formatCurriculumJson(curriculum: Curriculum): string {
     let json = JSON.stringify(curriculum, null, 4)
 
     // Collapse number entry objects to single lines for better manual review
-    // Handles: { "value": N } and { "value": N, "helpText": "..." }
-    json = json.replace(/\{\n\s+"value": (\d+)\n\s+}/g, '{ "value": $1 }')
-    // Match helpText values including escaped quotes: \" and other escape sequences
+    // New format includes patterns array: { "value": N, "patterns": [...] }
+    // With optional helpText: { "value": N, "helpText": "...", "patterns": [...] }
+
+    // Match entries with just value and patterns (no helpText)
     json = json.replace(
-        /\{\n\s+"value": (\d+),\n\s+"helpText": "((?:[^"\\]|\\.)*)"\n\s+}/g,
-        '{ "value": $1, "helpText": "$2" }',
+        /\{\n\s+"value": (\d+),\n\s+"patterns": \[((?:[^\]])*)\]\n\s+}/g,
+        '{ "value": $1, "patterns": [$2] }',
+    )
+
+    // Match entries with value, helpText, and patterns
+    json = json.replace(
+        /\{\n\s+"value": (\d+),\n\s+"helpText": "((?:[^"\\]|\\.)*)",\n\s+"patterns": \[((?:[^\]])*)\]\n\s+}/g,
+        '{ "value": $1, "helpText": "$2", "patterns": [$3] }',
     )
 
     return json + '\n'

@@ -114,7 +114,13 @@ interface ProgressState {
     /** Initialize cards for a language if not already done */
     initializeLanguage: (languageId: LanguageId) => void
 
-    getOrCreateCard: (languageId: LanguageId, number: number, mode: CardMode, stageIndex: number) => CardState
+    getOrCreateCard: (
+        languageId: LanguageId,
+        number: number,
+        mode: CardMode,
+        stageIndex: number,
+        patterns?: string[],
+    ) => CardState
 
     /** Review a card and update its FSRS data */
     reviewCard: (cardId: string, rating: ResponseRating) => void
@@ -156,7 +162,13 @@ export const useProgressStore = create<ProgressState>()(
                 })
             },
 
-            getOrCreateCard: (languageId: LanguageId, number: number, mode: CardMode, stageIndex: number) => {
+            getOrCreateCard: (
+                languageId: LanguageId,
+                number: number,
+                mode: CardMode,
+                stageIndex: number,
+                patterns: string[] = [],
+            ) => {
                 const cardId = makeCardId(languageId, number, mode)
                 const existing = get().allCardsByID[cardId]
 
@@ -171,6 +183,7 @@ export const useProgressStore = create<ProgressState>()(
                     mode,
                     languageId,
                     stageIndex,
+                    patterns,
                     fsrs: {
                         due: fsrsCard.due,
                         stability: fsrsCard.stability,
@@ -268,11 +281,17 @@ export const useProgressStore = create<ProgressState>()(
                 const newCards: CardState[] = []
                 const modes: CardMode[] = quietMode ? ['listen'] : ['listen', 'speak']
 
-                for (const number of stage.numbers) {
+                for (const numberEntry of stage.numbers) {
                     for (const mode of modes) {
                         if (newCards.length >= limit) break
 
-                        const card = state.getOrCreateCard(languageId, number.value, mode, unlockedStage)
+                        const card = state.getOrCreateCard(
+                            languageId,
+                            numberEntry.value,
+                            mode,
+                            unlockedStage,
+                            numberEntry.patterns,
+                        )
                         if (card.fsrs.state === 'new' && card.fsrs.reps === 0) {
                             newCards.push(card)
                         }

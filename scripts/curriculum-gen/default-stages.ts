@@ -2,45 +2,67 @@ import type { Stage } from '@curriculum/curriculum.ts'
 
 import { range, sparseRange, toNumberEntries } from './utils.ts'
 
+export interface StageConfig {
+    displayName: string
+    description: string
+    patterns: string[]
+    numbers: number[]
+}
+
 /**
  * Returns the default curriculum template with English descriptions as a template.
  * Languages can customize this via localizeStages().
  */
-export function getDefaultStages(random: () => number, helpTexts: Record<number, string>): Stage[] {
+export function getDefaultStages(
+    random: () => number,
+    helpTexts: Record<number, string>,
+    numberPatterns: Record<number, string[]>,
+): Stage[] {
     return [
         {
             displayName: 'Digits (1–10)',
             description: 'Learn the basic building blocks',
-            numbers: toNumberEntries(range(1, 10), helpTexts),
+            patterns: [],
+            numbers: toNumberEntries(range(1, 10), helpTexts, numberPatterns),
         },
         {
             displayName: 'Teens (11–20)',
             description: 'Numbers eleven through twenty',
-            numbers: toNumberEntries(range(11, 20), helpTexts),
+            patterns: [],
+            numbers: toNumberEntries(range(11, 20), helpTexts, numberPatterns),
         },
         {
             displayName: 'Twenties (21–30)',
             description: 'Practice the twenties',
-            numbers: toNumberEntries(range(21, 30), helpTexts),
+            patterns: [],
+            numbers: toNumberEntries(range(21, 30), helpTexts, numberPatterns),
         },
         {
             displayName: 'Decades',
             description: 'Round numbers: 0, 40, 50... 100',
-            numbers: toNumberEntries([0, 40, 50, 60, 70, 80, 90, 100], helpTexts),
+            patterns: [],
+            numbers: toNumberEntries([0, 40, 50, 60, 70, 80, 90, 100], helpTexts, numberPatterns),
         },
         {
             displayName: 'Two digits (31–99)',
             description: 'Master any two-digit number',
-            numbers: toNumberEntries([33, 44, 55, 66, 77, 88, 99, ...sparseRange(31, 99, 50, random)], helpTexts),
+            patterns: [],
+            numbers: toNumberEntries(
+                [33, 44, 55, 66, 77, 88, 99, ...sparseRange(31, 99, 50, random)],
+                helpTexts,
+                numberPatterns,
+            ),
         },
         {
             displayName: 'Hundreds',
             description: 'Round hundreds: 100, 200... 1000',
-            numbers: toNumberEntries([100, 200, 300, 400, 500, 600, 700, 800, 900, 1000], helpTexts),
+            patterns: [],
+            numbers: toNumberEntries([100, 200, 300, 400, 500, 600, 700, 800, 900, 1000], helpTexts, numberPatterns),
         },
         {
             displayName: 'Three digits (101–999)',
             description: 'Any number up to a thousand',
+            patterns: [],
             numbers: toNumberEntries(
                 [
                     101,
@@ -64,11 +86,13 @@ export function getDefaultStages(random: () => number, helpTexts: Record<number,
                     ...sparseRange(101, 999, 32, random),
                 ],
                 helpTexts,
+                numberPatterns,
             ),
         },
         {
             displayName: 'Thousands (1000–9999)',
             description: 'Numbers in the thousands',
+            patterns: [],
             numbers: toNumberEntries(
                 [
                     1111,
@@ -91,11 +115,13 @@ export function getDefaultStages(random: () => number, helpTexts: Record<number,
                     ...sparseRange(1000, 9999, 33, random),
                 ],
                 helpTexts,
+                numberPatterns,
             ),
         },
         {
             displayName: 'Large numbers (10000+)',
             description: 'Ten thousands, millions, and beyond',
+            patterns: [],
             numbers: toNumberEntries(
                 [
                     10000,
@@ -117,6 +143,7 @@ export function getDefaultStages(random: () => number, helpTexts: Record<number,
                     1_000_000_000_000,
                 ],
                 helpTexts,
+                numberPatterns,
             ),
         },
     ]

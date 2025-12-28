@@ -2,7 +2,22 @@ import sinoKoreanCurriculum from '@curriculum/sino-korean.json' with { type: 'js
 import swedishCurriculum from '@curriculum/swedish.json' with { type: 'json' }
 import type { LanguageId } from '@languages/index.ts'
 
+/**
+ * A pattern represents an atomic linguistic rule or fact that a learner must understand.
+ * Examples: DIGIT_ONE, SUFFIX_TEEN, PATTERN_DECADE_UNIT_ORDER
+ */
+export interface Pattern {
+    /** Unique identifier like 'DIGIT_ONE' or 'SUFFIX_TEEN' */
+    id: string
+    /** Human-readable description of what this pattern teaches */
+    description: string
+    /** Example numbers that demonstrate this pattern (~10 per pattern) */
+    examples: number[]
+}
+
 export interface Curriculum {
+    /** All patterns defined for this language */
+    patterns: Record<string, Pattern>
     /** All stages in learning order */
     stages: Stage[]
     /** Available voices for this language */
@@ -11,13 +26,18 @@ export interface Curriculum {
 
 export interface Stage {
     displayName: string
-    description: string // What this stage covers
+    description: string
+    /** Pattern IDs that this stage introduces */
+    patterns: string[]
+    /** Numbers to practice in this stage */
     numbers: NumberEntry[]
 }
 
 export interface NumberEntry {
     value: number
-    helpText?: string // Optional help text for tricky numbers
+    helpText?: string
+    /** Pattern IDs that this number demonstrates */
+    patterns: string[]
 }
 
 /**

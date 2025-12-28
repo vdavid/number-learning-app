@@ -40,8 +40,8 @@ function parseArgs(): CliArgs {
 function generateCurriculum(config: LanguageConfig): Curriculum {
     const random = createSeededRandom(64) // Fixed seed for deterministic output!
 
-    // Get default stages with this language's help texts
-    let stages: Stage[] = getDefaultStages(random, config.helpTexts)
+    // Get default stages with this language's help texts and number patterns
+    let stages: Stage[] = getDefaultStages(random, config.helpTexts, config.numberPatternMap)
 
     // Apply language-specific localization if provided
     if (config.localizeStages) {
@@ -54,6 +54,7 @@ function generateCurriculum(config: LanguageConfig): Curriculum {
     }
 
     return {
+        patterns: config.patterns,
         voices: config.voices,
         stages,
     }

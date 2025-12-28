@@ -12,6 +12,8 @@ export interface CardState {
     languageId: LanguageId
     /** Stage/level this card belongs to */
     stageIndex: number
+    /** Pattern IDs that this card tests */
+    patterns: string[]
     /** FSRS scheduling data */
     fsrs: {
         due: Date

@@ -100,11 +100,10 @@ For each new language, you'll need to:
           `jq -r '[.stages[].numbers[].value] | join(", ")' src/curriculum/swedish.json` to list the numbers.
         - See the files in `scripts/curriculum-gen/languages/` for reference, like `swedish.ts`, and `sino-korean.ts`.
 
-4. Generate patterns for the language.
+4.  Generate patterns for the language.
 
-See [[concepts#patterns]] for how to define patterns for a language.
-Use the notebook `scripts/add-language.ipynb` to help with pattern generation.
-
+See [[concepts#patterns]] for how to define patterns for a language. Use the notebook `scripts/add-language.ipynb` to
+help with pattern generation.
 
 5. Generate the curriculum:
 

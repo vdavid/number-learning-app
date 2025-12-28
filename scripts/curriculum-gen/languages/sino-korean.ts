@@ -145,6 +145,8 @@ function localizeStages(stages: Stage[]): Stage[] {
 export const sinoKoreanConfig: LanguageConfig = {
     id: 'sino-korean',
     helpTexts,
+    patterns: {},
+    numberPatternMap: {},
     voices: [
         {
             id: 'charlie',
